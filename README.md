@@ -10,7 +10,7 @@ Aplicación web progresiva (PWA) para registrar ingresos, gastos, finanzas perso
 
 ## Datos y privacidad
 
-Los registros se guardan primero en el almacenamiento local del navegador. Para sincronizarlos entre dispositivos, configura Supabase siguiendo [SUPABASE.md](SUPABASE.md) y entra con la misma cuenta en cada dispositivo. La clave pública de la app no da acceso a los datos de otras cuentas: la base usa políticas RLS. Nunca incluyas una clave `service_role`. Haz copias desde **Más → Ajustes y copias de seguridad**. El código es público; los registros personales no se guardan en GitHub.
+Los registros se guardan primero en el almacenamiento local del navegador. Para sincronizarlos entre dispositivos, configura Supabase siguiendo [SUPABASE.md](SUPABASE.md) y entra con la misma cuenta en cada dispositivo. La clave `publishable` es apta para la app web; las políticas RLS protegen los datos de cada cuenta. Nunca incluyas una clave `secret` o `service_role`. Haz copias desde **Más → Ajustes y copias de seguridad**. El código es público; los registros personales no se guardan en GitHub.
 
 ## Obligaciones vehiculares
 
