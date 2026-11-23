@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="es" data-portable="iphone">
+<html lang="es">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -633,6 +633,15 @@ label { margin: 7px 0 3px; }
 <script>
 const portable = document.documentElement.hasAttribute("data-portable");
 var K=portable ? "cuentasmoto-portatil-" + document.documentElement.dataset.portable : "cuentasmoto1",S=null;
+if(!portable){
+  try {
+    const legacyKey="cuentasmoto-portatil-iphone";
+    ["","_bak","_cloud","_auth","_owner"].forEach(suffix=>{
+      const previous=legacyKey+suffix,current=K+suffix;
+      if(!localStorage.getItem(current)){const value=localStorage.getItem(previous);if(value)localStorage.setItem(current,value);}
+    });
+  } catch(e) {}
+}
 try{var _raw=localStorage.getItem(K);if(_raw&&!localStorage.getItem(K+"_bak"))localStorage.setItem(K+"_bak",_raw);S=JSON.parse(_raw)}catch(e){}
 if(portable && !S) S=JSON.parse(document.getElementById("portable-data").textContent);
 if(!S||!S.s){S={s:{galon:15500,kmgal:110,mant:120,fijos:0,dias:26},d:[],g:[]}}
@@ -1722,7 +1731,7 @@ async function downloadPortable(includeData) {
   const json = includeData ? JSON.stringify(S).replace(/</g, "\\u003c") : "null";
   try {
     const html = document.documentElement.outerHTML
-      .replace(/<html lang="es" data-portable="[^"]*"/, '<html lang="es" data-portable="' + crypto.randomUUID() + '"')
+      .replace(/<html lang="es"(?: data-portable="[^"]*")?/, '<html lang="es" data-portable="' + crypto.randomUUID() + '"')
       .replace(/(<script id="portable-data" type="application\/json">)[\s\S]*?(<\/script>)/,
         (_, open, close) => open + json + close);
     const link = document.createElement("a");
