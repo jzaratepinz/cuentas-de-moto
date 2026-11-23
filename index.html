@@ -593,6 +593,11 @@ label { margin: 7px 0 3px; }
 </section>
 
 <section id="t-mas" class="sec-tab"><div class="card"><button class="go" data-go="bud">💰 Presupuesto personal</button><button class="go sec" data-go="set">⚙️ Ajustes y copias de seguridad</button></div></section><section id="t-bud" class="sec-tab"><button class="go sec" data-go="mas" style="margin:0 0 8px">← Más</button><div class="card"><h2>Mes</h2><input id="bm" type="month"></div><div class="card"><h2>Resultado del mes</h2><div id="bbal"></div></div><button class="go sec" data-go="gas" id="personal-expense">🧾 Registrar gasto personal</button><div class="card"><h2>En qué se va la plata</h2><div id="bdon"></div></div><div class="card"><h2>Presupuesto vs gastado</h2><div id="bbars"></div></div><div class="card"><h2>Gastos del mes</h2><div id="bhist"></div></div><div class="card" id="personal-categories"><h2>Categorías y presupuesto mensual</h2><div id="bcat"></div><div class="brow" style="grid-template-columns:1fr auto"><input id="bnew" placeholder="Nueva categoría"><button id="badd" class="x" style="color:var(--acc)">Agregar</button></div><button id="saveB">Guardar cambios</button></div></section><section id="t-set" class="sec-tab"><button class="go sec" data-go="mas" style="margin:0 0 8px">← Más</button>
+  <div class="card" id="cloud-card"><h2>☁️ Sincronizar mis datos</h2><p class="mute">Con tu cuenta puedes ver estos registros en otros dispositivos. La copia de este dispositivo se conserva.</p>
+    <p id="cloud-config-warning" class="mute" hidden></p>
+    <div id="cloud-signed-out"><label for="cloud-email">Correo electrónico</label><input id="cloud-email" type="email" autocomplete="email" inputmode="email" placeholder="tu@correo.com"><label for="cloud-password">Contraseña</label><input id="cloud-password" type="password" autocomplete="current-password" minlength="8" placeholder="Mínimo 8 caracteres"><div class="row"><button id="cloud-login">Iniciar sesión</button><button id="cloud-signup" class="sec">Crear cuenta</button></div><p id="cloud-auth-msg" class="mute" role="status"></p></div>
+    <div id="cloud-signed-in" hidden><p id="cloud-user" class="mute"></p><button id="cloud-logout" class="sec">Cerrar sesión</button></div>
+  </div>
   <div class="card">
     <h2>Sus datos</h2>
     <label for="sg">Precio del galón (COP)</label><input data-pesos id="sg" inputmode="numeric">
@@ -623,6 +628,7 @@ label { margin: 7px 0 3px; }
 </nav>
 <div id="msg" role="status"></div>
 
+<script src="./supabase-config.js"></script>
 <script id="portable-data" type="application/json">null</script>
 <script>
 const portable = document.documentElement.hasAttribute("data-portable");
@@ -1478,9 +1484,82 @@ setupDateWeekdays();
 all();
 loadPartQuote();
 </script>
-<script>const cacheKey = K + "_cloud";
-let revision = 0, dirty = false, busy = false, conflict = false;
+<script>const cacheKey = K + "_cloud", authKey = K + "_auth", ownerKey = K + "_owner";
+const cloudConfig = window.CUENTASMOTO_CLOUD || {};
+const cloudReady = /^https:\/\/[a-z0-9-]+\.supabase\.co\/?$/i.test(cloudConfig.url || "") && Boolean(cloudConfig.anonKey);
+let revision = 0, dirty = false, busy = false, conflict = false, cloudSession = null, cloudUser = null;
 const statusText = text => { $("cst").textContent = text; };
+const authStatus = text => { $("cloud-auth-msg").textContent = text; };
+function setCloudUI() {
+  $("cloud-config-warning").hidden = cloudReady;
+  $("cloud-config-warning").textContent = cloudReady ? "" : "La sincronización todavía no está conectada. Configura el proyecto de nube para activar el acceso desde otros dispositivos.";
+  $("cloud-signed-out").hidden = Boolean(cloudUser);
+  $("cloud-signed-in").hidden = !cloudUser;
+  if (cloudUser) $("cloud-user").textContent = "Sesión iniciada como " + cloudUser.email;
+  else if(!portable) statusText(cloudReady ? "Inicia sesión para sincronizar entre dispositivos" : "Datos guardados en este dispositivo · nube por configurar");
+}
+function saveSession(session) {
+  if(session?.access_token && !session.expires_at) session.expires_at=Math.floor(Date.now()/1000)+Number(session.expires_in||3600);
+  cloudSession = session;
+  try { session ? localStorage.setItem(authKey, JSON.stringify(session)) : localStorage.removeItem(authKey); } catch {}
+}
+async function authCall(path, body) {
+  const response = await fetch(cloudConfig.url.replace(/\/$/, "") + "/auth/v1/" + path, {method:"POST",headers:{"Content-Type":"application/json",apikey:cloudConfig.anonKey},body:JSON.stringify(body)});
+  const payload = await response.json().catch(()=>({}));
+  if (!response.ok) throw Error(payload.msg || payload.message || payload.error_description || payload.error || "No se pudo completar el acceso.");
+  return payload;
+}
+async function refreshSession() {
+  if (!cloudSession?.refresh_token) return false;
+  try { saveSession(await authCall("token?grant_type=refresh_token", {refresh_token:cloudSession.refresh_token})); return Boolean(cloudSession?.access_token); }
+  catch { saveSession(null); cloudUser=null; setCloudUI(); return false; }
+}
+async function ensureSession() {
+  if (!cloudSession) { try { cloudSession=JSON.parse(localStorage.getItem(authKey)||"null"); } catch {} }
+  if (!cloudSession?.access_token) return false;
+  if (Number(cloudSession.expires_at||0) < Math.floor(Date.now()/1000)+60) return refreshSession();
+  return true;
+}
+async function cloudFetch(path, options={}) {
+  if (!await ensureSession()) throw Error("Inicia sesión para sincronizar.");
+  const send = () => fetch(cloudConfig.url.replace(/\/$/, "") + path, { ...options, headers:{apikey:cloudConfig.anonKey,Authorization:"Bearer " + cloudSession.access_token,"Content-Type":"application/json",...(options.headers||{})} });
+  let response=await send();
+  if (response.status===401 && await refreshSession()) response=await send();
+  return response;
+}
+async function connectAccount(session) {
+  const savedOwner=localStorage.getItem(ownerKey);
+  if (savedOwner && savedOwner!==session.user.id) { saveSession(null); throw Error("Esta copia está vinculada a otro correo. Descarga primero una copia de seguridad antes de cambiar de cuenta."); }
+  saveSession(session); cloudUser=session.user; localStorage.setItem(ownerKey,cloudUser.id); setCloudUI();
+  const local=JSON.parse(localStorage.getItem(cacheKey)||"null"), hasLocal=Boolean(_raw || local?.data);
+  const remote=await readAccount();
+  if (remote.data) {
+    if (hasLocal) { revision=remote.version; markConflict(); }
+    else { displayData(remote.data); revision=remote.version; dirty=false; persist(); }
+  } else if (hasLocal) { revision=0; dirty=true; persist(); await synchronize(); }
+  else { revision=0; dirty=false; persist(); statusText("Cuenta conectada · sin registros todavía"); }
+}
+$("cloud-login").onclick=async()=>{
+  if(!cloudReady){authStatus("La cuenta de nube aún no está configurada.");return;}
+  const email=$("cloud-email").value.trim(),password=$("cloud-password").value;
+  if(!email||!password){authStatus("Escribe tu correo y contraseña.");return;}
+  authStatus("Conectando…");
+  try { await connectAccount(await authCall("token?grant_type=password",{email,password})); authStatus("Sesión iniciada."); }
+  catch(e){authStatus(e.message);}
+};
+$("cloud-signup").onclick=async()=>{
+  if(!cloudReady){authStatus("La cuenta de nube aún no está configurada.");return;}
+  const email=$("cloud-email").value.trim(),password=$("cloud-password").value;
+  if(!email||password.length<8){authStatus("Escribe un correo válido y una contraseña de al menos 8 caracteres.");return;}
+  authStatus("Creando cuenta…");
+  try { const session=await authCall("signup",{email,password}); if(session.access_token&&session.user){await connectAccount(session);authStatus("Cuenta creada y conectada.");}else authStatus("Cuenta creada. Confirma el correo y luego inicia sesión."); }
+  catch(e){authStatus(e.message);}
+};
+$("cloud-logout").onclick=async()=>{
+  try { if(await ensureSession()) await fetch(cloudConfig.url.replace(/\/$/,"")+"/auth/v1/logout",{method:"POST",headers:{apikey:cloudConfig.anonKey,Authorization:"Bearer "+cloudSession.access_token}}); } catch {}
+  saveSession(null); cloudUser=null; conflict=false; resolveButton.hidden=true; setCloudUI(); statusText("Sesión cerrada · copia local conservada");
+};
+setCloudUI();
 function persist() {
   try {
     localStorage.setItem(cacheKey, JSON.stringify({ revision, dirty, data:S }));
@@ -1517,18 +1596,21 @@ resolveButton.onclick = async () => {
   } catch { statusText("Sin conexión. Vuelve a intentar."); }
 };
 async function readAccount() {
-  const response = await fetch("/api/cuentas",{cache:"no-store"});
+  const response = await cloudFetch("/rest/v1/cuentas?id=eq."+encodeURIComponent(cloudUser.id)+"&select=version,data&limit=1",{cache:"no-store"});
   if (!response.ok) throw Error("read");
-  return response.json();
+  const rows=await response.json();
+  return rows[0] || {version:0,data:null};
 }
 function queueSave() {
   dirty = true; const cached = persist();
   if (portable) { statusText(cached ? "Guardado en este dispositivo" : "No se pudo guardar en este dispositivo"); return; }
+  if(!cloudReady || !cloudUser){statusText(cached ? (cloudReady ? "Guardado en este dispositivo · inicia sesión para sincronizar" : "Guardado en este dispositivo · nube por configurar") : "No se pudo guardar en este dispositivo");return;}
   statusText(cached ? "Cambios pendientes de sincronizar…" : "Guardando en la nube…");
   if(conflict) markConflict(); else synchronize();
 }
 async function synchronize() {
   if (portable) { statusText("Archivo local · sin sincronización"); return; }
+  if(!cloudReady || !cloudUser) return;
   if (busy || conflict) return;
   busy = true;
   try {
@@ -1540,9 +1622,9 @@ async function synchronize() {
     }
     while (dirty) {
       const snapshot = JSON.stringify(S);
-      const result = await fetch("/api/cuentas",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({version:revision,data:JSON.parse(snapshot)})});
+      const result = await cloudFetch("/rest/v1/rpc/sync_cuenta",{method:"POST",body:JSON.stringify({p_version:revision,p_data:JSON.parse(snapshot)})});
       if(result.status === 409) return markConflict();
-      if(!result.ok) throw Error("write");
+      if(!result.ok) { const error=await result.json().catch(()=>({})); if(error.code==="40001") return markConflict(); throw Error(error.message||"write"); }
       revision=(await result.json()).version;
       dirty = JSON.stringify(S) !== snapshot;
       persist();
@@ -1553,6 +1635,22 @@ async function synchronize() {
     statusText(dirty ? (persist() ? "Guardado en este dispositivo · nube pendiente" : "Pendiente de guardar · mantén esta página abierta") : "Sin conexión con la nube");
   } finally { busy=false; }
 }
+async function restoreCloudSession() {
+  if(!cloudReady || portable) return;
+  if(await ensureSession()) {
+    try {
+      const response=await cloudFetch("/auth/v1/user",{method:"GET"});
+      if(response.ok){
+        cloudUser=await response.json();
+        const savedOwner=localStorage.getItem(ownerKey);
+        if(savedOwner && savedOwner!==cloudUser.id){saveSession(null);cloudUser=null;setCloudUI();statusText("La copia local pertenece a otra cuenta. No se sincronizó.");return;}
+        localStorage.setItem(ownerKey,cloudUser.id);setCloudUI();await synchronize();
+      }
+    }
+    catch { statusText("Sin conexión con la nube · copia local conservada"); }
+  }
+}
+restoreCloudSession();
 window.addEventListener("online",synchronize);
 window.addEventListener("focus",synchronize);
 setInterval(()=>{if(dirty && !document.hidden) synchronize()},15000);
@@ -1594,14 +1692,14 @@ $("reset-data").onclick = async () => {
     result.textContent = conflict ? "Revisa las versiones antes de limpiar los datos." : "Espera a que termine la sincronización.";
     return;
   }
-  const scope = portable ? "este archivo en este dispositivo" : "tu cuenta y sus dispositivos sincronizados";
+  const scope = portable || !cloudUser ? "este dispositivo" : "tu cuenta y sus dispositivos sincronizados";
   if (prompt("Se borrarán los movimientos, saldos, datos de la moto y ajustes de " + scope + ". Para confirmar, escribe BORRAR.") !== "BORRAR") return;
   const empty = {s:{}, d:[], g:[], p27:{soat:0,tec:0,imp:0,seg:0}, clearedAt:Date.now()};
   busy = true;
   document.body.inert = true;
   try {
-    if (!portable) {
-      const response = await fetch("/api/cuentas", {method:"PUT", headers:{"Content-Type":"application/json"}, body:JSON.stringify({version:revision,data:empty})});
+    if (!portable && cloudUser) {
+      const response = await cloudFetch("/rest/v1/rpc/sync_cuenta", {method:"POST", body:JSON.stringify({p_version:revision,p_data:empty})});
       if (response.status === 409) { markConflict(); result.textContent = "Revisa las versiones antes de limpiar los datos."; return; }
       if (!response.ok) throw Error("reset");
       revision = (await response.json()).version;
