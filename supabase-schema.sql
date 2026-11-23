@@ -8,17 +8,14 @@ create table if not exists public.cuentas (
 
 alter table public.cuentas enable row level security;
 
-drop policy if exists "cada usuario lee su propia cuenta" on public.cuentas;
 create policy "cada usuario lee su propia cuenta"
   on public.cuentas for select to authenticated
   using ((select auth.uid()) = id);
 
-drop policy if exists "cada usuario crea su propia cuenta" on public.cuentas;
 create policy "cada usuario crea su propia cuenta"
   on public.cuentas for insert to authenticated
   with check ((select auth.uid()) = id);
 
-drop policy if exists "cada usuario actualiza su propia cuenta" on public.cuentas;
 create policy "cada usuario actualiza su propia cuenta"
   on public.cuentas for update to authenticated
   using ((select auth.uid()) = id)
