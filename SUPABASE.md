@@ -6,7 +6,7 @@ La app conserva una copia local y puede sincronizar los mismos datos entre dispo
 
 1. Crea un proyecto en [Supabase](https://supabase.com/dashboard).
 2. En el panel abre **SQL Editor** y ejecuta el contenido de `supabase-schema.sql`.
-3. En **Project Settings → API** copia el **Project URL** y la clave **anon/public** (también puede aparecer como publishable).
+3. En el panel del proyecto, abre **Connect** y copia el **Project URL** y la **Publishable key**. También los encuentras en **Project Settings → API Keys**. En proyectos con la interfaz anterior, la clave equivalente puede aparecer como `anon` o `anon public`.
 4. Completa `supabase-config.js` con esos dos valores y publica los cambios del repositorio.
 5. En **Authentication → URL Configuration**, agrega como URL del sitio y redirección: `https://jzaratepinz.github.io/cuentas-de-moto/`.
 6. En **Authentication → Providers → Email**, decide si quieres que Supabase pida confirmar el correo al crear una cuenta.
@@ -16,11 +16,11 @@ Ejemplo de configuración:
 ```js
 window.CUENTASMOTO_CLOUD = {
   url: "https://TU-PROJECT-REF.supabase.co",
-  anonKey: "TU-CLAVE-ANON-PUBLICA"
+  anonKey: "TU-PUBLISHABLE-KEY"
 };
 ```
 
-No uses una contraseña de base de datos ni la clave `service_role` en el navegador o en GitHub.
+La clave publishable es apta para el navegador; las políticas RLS siguen protegiendo las filas de cada usuario. No uses una contraseña de base de datos, `secret key` ni `service_role` en el navegador o en GitHub.
 
 ## 2. Iniciar sesión en la app
 
