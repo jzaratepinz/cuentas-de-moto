@@ -1,6 +1,6 @@
 # Cuentas de Moto para iPhone
 
-Paquete de aplicación web progresiva (PWA), en español y con almacenamiento local en el dispositivo. Incluye registro de ingresos y gastos, finanzas, presupuestos, mantenimiento, saldos y exportación de copias.
+Paquete de aplicación web progresiva (PWA), en español. Guarda una copia local y puede sincronizarla entre dispositivos con Supabase cuando se configura la nube. Incluye registro de ingresos y gastos, finanzas, presupuestos, mantenimiento, saldos y exportación de copias.
 
 ## Instalar en iPhone
 
@@ -9,13 +9,16 @@ Paquete de aplicación web progresiva (PWA), en español y con almacenamiento lo
 3. Toca **Compartir → Añadir a pantalla de inicio → Añadir**.
 4. Abre “Cuentas Moto” desde el nuevo icono. Tras la primera carga, las pantallas principales funcionan sin conexión.
 
-La app guarda los datos en el almacenamiento del navegador de ese iPhone. Usa **Más → Ajustes y copias de seguridad → Copiar mis datos** periódicamente para guardar una copia. Para cambiar de iPhone, copia esos datos y restáuralos en la app nueva.
+La app guarda primero los datos en el almacenamiento del navegador del iPhone. Para acceder desde otros dispositivos, configura Supabase con los pasos de `SUPABASE.md`, crea una cuenta en la app e inicia sesión con la misma cuenta en cada dispositivo. Usa **Más → Ajustes y copias de seguridad** para descargar una copia de tus registros.
 
 ## Archivos
 
 - `index.html`: aplicación.
 - `manifest.webmanifest`: nombre, iconos y modo de pantalla completa.
 - `sw.js`: caché para uso sin conexión.
+- `supabase-config.js`: URL del proyecto y clave pública para conectar la nube.
+- `supabase-schema.sql`: tabla, protección por usuario y función de sincronización.
+- `SUPABASE.md`: instrucciones para habilitar cuentas y sincronización.
 - `icon-180.png`, `icon-192.png`, `icon-512.png`: iconos de iPhone y de instalación.
 - `icon.svg`: icono vectorial alternativo.
 ## Alcance de las obligaciones para cualquier moto
