@@ -143,6 +143,15 @@ h2 { font-size: 19px; letter-spacing: -.025em; }
 .profile-section[open] > summary::after { content: "−"; }
 .profile-section form { display: grid; gap: 4px; padding: 0 12px 12px; }
 .profile-section form button { width: 100%; }
+.accordion { padding: 0; overflow: hidden; }
+.accordion > summary { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px; cursor: pointer; list-style: none; }
+.accordion > summary::-webkit-details-marker { display: none; }
+.accordion > summary::after { content: "+"; flex: 0 0 auto; color: var(--mute); font-size: 21px; line-height: 1; }
+.accordion[open] > summary::after { content: "−"; }
+.accordion > summary h2 { margin: 0; font-size: 17px; }
+.accordion-body { padding: 0 16px 16px; }
+.accordion-body > :first-child { margin-top: 0; }
+.accordion-body > :last-child { margin-bottom: 0; }
 .brand { font-weight: 750; letter-spacing: -.04em; font-size: 19px; }
 .mast small { display:block; min-width:0; color:var(--mute); font-size:12px; max-width:130px; text-align:right; line-height:1.2; }
 @media (max-width:480px) {
@@ -647,29 +656,31 @@ label { margin: 7px 0 3px; }
   <div class="card"><h2>Últimos 14 días</h2><div id="ievo"></div></div><div class="card"><h2>Por aplicación</h2><div class="tbl" id="apps"></div></div>
 </section>
 
-<section id="t-bud" class="sec-tab"><button class="go sec" data-go="ini" style="margin:0 0 8px">← Inicio</button><div class="card"><h2>Mes</h2><input id="bm" type="month"></div><div class="card"><h2>Resultado del mes</h2><div id="bbal"></div></div><button class="go sec" data-go="gas" id="personal-expense">🧾 Registrar gasto personal</button><div class="card"><h2>En qué se va la plata</h2><div id="bdon"></div></div><div class="card"><h2>Presupuesto vs gastado</h2><div id="bbars"></div></div><div class="card"><h2>Gastos del mes</h2><div id="bhist"></div></div><div class="card" id="personal-categories"><h2>Categorías y presupuesto mensual</h2><div id="bcat"></div><div class="brow" style="grid-template-columns:1fr auto"><input id="bnew" placeholder="Nueva categoría"><button id="badd" class="x" style="color:var(--acc)">Agregar</button></div><button id="saveB">Guardar cambios</button></div></section><section id="t-set" class="sec-tab"><button class="go sec" data-go="ini" style="margin:0 0 8px">← Inicio</button>
+<section id="t-bud" class="sec-tab"><button class="go sec" data-go="ini" style="margin:0 0 8px">← Inicio</button>
+  <details class="card accordion"><summary><h2>Mes</h2></summary><div class="accordion-body"><input id="bm" type="month"></div></details>
+  <details class="card accordion"><summary><h2>Resultado del mes</h2></summary><div class="accordion-body"><div id="bbal"></div></div></details>
+  <button class="go sec" data-go="gas" id="personal-expense">🧾 Registrar gasto personal</button>
+  <details class="card accordion"><summary><h2>En qué se va la plata</h2></summary><div class="accordion-body"><div id="bdon"></div></div></details>
+  <details class="card accordion"><summary><h2>Presupuesto vs gastado</h2></summary><div class="accordion-body"><div id="bbars"></div></div></details>
+  <details class="card accordion"><summary><h2>Gastos del mes</h2></summary><div class="accordion-body"><div id="bhist"></div></div></details>
+  <details class="card accordion" id="personal-categories"><summary><h2>Categorías y presupuesto mensual</h2></summary><div class="accordion-body"><div id="bcat"></div><div class="brow" style="grid-template-columns:1fr auto"><input id="bnew" placeholder="Nueva categoría"><button id="badd" class="x" style="color:var(--acc)">Agregar</button></div><button id="saveB">Guardar cambios</button></div></details>
+</section><section id="t-set" class="sec-tab"><button class="go sec" data-go="ini" style="margin:0 0 8px">← Inicio</button>
   <dialog id="cloud-recovery-dialog" aria-labelledby="cloud-recovery-title"><form id="cloud-recovery-form"><h2 id="cloud-recovery-title">Define una contraseña nueva</h2><p class="mute">Elige una contraseña de al menos 8 caracteres y confírmala.</p><label for="cloud-new-password">Nueva contraseña</label><input id="cloud-new-password" type="password" autocomplete="new-password" minlength="8" required><label for="cloud-confirm-password">Confirma la contraseña</label><input id="cloud-confirm-password" type="password" autocomplete="new-password" minlength="8" required><p id="cloud-recovery-msg" class="mute" role="status"></p><div class="row"><button id="cloud-save-password" type="submit">Guardar contraseña</button><button id="cloud-recovery-later" type="button" class="sec">Más tarde</button></div></form></dialog>
-  <div class="card">
-    <h2>Sus datos</h2>
+  <details class="card accordion"><summary><h2>Sus datos</h2></summary><div class="accordion-body">
     <label for="sg">Precio del galón (COP)</label><input data-pesos id="sg" inputmode="numeric">
     <label for="sk">Km por galón (Gixxer 150 en ciudad: 100 a 130)</label><input id="sk" inputmode="decimal">
     <label for="sm">Desgaste por km: aceite, llantas, kit de arrastre, frenos (COP)</label><input data-pesos id="sm" inputmode="numeric">
     <label for="sf">Gastos fijos del mes: SOAT, tecno, seguro, cuota, datos (COP)</label><input data-pesos id="sf" inputmode="numeric"><label for="sd">Días que trabaja al mes</label><input id="sd" inputmode="numeric"><label for="smeta">Meta de utilidad por km (COP)</label><input data-pesos id="smeta" inputmode="numeric"><label for="sgm">Gasolina</label><select id="sgm"><option value="calc">Calculada con los km</option><option value="real">La que yo registro</option></select><label for="smm">Mantenimiento y desgaste</label><select id="smm"><option value="calc">Calculado por km</option><option value="real">Lo que yo registro</option></select><label for="sfm">Gastos fijos</label><select id="sfm"><option value="real">Los que yo registro</option><option value="calc">Prorrateados por día trabajado</option></select>
-    <h2 style="margin-top:16px">Comisión de cada app</h2><div id="comis" class="row"></div><div class="brow" style="grid-template-columns:1fr auto"><input id="apn" placeholder="Otra aplicación"><button id="apa" class="x" style="color:var(--acc)">Agregar</button></div><div id="apl"></div><button id="saveS">Guardar ajustes</button>
-    <p class="mute" id="cpk"></p>
-  </div>
-  <div class="card" id="moto-categories"><h2>Categorías de moto</h2><div id="gcl"></div><div class="brow" style="grid-template-columns:1fr auto"><input id="gcn" placeholder="Nueva categoría"><button id="gca" class="x" style="color:var(--acc)">Agregar</button></div></div><div class="card">
-    <h2>Copia de seguridad</h2>
+  </div></details>
+  <details class="card accordion"><summary><h2>Comisión de cada app</h2></summary><div class="accordion-body"><div id="comis" class="row"></div><div class="brow" style="grid-template-columns:1fr auto"><input id="apn" placeholder="Otra aplicación"><button id="apa" class="x" style="color:var(--acc)">Agregar</button></div><div id="apl"></div><button id="saveS">Guardar ajustes</button><p class="mute" id="cpk"></p></div></details>
+  <details class="card accordion" id="moto-categories"><summary><h2>Categorías de moto</h2></summary><div class="accordion-body"><div id="gcl"></div><div class="brow" style="grid-template-columns:1fr auto"><input id="gcn" placeholder="Nueva categoría"><button id="gca" class="x" style="color:var(--acc)">Agregar</button></div></div></details>
+  <details class="card accordion"><summary><h2>Copia de seguridad</h2></summary><div class="accordion-body">
     <p class="mute">Para traer tus registros anteriores, copia los datos del sitio original y pégalos aquí.</p>
-    <div class="html-exports"><button id="export-full" disabled>⬇ Descargar HTML con mis datos</button>
-    <button id="export-empty" class="sec">⬇ Descargar HTML sin datos</button>
-    <p class="mute">Cada archivo funciona sin conexión. La copia con datos incluye tus registros y ajustes actuales.</p></div>
+    <div class="html-exports"><button id="export-full" disabled>⬇ Descargar HTML con mis datos</button><button id="export-empty" class="sec">⬇ Descargar HTML sin datos</button><p class="mute">Cada archivo funciona sin conexión. La copia con datos incluye tus registros y ajustes actuales.</p></div>
     <button id="exp" class="sec">Copiar mis datos</button><button id="csv" class="sec">Copiar CSV (ingresos y gastos)</button><button id="bk" class="sec">Copiar respaldo inicial (antes de esta versión)</button>
-    <label for="imp">Pegar datos para restaurar</label><input id="imp" placeholder="Pegue aquí la copia">
-    <button id="impb" class="sec">Restaurar</button>
-  </div>
-  <div class="card"><h2>Limpiar datos</h2><button id="reset-data" class="sec">Limpiar todos los datos</button><p id="reset-result" role="status" class="mute"></p>
-  </div>
+    <label for="imp">Pegar datos para restaurar</label><input id="imp" placeholder="Pegue aquí la copia"><button id="impb" class="sec">Restaurar</button>
+  </div></details>
+  <details class="card accordion"><summary><h2>Limpiar datos</h2></summary><div class="accordion-body"><button id="reset-data" class="sec">Limpiar todos los datos</button><p id="reset-result" role="status" class="mute"></p></div></details>
 </section>
 
 <nav aria-label="Navegación principal">
@@ -1539,7 +1550,9 @@ $("bhist").onclick = function(event) {
 $("edit-categories").onclick = function() {
   const personal = $("gt").value === "personal";
   showTab(personal ? "bud" : "set");
-  $(personal ? "personal-categories" : "moto-categories").scrollIntoView({block:"start"});
+  const categorySection = $(personal ? "personal-categories" : "moto-categories");
+  categorySection.open = true;
+  categorySection.scrollIntoView({block:"start"});
 };
 $("cancel-expense").onclick = clearExpenseForm;
 $("gt").onchange = function() {
