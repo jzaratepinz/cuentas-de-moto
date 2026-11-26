@@ -632,12 +632,47 @@ table { font-size: 14px; }
 .date-weekday { font-size: 12px; }
 nav .nav-icon { font-size: 16px; }
 nav .nav-label { font-size: clamp(8px, 2.2vw, 10px); }
+/* Jerarquía y ritmo visual comunes para toda la interfaz. */
+h1, h2, h3 { text-transform: uppercase; letter-spacing: .035em; }
+h1 { font-size: clamp(21px, 3vw, 24px) !important; line-height: 1.2; font-weight: 800; }
+h2 { font-size: 15px !important; line-height: 1.3; }
+h3 { font-size: 14px !important; line-height: 1.3; }
+#ttl { margin: 4px 0 14px; }
+.card { margin: 10px 0; padding: 16px; border-radius: 15px; }
+.card > h2 { display: flex; align-items: center; gap: 8px; margin: 0 0 10px; }
+.row, .actions, .income-grid { align-items: stretch; gap: 10px; }
+.row > *, .actions > *, .income-grid > * { min-width: 0; }
+.actions > button { min-height: 48px; margin: 0; }
+.kv { min-height: 36px; padding-block: 7px; align-items: center; gap: 10px; }
+.kv > span { min-width: 0; text-align: left; }
+.kv > b, .kv > :last-child { text-align: right; font-variant-numeric: tabular-nums; }
+.item { min-height: 48px; padding-block: 9px; }
+.home-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.home-summary .hero { min-height: 148px; padding: 20px clamp(16px, 3vw, 26px); gap: 4px; border-radius: 16px; }
+.home-summary .tile { height: 100%; min-height: 108px; padding: 14px 10px; border-radius: 14px; }
+.home-summary .tile .mute:first-child { min-height: 2.4em; display: flex; align-items: center; justify-content: center; line-height: 1.2; }
+.home-summary .tile .num { margin: 3px 0; line-height: 1.2; }
+.home-summary .tile .sub { line-height: 1.3; }
+.hero-eyebrow { color: #e1efff; font-size: 11px; line-height: 1.2; font-weight: 800; letter-spacing: .09em; text-transform: uppercase; }
+.hero-description { color: #fff; font-size: 12px; line-height: 1.2; font-weight: 650; letter-spacing: .06em; text-transform: uppercase; }
+#t-ini .hero .big { margin: 2px 0 0; font-size: clamp(26px, 5vw, 38px); line-height: 1.08; }
+button { border-radius: 12px; letter-spacing: .01em; }
+.chips button { min-height: 40px; letter-spacing: .06em; }
+@media (min-width: 780px) {
+  .home-summary { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .home-summary .hero { grid-column: 1 / -1; }
+}
+@media (max-width: 480px) {
+  .card { padding: 14px; }
+  .home-summary .tile:last-child:nth-child(odd) { grid-column: 1 / -1; }
+  .home-summary .tile:last-child:nth-child(odd) .num { font-size: clamp(16px, 5vw, 21px) !important; }
+}
 </style></head>
 <body>
 <header class="mast"><img class="mark" src="icon-192.png" alt="" width="42" height="42"><div class="mast-title"><span class="brand">CUENTAS</span><p class="mute" id="cst" role="status"></p></div><details class="profile-menu" id="profile-menu"><summary id="profile-trigger" aria-label="Abrir perfil" title="Mi perfil"><svg class="profile-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="8" r="3.5"></circle><path d="M4.8 20c.6-3.6 3.3-5.5 7.2-5.5s6.6 1.9 7.2 5.5"></path></svg><img id="profile-avatar-badge" class="profile-avatar" alt="" hidden></summary><div class="profile-popover"><p id="cloud-config-warning" class="mute" hidden></p><div id="cloud-signed-out"><h2 class="profile-heading">Mi cuenta</h2><p class="profile-note">Inicia sesión para sincronizar tus registros entre dispositivos.</p><label for="cloud-email">Correo electrónico</label><input id="cloud-email" type="email" autocomplete="email" inputmode="email" placeholder="tu@correo.com"><label for="cloud-password">Contraseña</label><input id="cloud-password" type="password" autocomplete="current-password" minlength="8" placeholder="Mínimo 8 caracteres"><div class="profile-actions"><button id="cloud-login" type="button">Iniciar sesión</button><button id="cloud-signup" type="button" class="sec">Crear cuenta</button></div><button id="cloud-forgot" type="button" class="sec">¿Olvidaste tu contraseña?</button></div><div id="cloud-signed-in" hidden><div class="profile-identity"><div class="profile-avatar-frame"><img id="profile-avatar-preview" class="avatar-preview" alt="Foto de perfil"><svg id="profile-avatar-fallback" class="profile-icon profile-placeholder" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"></circle><path d="M4.8 20c.6-3.6 3.3-5.5 7.2-5.5s6.6 1.9 7.2 5.5"></path></svg></div><div class="profile-identity-copy"><h2 id="profile-name-label">Mi perfil</h2><p id="cloud-user" class="profile-email"></p></div></div><label for="profile-display-name">Nombre visible</label><input id="profile-display-name" type="text" maxlength="60" autocomplete="nickname" placeholder="Tu nombre"><button id="profile-save-name" type="button">Guardar nombre</button><label for="profile-avatar-input">Foto de perfil</label><input id="profile-avatar-input" type="file" accept="image/*"><button id="profile-remove-avatar" type="button" class="sec">Quitar foto</button><details class="profile-section"><summary>Cambiar contraseña</summary><form id="profile-password-form"><label for="profile-new-password">Nueva contraseña</label><input id="profile-new-password" type="password" autocomplete="new-password" minlength="8" required placeholder="Mínimo 8 caracteres"><label for="profile-confirm-password">Confirma la contraseña</label><input id="profile-confirm-password" type="password" autocomplete="new-password" minlength="8" required><button type="submit">Actualizar contraseña</button></form></details><div class="profile-links"><h3>Más opciones</h3><button type="button" class="go sec" data-go="bud">💰 Presupuesto personal</button><button type="button" class="go sec" data-go="set">⚙️ Ajustes y copias de seguridad</button></div><button id="cloud-logout" type="button" class="sec">Cerrar sesión</button></div><p id="cloud-auth-msg" class="profile-message" role="status" aria-live="polite"></p><button id="cloud-recovery-open" type="button" class="sec" hidden>Continuar cambio de contraseña</button></div></details><small id="today"></small></header><h1 id="ttl">INICIO</h1>
 
 
-<section id="t-ini" class="sec-tab on"><div class="chips" id="ichips"><button data-p="hoy">Hoy</button><button data-p="semana" class="sec">Semana</button><button data-p="cal" class="sec">Este mes</button><button data-p="cus" class="sec">Rango</button></div><div class="row date-range" id="icus" hidden><div><label for="ic1">Desde</label><input type="date" id="ic1"></div><div><label for="ic2">Hasta</label><input type="date" id="ic2"></div></div><div class="home-summary"><div class="card hero"><svg class="map" viewBox="0 0 340 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><pattern id="blocks" width="46" height="33" patternTransform="rotate(-24)" patternUnits="userSpaceOnUse"><rect x="3" y="3" width="39" height="26" rx="3" fill="#1b427d" stroke="#4168a0"/></pattern></defs><rect width="340" height="200" fill="url(#blocks)"/><path d="M-20 188 62 151 82 105 142 78 165 120 224 94 252 43 348 -1" fill="none" stroke="#94d6ff" stroke-width="4" stroke-linejoin="round"/><circle cx="165" cy="120" r="7" fill="#d6efff" stroke="#153567" stroke-width="3"/></svg><div class="mute">Disponible del mes</div><div class="big" id="in">$0</div></div><div id="imini"></div></div><div class="actions"><button onclick="showTab('reg')">💵 Registrar jornada</button><button class="sec" onclick="showTab('gas')">🧾 Agregar gasto</button></div><div class="card" id="wallet-card"><h2>💵 Cuadre de saldos</h2>
+<section id="t-ini" class="sec-tab on"><div class="chips" id="ichips"><button data-p="hoy">Hoy</button><button data-p="semana" class="sec">Semana</button><button data-p="cal" class="sec">Este mes</button><button data-p="cus" class="sec">Rango</button></div><div class="row date-range" id="icus" hidden><div><label for="ic1">Desde</label><input type="date" id="ic1"></div><div><label for="ic2">Hasta</label><input type="date" id="ic2"></div></div><div class="home-summary"><div class="card hero"><svg class="map" viewBox="0 0 340 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><pattern id="blocks" width="46" height="33" patternTransform="rotate(-24)" patternUnits="userSpaceOnUse"><rect x="3" y="3" width="39" height="26" rx="3" fill="#1b427d" stroke="#4168a0"/></pattern></defs><rect width="340" height="200" fill="url(#blocks)"/><path d="M-20 188 62 151 82 105 142 78 165 120 224 94 252 43 348 -1" fill="none" stroke="#94d6ff" stroke-width="4" stroke-linejoin="round"/><circle cx="165" cy="120" r="7" fill="#d6efff" stroke="#153567" stroke-width="3"/></svg><div class="hero-eyebrow">Acumulado + hoy</div><div class="hero-description">Disponible</div><div class="big" id="in">$0</div></div><div id="imini"></div></div><div class="actions"><button onclick="showTab('reg')">💵 Registrar jornada</button><button class="sec" onclick="showTab('gas')">🧾 Agregar gasto</button></div><div class="card" id="wallet-card"><h2>💵 Cuadre de saldos</h2>
 
 <div id="wallet-summary" aria-live="polite"></div><div id="wallet-list"></div>
 <details id="opening-editor"><summary>Saldo inicial del mes</summary>
