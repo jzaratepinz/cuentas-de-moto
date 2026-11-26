@@ -125,6 +125,7 @@ h2 { font-size: 19px; letter-spacing: -.025em; }
 .profile-links { display: grid; gap: 6px; margin: 14px 0 6px; padding-top: 12px; border-top: 1px solid var(--line); }
 .profile-links h3 { margin: 0; font-size: 14px; }
 .profile-links button { width: 100%; margin-top: 0; }
+.profile-subview-close { display: grid; place-items: center; width: 42px; height: 42px; margin: 0 0 8px auto; padding: 0; border-radius: 50%; font-size: 26px; line-height: 1; }
 .profile-note, .profile-message { margin: 7px 0 10px; color: var(--mute); font-size: 12px; }
 .profile-message { min-height: 18px; }
 .profile-identity { display: flex; align-items: center; gap: 11px; margin: 0 0 10px; }
@@ -666,7 +667,7 @@ label { margin: 7px 0 3px; }
   <div class="card"><h2>Últimos 14 días</h2><div id="ievo"></div></div><div class="card"><h2>Por aplicación</h2><div class="tbl" id="apps"></div></div>
 </section>
 
-<section id="t-bud" class="sec-tab"><button class="go sec" data-go="ini" style="margin:0 0 8px">← Inicio</button>
+<section id="t-bud" class="sec-tab"><button type="button" class="sec profile-subview-close" aria-label="Cerrar y volver al perfil" title="Volver al perfil">×</button>
   <details class="card accordion"><summary><h2>Mes</h2></summary><div class="accordion-body"><input id="bm" type="month"></div></details>
   <details class="card accordion"><summary><h2>Resultado del mes</h2></summary><div class="accordion-body"><div id="bbal"></div></div></details>
   <button class="go sec" data-go="gas" id="personal-expense">🧾 Registrar gasto personal</button>
@@ -674,7 +675,7 @@ label { margin: 7px 0 3px; }
   <details class="card accordion"><summary><h2>Presupuesto vs gastado</h2></summary><div class="accordion-body"><div id="bbars"></div></div></details>
   <details class="card accordion"><summary><h2>Gastos del mes</h2></summary><div class="accordion-body"><div id="bhist"></div></div></details>
   <details class="card accordion" id="personal-categories"><summary><h2>Categorías y presupuesto mensual</h2></summary><div class="accordion-body"><div id="bcat"></div><div class="brow" style="grid-template-columns:1fr auto"><input id="bnew" placeholder="Nueva categoría"><button id="badd" class="x" style="color:var(--acc)">Agregar</button></div><button id="saveB">Guardar cambios</button></div></details>
-</section><section id="t-set" class="sec-tab"><button class="go sec" data-go="ini" style="margin:0 0 8px">← Inicio</button>
+</section><section id="t-set" class="sec-tab"><button type="button" class="sec profile-subview-close" aria-label="Cerrar y volver al perfil" title="Volver al perfil">×</button>
   <dialog id="cloud-recovery-dialog" aria-labelledby="cloud-recovery-title"><form id="cloud-recovery-form"><h2 id="cloud-recovery-title">Define una contraseña nueva</h2><p class="mute">Elige una contraseña de al menos 8 caracteres y confírmala.</p><label for="cloud-new-password">Nueva contraseña</label><input id="cloud-new-password" type="password" autocomplete="new-password" minlength="8" required><label for="cloud-confirm-password">Confirma la contraseña</label><input id="cloud-confirm-password" type="password" autocomplete="new-password" minlength="8" required><p id="cloud-recovery-msg" class="mute" role="status"></p><div class="row"><button id="cloud-save-password" type="submit">Guardar contraseña</button><button id="cloud-recovery-later" type="button" class="sec">Más tarde</button></div></form></dialog>
   <details class="card accordion"><summary><h2>Sus datos</h2></summary><div class="accordion-body">
     <label for="sg">Precio del galón (COP)</label><input data-pesos id="sg" inputmode="numeric">
@@ -963,7 +964,22 @@ function ivOf(c){var v=S.iv[c]||IV0[c]||{};return{km:v.km||0,mes:v.mes||0}}
 function copyT(t){try{navigator.clipboard.writeText(t).then(function(){msg("Copiado")},function(){$("imp").value=t;msg("Copie el texto del cuadro")})}catch(e){$("imp").value=t;msg("Copie el texto del cuadro")}}
 function cdel(b,fn){if(b.dataset.c){b.dataset.c="";fn();return}b.dataset.c="1";var o=b.textContent;b.textContent="¿Seguro?";setTimeout(function(){b.dataset.c="";b.textContent=o},3000)}
 function showTab(t){[].forEach.call(document.querySelectorAll(".sec-tab"),function(c){c.className="sec-tab"+(c.id=="t-"+t?" on":"")});var h=(t=="bud"||t=="set")?"ini":t;[].forEach.call(document.querySelectorAll("nav button"),function(c){c.className=c.dataset.t==h?"on":""});window.scrollTo(0,0)}
-document.addEventListener("click",function(e){var b=e.target.closest(".go");if(b){$("profile-menu").open=false;showTab(b.dataset.go)}});
+let profileReturnTab = "ini";
+let profileReturnToMenu = false;
+document.addEventListener("click",function(e){
+  var close=e.target.closest(".profile-subview-close");
+  if(close){showTab(profileReturnTab);$("profile-menu").open=profileReturnToMenu;return}
+  var b=e.target.closest(".go");
+  if(b){
+    if(b.closest(".profile-links")){
+      var active=document.querySelector(".sec-tab.on");
+      profileReturnTab=active?active.id.slice(2):"ini";
+      profileReturnToMenu=true;
+    }
+    $("profile-menu").open=false;
+    showTab(b.dataset.go);
+  }
+});
 function nextM(){var L={},r=[],km=S.mo.km||0,t0=new Date(iso(new Date())).getTime();S.m.forEach(function(x){if(!L[x.c]||x.km>=L[x.c].km)L[x.c]=x});Object.keys(L).forEach(function(c){var x=L[c],iv=ivOf(c),ik=x.int>0?x.int:iv.km,im=x.mes>0?x.mes:iv.mes;if(!ik&&!im)return;var o={c:c,last:x.f,lastKm:x.km};if(ik){o.next=x.km+ik;o.left=o.next-km}if(im){var d=new Date(x.f);d.setMonth(d.getMonth()+im);o.nd=iso(d);o.dleft=Math.round((d.getTime()-t0)/864e5)}o.urg=!!((ik&&km&&o.left<=300)||(im&&o.dleft<=30));o.ord=ik?o.left:99999;r.push(o)});return r.sort(function(a,b){return a.ord-b.ord})}
 function alerts(){var a=[],km=S.mo.km||0,t0=new Date(iso(new Date())).getTime(),up=[],lead=Number(S.remindDays)||30;DOCS.forEach(function(d){var f=S.doc[d];if(!f)return;var n=Math.round((new Date(f).getTime()-t0)/864e5);if(n<0)a.push({t:"📄 "+d+" vencido hace "+(-n)+" días",u:1});else if(n<=lead)a.push({t:"📄 "+d+" vence en "+n+" días ("+dmy(f)+")",u:1});else up.push({n:n,t:"📄 Próximo: "+d+" vence el "+dmy(f)+" (en "+n+" días)"})});
 var nx=nextM();nx.forEach(function(x){if(x.urg){var m=[];if(x.next!=null&&km&&x.left<=300)m.push(x.left<0?"pasado por "+(-x.left)+" km":"toca en "+x.left+" km");if(x.nd&&x.dleft<=30)m.push(x.dleft<0?"vencido hace "+(-x.dleft)+" días":"vence en "+x.dleft+" días");a.push({t:"🔧 "+x.c+": "+m.join(" · "),u:1})}});
