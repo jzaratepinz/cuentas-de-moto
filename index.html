@@ -616,6 +616,22 @@ label { margin: 7px 0 3px; }
 
 #reset-data {color:var(--neg)}
 [data-portable] .html-exports {display:none}
+/* Tipografía global más compacta en web y móvil. Los campos conservan 16 px para evitar zoom automático en iPhone. */
+body { font-size: 14px; line-height: 1.38; }
+h1 { font-size: 24px !important; line-height: 1.2; }
+h2 { font-size: 17px !important; }
+h3 { font-size: 15px !important; }
+label, .mute { font-size: 12px; }
+button, .profile-popover button { font-size: 13px; }
+input, select, textarea { font-size: 16px; }
+table { font-size: 14px; }
+.big { font-size: 46px; }
+#t-ini .hero .big { font-size: clamp(22px, 5vw, 34px); }
+.tile .num { font-size: clamp(14px, 4.5vw, 20px) !important; }
+.brand { font-size: 17px; }
+.date-weekday { font-size: 12px; }
+nav .nav-icon { font-size: 16px; }
+nav .nav-label { font-size: clamp(8px, 2.2vw, 10px); }
 </style></head>
 <body>
 <header class="mast"><img class="mark" src="icon-192.png" alt="" width="42" height="42"><div class="mast-title"><span class="brand">CUENTAS</span><p class="mute" id="cst" role="status"></p></div><details class="profile-menu" id="profile-menu"><summary id="profile-trigger" aria-label="Abrir perfil" title="Mi perfil"><svg class="profile-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="8" r="3.5"></circle><path d="M4.8 20c.6-3.6 3.3-5.5 7.2-5.5s6.6 1.9 7.2 5.5"></path></svg><img id="profile-avatar-badge" class="profile-avatar" alt="" hidden></summary><div class="profile-popover"><p id="cloud-config-warning" class="mute" hidden></p><div id="cloud-signed-out"><h2 class="profile-heading">Mi cuenta</h2><p class="profile-note">Inicia sesión para sincronizar tus registros entre dispositivos.</p><label for="cloud-email">Correo electrónico</label><input id="cloud-email" type="email" autocomplete="email" inputmode="email" placeholder="tu@correo.com"><label for="cloud-password">Contraseña</label><input id="cloud-password" type="password" autocomplete="current-password" minlength="8" placeholder="Mínimo 8 caracteres"><div class="profile-actions"><button id="cloud-login" type="button">Iniciar sesión</button><button id="cloud-signup" type="button" class="sec">Crear cuenta</button></div><button id="cloud-forgot" type="button" class="sec">¿Olvidaste tu contraseña?</button></div><div id="cloud-signed-in" hidden><div class="profile-identity"><div class="profile-avatar-frame"><img id="profile-avatar-preview" class="avatar-preview" alt="Foto de perfil"><svg id="profile-avatar-fallback" class="profile-icon profile-placeholder" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"></circle><path d="M4.8 20c.6-3.6 3.3-5.5 7.2-5.5s6.6 1.9 7.2 5.5"></path></svg></div><div class="profile-identity-copy"><h2 id="profile-name-label">Mi perfil</h2><p id="cloud-user" class="profile-email"></p></div></div><label for="profile-display-name">Nombre visible</label><input id="profile-display-name" type="text" maxlength="60" autocomplete="nickname" placeholder="Tu nombre"><button id="profile-save-name" type="button">Guardar nombre</button><label for="profile-avatar-input">Foto de perfil</label><input id="profile-avatar-input" type="file" accept="image/*"><button id="profile-remove-avatar" type="button" class="sec">Quitar foto</button><details class="profile-section"><summary>Cambiar contraseña</summary><form id="profile-password-form"><label for="profile-new-password">Nueva contraseña</label><input id="profile-new-password" type="password" autocomplete="new-password" minlength="8" required placeholder="Mínimo 8 caracteres"><label for="profile-confirm-password">Confirma la contraseña</label><input id="profile-confirm-password" type="password" autocomplete="new-password" minlength="8" required><button type="submit">Actualizar contraseña</button></form></details><div class="profile-links"><h3>Más opciones</h3><button type="button" class="go sec" data-go="bud">💰 Presupuesto personal</button><button type="button" class="go sec" data-go="set">⚙️ Ajustes y copias de seguridad</button></div><button id="cloud-logout" type="button" class="sec">Cerrar sesión</button></div><p id="cloud-auth-msg" class="profile-message" role="status" aria-live="polite"></p><button id="cloud-recovery-open" type="button" class="sec" hidden>Continuar cambio de contraseña</button></div></details><small id="today"></small></header><h1 id="ttl">INICIO</h1>
