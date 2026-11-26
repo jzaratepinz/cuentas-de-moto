@@ -125,8 +125,9 @@ h2 { font-size: 19px; letter-spacing: -.025em; }
 .profile-note, .profile-message { margin: 7px 0 10px; color: var(--mute); font-size: 12px; }
 .profile-message { min-height: 18px; }
 .profile-identity { display: flex; align-items: center; gap: 11px; margin: 0 0 10px; }
-.profile-avatar-frame { position: relative; flex: 0 0 52px; width: 52px; height: 52px; }
-.avatar-preview { width: 52px; height: 52px; border: 2px solid var(--line); border-radius: 50%; object-fit: cover; }
+.profile-avatar-frame { position: relative; flex: 0 0 52px; width: 52px; height: 52px; overflow: hidden; border-radius: 50%; }
+#profile-avatar-preview { display: block; box-sizing: border-box; flex: 0 0 52px; width: 52px !important; height: 52px !important; max-width: 52px !important; max-height: 52px !important; border: 2px solid var(--line); border-radius: 50%; object-fit: cover; }
+#profile-avatar-preview[hidden] { display: none !important; }
 .profile-placeholder { width: 52px; height: 52px; padding: 8px; border: 1px solid var(--line); border-radius: 50%; background: var(--bg); color: var(--mute); }
 .profile-identity-copy { min-width: 0; }
 .profile-identity-copy h2 { margin: 0 0 3px; font-size: 17px; }
