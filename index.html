@@ -152,6 +152,16 @@ h2 { font-size: 19px; letter-spacing: -.025em; }
 .accordion-body { padding: 0 16px 16px; }
 .accordion-body > :first-child { margin-top: 0; }
 .accordion-body > :last-child { margin-bottom: 0; }
+.category-editor { margin: 8px 0; border: 1px solid var(--line); border-radius: 10px; background: var(--bg); overflow: hidden; }
+.category-editor > summary { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 11px 12px; font-weight: 700; cursor: pointer; list-style: none; }
+.category-editor > summary::-webkit-details-marker { display: none; }
+.category-editor > summary::after { content: "+"; color: var(--mute); font-size: 20px; line-height: 1; }
+.category-editor[open] > summary::after { content: "−"; }
+.category-editor-fields { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr) auto; align-items: end; gap: 6px 8px; padding: 0 10px 10px; }
+.category-editor-fields label { margin: 0; font-size: 12px; }
+.category-editor-fields input { min-width: 0; }
+.category-editor-fields button { min-height: 40px; }
+@media (max-width: 480px) { .category-editor-fields { grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); } .category-editor-fields button { grid-column: 1 / -1; } }
 .brand { font-weight: 750; letter-spacing: -.04em; font-size: 19px; }
 .mast small { display:block; min-width:0; color:var(--mute); font-size:12px; max-width:130px; text-align:right; line-height:1.2; }
 @media (max-width:480px) {
@@ -833,7 +843,7 @@ $("f").onchange=loadDay;fix();buildDay();loadDay();
 $("bm").value=iso(new Date()).slice(0,7);$("bm").onchange=renderBud;
 $("saveB").onclick=function(){Object.keys(S.b.cat).forEach(function(k){S.b.cat[k]=money($("bc_"+k).value)});save();renderBud();msg("Presupuesto guardado")};
 var BK=[];
-function buildBud(){fix();BK=Object.keys(S.b.cat);$("bcat").innerHTML='<div class="brow mute"><span>Nombre</span><span>Presupuesto</span><button type="button" class="x" aria-hidden="true" disabled>Borrar</button></div>'+BK.map(function(k,i){return'<div class="brow"><input id="bn_'+i+'" value="'+esc(k)+'" aria-label="Nombre"><input data-pesos id="ba_'+i+'" inputmode="numeric" value="'+moneyField(S.b.cat[k]||"")+'" aria-label="Presupuesto de '+esc(k)+'"><button class="x" data-i="'+i+'" aria-label="Borrar '+esc(k)+'">Borrar</button></div>'}).join("")}
+function buildBud(){fix();BK=Object.keys(S.b.cat);$("bcat").innerHTML=BK.map(function(k,i){return'<details class="category-editor"><summary>'+esc(k)+'</summary><div class="category-editor-fields"><label for="bn_'+i+'">Nombre</label><input id="bn_'+i+'" value="'+esc(k)+'" aria-label="Nombre"><label for="ba_'+i+'">Presupuesto</label><input data-pesos id="ba_'+i+'" inputmode="numeric" value="'+moneyField(S.b.cat[k]||"")+'" aria-label="Presupuesto de '+esc(k)+'"><button type="button" class="x" data-i="'+i+'" aria-label="Borrar '+esc(k)+'">Borrar</button></div></details>'}).join("")}
 function applyBud(removed, added) {
   const rows = BK.map((previous, index) => ({
     previous,
