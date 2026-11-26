@@ -1,1119 +1,4 @@
-<!doctype html>
-<html lang="es">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#10264f">
-<meta name="apple-mobile-web-app-title" content="Cuentas Moto">
-<link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" href="icon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
-<style>.button-link{display:flex;align-items:center;justify-content:center;text-align:center;text-decoration:none;padding:9px 6px;border:1px solid var(--line);border-radius:12px;color:var(--acc);font-size:12px;font-weight:700;min-height:44px}.vehicle-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}</style>
-<style>
-html { -webkit-text-size-adjust: 100%; }
-button, input, select, textarea, summary { touch-action: manipulation; }
-button { min-height: 44px; transition: filter .15s ease, transform .15s ease; }
-button:active { transform: scale(.985); }
-nav { box-shadow: 0 -8px 24px rgb(16 38 79 / 8%); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); background: color-mix(in srgb, var(--card) 92%, transparent); }
-@media (max-width: 480px) { body { padding-bottom: calc(106px + env(safe-area-inset-bottom, 0px)); } .card { margin-block: 10px; } }
-@media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; } }
-</style>
-<title>Cuentas de moto</title>
-
-<style>
-:root{--bg:#eef2f4;--card:#fff;--ink:#14202b;--mute:#5d6b78;--line:#d5dde3;--acc:#1b4fd8;--accink:#fff;--pos:#0b7d56;--neg:#c23b2e;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1720;--card:#18232e;--ink:#e8eef3;--mute:#93a3b1;--line:#2b3947;--acc:#6b93ff;--accink:#0b1220;--pos:#3ecf9a;--neg:#ff7d6e;color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#0f1720;--card:#18232e;--ink:#e8eef3;--mute:#93a3b1;--line:#2b3947;--acc:#6b93ff;--accink:#0b1220;--pos:#3ecf9a;--neg:#ff7d6e;color-scheme:dark}
-*,*::before,*::after{box-sizing:border-box}
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
-body{margin:0;background:var(--bg);color:var(--ink);font:500 16px/1.4 Barlow,system-ui,-apple-system,"Segoe UI",sans-serif;padding:16px 16px 88px;max-width:560px;margin-inline:auto}
-body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:10}
-h1,h2{font-family:"Barlow Condensed",system-ui,sans-serif;margin:0}
-h1{font-size:28px;font-weight:700}
-h2{font-size:20px;font-weight:700;margin-bottom:10px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin:12px 0}
-label{display:block;font-size:14px;color:var(--mute);margin:10px 0 4px}
-input,select{width:100%;font:inherit;font-size:17px;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:11px 12px}
-input:focus-visible,select:focus-visible,button:focus-visible{outline:3px solid var(--acc);outline-offset:1px}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-button{font:600 17px Barlow,system-ui,sans-serif;border:0;border-radius:10px;padding:12px 14px;background:var(--acc);color:var(--accink);width:100%;margin-top:14px}
-button.sec{background:transparent;color:var(--acc);border:1px solid var(--line)}
-button.x{width:auto;margin:0;padding:4px 10px;font-size:14px;background:transparent;color:var(--neg);border:1px solid var(--line)}
-nav{position:fixed;left:0;right:0;bottom:0;display:flex;background:var(--card);border-top:1px solid var(--line);padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px));z-index:5}
-nav button{margin:0;background:transparent;color:var(--mute);border-radius:8px;padding:6px 0;font-size:11px}
-nav button.on{color:var(--acc);background:var(--bg)}
-.chips{display:flex;gap:8px}.chips button{margin:0;padding:8px 6px;font-size:15px}
-.hero{text-align:center;padding:8px 0 4px}
-.big{font:700 54px/1 "Barlow Condensed",system-ui,sans-serif}
-.pos{color:var(--pos)}.neg{color:var(--neg)}
-.mute{color:var(--mute);font-size:14px}
-.kv{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--line)}
-.kv:last-child{border:0}
-.tbl{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:15px}
-th,td{text-align:right;padding:7px 4px;border-bottom:1px solid var(--line);white-space:nowrap}
-th:first-child,td:first-child{text-align:left}th{color:var(--mute);font-weight:500}
-.item{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--line)}
-.item:last-child{border:0}
-.brow{display:grid;grid-template-columns:1fr 110px auto;gap:8px;margin:8px 0;align-items:center}.brow input{min-width:0;padding:9px 10px;font-size:16px}#mini,#imini,#fmini{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}.tile{margin:0;text-align:center;padding:10px}.tile .num{font:700 28px/1.1 "Barlow Condensed",system-ui,sans-serif}input[type=date],input[type=month]{display:block;width:100%;min-width:0;max-width:100%;-webkit-appearance:none;appearance:none;height:48px;line-height:1.2;text-align:left}input[type=date]::-webkit-date-and-time-value,input[type=month]::-webkit-date-and-time-value{text-align:left;min-width:0}[hidden]{display:none!important}.nota{border-left:4px solid var(--acc)}.al{padding:10px 0;border-bottom:1px solid var(--line)}.al:last-child{border:0}.al>div{margin-top:2px;overflow-wrap:anywhere}.alh{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}.alh span{font-weight:600}.fil{display:grid;grid-template-columns:1fr;gap:8px;margin-bottom:8px}.fil input,.fil select{width:100%;max-width:100%;min-width:0;font-size:15px;padding:9px 10px;height:46px;overflow:hidden;text-overflow:ellipsis;-webkit-appearance:none;appearance:none}.tile{min-width:0}.tile .mute{font-size:13px;line-height:1.2}.tile .sub{font-size:12px;margin-top:4px}.tile .num{font-size:clamp(15px,5vw,22px)!important;line-height:1.15;overflow-wrap:anywhere}.kv{gap:10px}.kv span{min-width:0;overflow-wrap:anywhere}.kv b{text-align:right;overflow-wrap:anywhere}.item>div{min-width:0;overflow-wrap:anywhere}.row>*{min-width:0}.chips{flex-wrap:wrap}.chips button{flex:1 1 0;min-width:0;white-space:nowrap;font-size:13px;padding:8px 4px}.jt{font-size:12px}.jt th,.jt td{padding:6px 3px}.jt .ic{padding:2px 5px;margin-left:2px;font-size:14px}.jt tr.tot td{font-weight:700}nav button span{display:block;font-size:19px;line-height:1.25}.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:8px}.bar{height:8px;background:var(--line);border-radius:4px;overflow:hidden;margin-top:6px}.bar>div{height:100%}.sec-tab{display:none}.sec-tab.on{display:block}
-#msg{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(76px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:8px 16px;border-radius:20px;font-size:15px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:6}
-#msg.show{opacity:1}
-</style>
-<style>:root, :root[data-theme="light"] {
-  --bg: #f1f5fb;
-  --card: #fff;
-  --ink: #11284a;
-  --mute: #465e7d;
-  --line: #d5e1f0;
-  --acc: #2355ae;
-  --accink: #fff;
-  --pos: #184896;
-  --neg: #ac352d;
-}
-
-body {
-  max-width: 1080px;
-  padding: 28px 24px calc(100px + env(safe-area-inset-bottom, 0px));
-  font: 400 15px/1.35 system-ui, sans-serif;
-  overflow-wrap: break-word;
-}
-button { cursor: pointer; font: 600 14px/1.25 system-ui, sans-serif; }
-button:hover { filter: brightness(.95); }
-input, select { min-width: 0; max-width: 100%; font-size: 16px; }
-h1, h2, .tile .num, .big { font-family: system-ui, sans-serif; }
-h1 { font-size: clamp(30px, 5vw, 46px); line-height: 1.15; letter-spacing: -.035em; }
-h2 { font-size: 19px; letter-spacing: -.025em; }
-.mast {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 10px;
-  border-bottom: 1px solid var(--line);
-  padding-bottom: 9px;
-  margin-bottom: 12px;
-}
-.mark {
-  width: 34px;
-  height: 34px;
-  border-radius: 10px;
-  display: grid;
-  place-items: center;
-  background: var(--bg);
-  border: 1px solid var(--line);
-}
-.brand { font-weight: 750; letter-spacing: -.04em; font-size: 19px; }
-.mast small { color: var(--mute); font-size: 12px; max-width: 130px; text-align: right; }
-#cst { min-height: 20px; font-size: 12px; margin: 0; }
-
-.chips {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  width: min(100%, 440px);
-  padding: 4px;
-  gap: 2px;
-  border: 1px solid var(--line);
-  border-radius: 20px;
-  background: var(--card);
-}
-#chips { grid-template-columns: repeat(5, minmax(0, 1fr)); }
-.chips button {
-  width: 100%;
-  border: 0;
-  border-radius: 15px;
-  padding: 8px 2px;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: .04em;
-  text-transform: uppercase;
-  text-align: center;
-  white-space: normal;
-}
-.chips .sec { color: var(--mute); }
-
-.card { padding: clamp(12px, 2vw, 16px); border-radius: 16px; min-width: 0; }
-.card > h2 { margin-bottom: 7px; }
-.card p { margin-bottom: 0; }
-.hero {
-  background: linear-gradient(120deg, #10264f, #1a4b96);
-  color: #fff;
-  position: relative;
-  isolation: isolate;
-  text-align: left;
-  padding: 30px clamp(20px, 4vw, 48px);
-  border: 0;
-  min-height: 176px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-.hero .mute, .hero .pos { color: #e1efff; }
-.hero .neg { color: #ffd2cb; }
-.hero > .map + .mute, .tile > .mute:first-child {
-  text-transform: uppercase;
-  letter-spacing: .07em;
-  font-size: 10px;
-  font-weight: 750;
-  text-align: center;
-}
-.hero > .map + .mute {
-  align-self: flex-start;
-  background: #274c83;
-  padding: 4px 11px;
-  border-radius: 18px;
-}
-.big {
-  font-size: clamp(30px, 6vw, 60px);
-  line-height: 1.15;
-  letter-spacing: -.04em;
-  margin: 6px 0 9px;
-  font-variant-numeric: tabular-nums;
-}
-.map {
-  position: absolute;
-  inset: 0 0 0 auto;
-  height: 100%;
-  width: 48%;
-  z-index: -1;
-  opacity: .65;
-  border-radius: inherit;
-  mask-image: linear-gradient(90deg, transparent, #000 50%);
-}
-.hero #inv { font-size: 13px; }
-.actions {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px;
-  margin-bottom: 14px;
-}
-.actions button { margin: 0; min-width: 0; padding: 12px 6px; }
-#mini, #imini, #fmini, .row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.tile { container-type: inline-size; padding: 18px 10px; }
-.tile .num {
-  font-weight: 700;
-  font-size: clamp(13px, 9cqw, 30px) !important;
-  line-height: 1.35;
-  margin: 6px 0;
-  white-space: nowrap;
-  font-variant-numeric: tabular-nums;
-}
-.tile .num[data-fit] { font-size: var(--fit) !important; }
-.tile .sub { font-size: 12px; }
-.kv { align-items: baseline; }
-.kv > :last-child { text-align: right; min-width: 0; }
-.kv > :last-child { font-variant-numeric: tabular-nums; }
-.item > span, .alh > * { min-width: 0; }
-.fil select { text-overflow: clip; padding-right: 10px; }
-.tbl { max-width: 100%; }
-.card.nota { background: var(--bg); border-left: 3px solid var(--acc); }
-#msg { max-width: calc(100% - 24px); text-align: center; }
-.sec-tab { min-width: 0; }
-
-nav {
-  display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-  gap: 2px;
-  padding-inline: 5px;
-}
-nav button {
-  min-width: 0;
-  min-height: 49px;
-  display: grid;
-  gap: 3px;
-  align-content: center;
-  justify-items: center;
-  padding: 4px 0;
-  text-align: center;
-  font-weight: 750;
-}
-nav .nav-icon { font-size: 18px; line-height: 1.2; }
-nav .nav-label { font-size: clamp(8px, 2.4vw, 11px); line-height: 1.2; }
-nav button.on { background: var(--bg); color: var(--acc); }
-
-@media (min-width: 780px) {
-  body { padding-left: 208px; padding-right: 32px; }
-  nav {
-    inset: 0 auto 0 0;
-    width: max(176px, calc((100vw - 1080px) / 2 + 176px));
-    padding: 96px 14px 20px max(14px, calc((100vw - 1080px) / 2 + 14px));
-    grid-template-columns: minmax(0, 1fr);
-    align-content: start;
-    gap: 6px;
-    border: 0;
-    border-right: 1px solid var(--line);
-    overflow-y: auto;
-  }
-  nav button {
-    grid-template-columns: 24px minmax(0, 1fr);
-    align-items: center;
-    justify-items: start;
-    gap: 10px;
-    padding: 10px 12px;
-    text-align: left;
-  }
-  nav .nav-label { font-size: 12px; }
-  .sec-tab#t-ini.on {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
-  }
-  .sec-tab#t-ini.on > * { grid-column: 1 / -1; margin: 0; }
-  #t-ini.on > .card:not(.hero) { grid-column: span 1; }
-  #imini { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-  .hero { min-height: 200px; }
-}
-@media (max-width: 450px) {
-  body { padding: 16px 13px calc(88px + env(safe-area-inset-bottom, 0px)); }
-  .hero { padding: 22px; }
-  .tile { padding: 13px 8px; }
-  .map { opacity: .48; }
-  .brow { grid-template-columns: minmax(0, 1fr) minmax(55px, 85px) auto; }
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #0c172a;
-    --card: #15243e;
-    --ink: #ecf4ff;
-    --mute: #b7cae3;
-    --line: #344968;
-    --acc: #9dc6ff;
-    --accink: #122745;
-    --pos: #a9d3ff;
-  }
-}
-:root[data-theme="dark"] {
-  --bg: #0c172a;
-  --card: #15243e;
-  --ink: #ecf4ff;
-  --mute: #b7cae3;
-  --line: #344968;
-  --acc: #9dc6ff;
-  --accink: #122745;
-  --pos: #a9d3ff;
-}
-
-.date-range,
-.sec-tab#t-ini.on > .date-range {
-  width: min(100%, 440px);
-  margin: 12px 0 0;
-}
-.date-range label { margin: 0 0 5px; font-weight: 650; }
-.date-range input { padding-inline: 8px; font-size: 16px; }
-
-#bcat .brow {
-  grid-template-columns: minmax(0, 1fr) minmax(100px, .65fr) auto;
-  column-gap: 6px;
-}
-#bcat .brow.mute {
-  font-size: 13px;
-  font-weight: 650;
-}
-#bcat .brow.mute > :last-child { visibility: hidden; }
-#bcat .brow.mute > :nth-child(2) { white-space: nowrap; }
-
-.parts-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 245px), 1fr)); gap: 10px; }
-.part-quote { min-width: 0; border: 1px solid var(--line); border-radius: 12px; padding: 12px; }
-.part-quote h3 { margin: 0; font-size: 16px; }
-.part-quote p { margin: 3px 0 6px; white-space: pre-wrap; }
-.part-edit { padding: 7px 10px; margin-top: 8px; }
-.part-editor { margin-top: 12px; }
-.part-editor summary { color: var(--acc); font-weight: 650; padding-block: 6px; cursor: pointer; }
-.part-editor textarea {
-  width: 100%;
-  padding: 10px 12px;
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  background: var(--bg);
-  color: var(--ink);
-  font: inherit;
-  font-size: 16px;
-  resize: vertical;
-}
-
-.category-row { grid-template-columns: minmax(0, 1fr) auto auto; }
-.expense-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 4px; }
-@media (max-width: 370px) {
-  #chips button[data-p="semana"] { font-size: 9px; letter-spacing: 0; }
-}
-
-#fnota > p { margin: 0 0 6px; }
-.reserve-line {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) max-content;
-  gap: 2px 10px;
-}
-.reserve-amount, .daily-value {
-  white-space: nowrap;
-  font-variant-numeric: tabular-nums;
-}
-#fnota .reserve-line > small { grid-column: 1 / -1; text-align: start; }
-
-.daily-head {
-  display: flex;
-  justify-content: space-between;
-  padding-bottom: 6px;
-}
-.daily-chart {
-  --zero: 0%;
-  display: grid;
-  grid-template-columns: minmax(0, 10.5rem) minmax(0, 1fr) max-content;
-  column-gap: 8px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-.daily-chart.mixed { --zero: 50%; }
-.daily-chart.losses { --zero: 100%; }
-.daily-row {
-  display: grid;
-  grid-column: 1 / -1;
-  grid-template-columns: subgrid;
-  align-items: center;
-  gap: 8px;
-  min-height: 30px;
-  border-top: 1px solid var(--line);
-  font-size: 13px;
-}
-.daily-row time { color: var(--mute); font-variant-numeric: tabular-nums; white-space: nowrap; }
-.daily-value { text-align: right; min-width: 85px; }
-.daily-track { position: relative; height: 12px; }
-.daily-track::after {
-  content: "";
-  position: absolute;
-  inset: 0 auto 0 var(--zero);
-  border-left: 1px solid var(--line);
-}
-.daily-bar {
-  position: absolute;
-  inset-block: 2px;
-  width: var(--bar-width);
-  min-width: 2px;
-  border-radius: 3px;
-}
-.mixed .daily-bar { width: calc(var(--bar-width) / 2); }
-.daily-bar.gain { left: var(--zero); background: var(--pos); }
-.daily-bar.loss { right: calc(100% - var(--zero)); background: var(--neg); }
-
-
-/* Give financial summaries as many equal columns as their container can hold. */
-#imini, #mini, #fmini {
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 9.75rem), 1fr));
-}
-.hero { container-type: inline-size; }
-.big {
-  font-size: clamp(24px, 11cqw, 60px);
-  white-space: nowrap;
-}
-.kv:not(.reserve-line) {
-  flex-wrap: wrap;
-  gap: 2px 12px;
-}
-.kv > :nth-child(2) {
-  max-width: 100%;
-  margin-inline-start: auto;
-  overflow-wrap: normal;
-}
-.tile .sub, .item, .al > div, .reserve-line { overflow-wrap: normal; }
-.item { flex-wrap: wrap; }
-.item > :first-child { flex: 1 1 12rem; min-width: 0; overflow-wrap: break-word; }
-.item > :last-child:not(:first-child) { margin-inline-start: auto; }
-.row > * { min-width: 0; }
-#bcat .brow { grid-template-columns: minmax(0, 1fr) minmax(12ch, .8fr) auto; }
-@media (max-width: 420px) {
-  #bcat .brow:not(.mute) { grid-template-columns: minmax(0,1fr) auto; }
-  #bcat .brow:not(.mute) > :first-child { grid-column: 1 / -1; }
-  #bcat .brow.mute { display: none; }
-}
-.big[data-fit] { font-size: var(--fit); }
-.tile .num { font-size: clamp(18px, 13cqw, 30px) !important; }
-@media (max-width: 420px) {
-  #bcat .brow:not(.mute)::before {
-    content: "Presupuesto mensual";
-    grid-column: 1 / -1;
-    grid-row: 2;
-    color: var(--mute);
-    font-size: 13px;
-  }
-}
-
-#wallet-summary {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 13ch), 1fr));
-  gap: 8px;
-  margin-block: 10px;
-}
-#wallet-summary > div {
-  min-width: 0;
-  display: grid;
-  align-content: center;
-  justify-items: center;
-  gap: 4px;
-  border: 1px solid var(--line);
-  background: var(--bg);
-  padding: 10px 5px;
-  border-radius: 12px;
-  text-align: center;
-}
-#wallet-summary strong { font-size: 11px; letter-spacing: .05em; text-transform: uppercase; }
-#wallet-summary b { font-variant-numeric: tabular-nums; font-size: clamp(14px, 3.8vw, 22px); white-space: nowrap; }
-.wallet-total { color: var(--acc); }
-#wallet-summary .outside-margin { box-shadow: inset 0 -3px currentColor; }
-.wallet-account { display: flex; align-items: center; flex-wrap: wrap; gap: 4px 10px; padding: 8px 0; border-bottom: 1px solid var(--line); }
-.wallet-account strong { flex: 1 1 6rem; overflow-wrap: anywhere; }
-.wallet-account b { white-space: nowrap; font-variant-numeric: tabular-nums; }
-.wallet-account > div { display: flex; gap: 4px; margin-left: auto; }
-#wallet-card .wallet-account button { border: 0; font-size: 13px; padding: 6px; }
-#wallet-editor, #opening-editor { margin-top: 10px; }
-#wallet-editor summary, #opening-editor summary { cursor: pointer; color: var(--acc); font-weight: 650; padding: 8px 10px; background: var(--bg); border: 1px solid var(--line); border-radius: 10px; }
-.wallet-account [data-edit] { color: var(--acc); }
-
-#ttl { text-align: center; }
-nav button { justify-content: center; }
-@media (min-width: 780px) {
-  nav button { display: flex; align-items: center; justify-content: center; }
-  #t-ini.on > #wallet-card { grid-column: 1 / -1; }
-}
-.wallet-short { color: #b42d33; }
-.wallet-over { color: #137140; }
-:root[data-theme="dark"] .wallet-short { color: #ffabb0; }
-:root[data-theme="dark"] .wallet-over { color: #7be0a2; }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .wallet-short { color: #ffabb0; }
-  :root:not([data-theme="light"]) .wallet-over { color: #7be0a2; }
-}
-.gross-share { display: inline-block; min-width: 5ch; text-align: right; font-weight: 600; color: var(--mute); }
-
-.income-grid { gap: 6px 9px; margin-block: 8px; }
-.income-field { display: grid; grid-template-rows: 1fr auto; gap: 2px; align-items: end; margin: 0; }
-.income-field span { overflow-wrap: anywhere; }
-.field-pair { align-items: end; }
-.field-output { display: block; padding: 11px 10px; border: 1px solid var(--line); border-radius: 10px; font-weight: 650; font-variant-numeric: tabular-nums; }
-.category-picker { display: grid; grid-template-columns: minmax(0,1fr) 46px; gap: 8px; }
-.category-picker button { margin: 0; padding: 0; }
-.expense-values:has(#expense-km[hidden]) { grid-template-columns: 1fr; }
-.date-box { display: grid; position: relative; align-items: center; min-height: 48px; padding: 5px 8px; background: var(--bg); border: 1px solid var(--line); border-radius: 10px; }
-.date-box input[type=date] { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
-.date-box:focus-within { outline: 3px solid var(--acc); }
-.date-weekday { pointer-events: none; font-size: 14px; line-height: 1.3; overflow-wrap: normal; color: var(--ink); font-variant-numeric: tabular-nums; }
-
-label { margin: 7px 0 3px; }
-.kv { padding-block: 5px; }
-.close-heading { display: grid; grid-template-columns: auto minmax(0,1fr); align-items: center; gap: 6px; }
-.close-heading h2, .close-heading label, .close-totals label { margin: 0; }
-.close-heading .date-box { min-height: 42px; text-align: center; }
-.close-totals { grid-template-columns: minmax(0,1fr) minmax(0,1fr) minmax(0,1.65fr); gap: 6px; align-items: end; }
-.close-totals label { font-size: 13px; margin-bottom: 3px; }
-.close-totals input, .close-totals output { height: 44px; padding: 0 6px; }
-.close-totals output { display: flex; align-items: center; white-space: nowrap; font-size: clamp(13px,3.5vw,17px); }
-.daily-row time { white-space: normal; }
-@media (max-width: 480px) {
-  .daily-chart { display: block; }
-  .daily-row { grid-template-columns: 1fr auto; gap: 2px 6px; padding-block: 3px; }
-  .daily-track { grid-column: 1 / -1; grid-row: 2; height: 7px; }
-}
-
-#t-ini .hero { min-height: 0; padding: 12px 16px; }
-#t-ini .hero .big { font-size: clamp(24px, 7cqw, 38px); margin: 3px 0 0; }
-#t-ini .home-summary {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  grid-auto-rows: 1fr;
-  gap: 8px;
-  margin-block: 10px;
-}
-.home-summary .hero { grid-column: 1 / -1; margin: 0; }
-.home-summary #imini { display: contents; }
-.home-summary .tile { margin: 0; padding: 12px 5px; }
-.home-summary .tile .sub { font-size: clamp(10px, 2.9vw, 12px); }
-
-.card :where(details, form, input, select, textarea, button) {
-  min-inline-size: 0;
-  max-inline-size: 100%;
-}
-#wallet-form, #opening-form {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  inline-size: 100%;
-  margin: 0;
-}
-#wallet-form > * { min-inline-size: 0; }
-#wallet-form button, .card label { overflow-wrap: anywhere; }
-
-#reset-data {color:var(--neg)}
-[data-portable] .html-exports {display:none}
-</style></head>
-<body>
-<header class="mast"><span class="mark" aria-hidden="true">ğŸï¸</span><div class="mast-title"><span class="brand">CUENTAS</span><p class="mute" id="cst" role="status"></p></div><small id="today"></small></header><h1 id="ttl">INICIO</h1>
-
-
-<section id="t-ini" class="sec-tab on"><div class="chips" id="ichips"><button data-p="hoy">Hoy</button><button data-p="semana" class="sec">Semana</button><button data-p="cal" class="sec">Este mes</button><button data-p="cus" class="sec">Rango</button></div><div class="row date-range" id="icus" hidden><div><label for="ic1">Desde</label><input type="date" id="ic1"></div><div><label for="ic2">Hasta</label><input type="date" id="ic2"></div></div><div class="home-summary"><div class="card hero"><svg class="map" viewBox="0 0 340 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><pattern id="blocks" width="46" height="33" patternTransform="rotate(-24)" patternUnits="userSpaceOnUse"><rect x="3" y="3" width="39" height="26" rx="3" fill="#1b427d" stroke="#4168a0"/></pattern></defs><rect width="340" height="200" fill="url(#blocks)"/><path d="M-20 188 62 151 82 105 142 78 165 120 224 94 252 43 348 -1" fill="none" stroke="#94d6ff" stroke-width="4" stroke-linejoin="round"/><circle cx="165" cy="120" r="7" fill="#d6efff" stroke="#153567" stroke-width="3"/></svg><div class="mute">Disponible del mes</div><div class="big" id="in">$0</div></div><div id="imini"></div></div><div class="actions"><button onclick="showTab('reg')">ğŸ’µ Registrar jornada</button><button class="sec" onclick="showTab('gas')">ğŸ§¾ Agregar gasto</button></div><div class="card" id="wallet-card"><h2>ğŸ’µ Cuadre de saldos</h2>
-
-<div id="wallet-summary" aria-live="polite"></div><div id="wallet-list"></div>
-<details id="opening-editor"><summary>Saldo inicial del mes</summary>
-<form id="opening-form"><label for="opening-month">Mes de apertura</label><input type="month" id="opening-month" required>
-<label for="opening-amount">Saldo al comenzar el mes</label><input id="opening-amount" data-pesos inputmode="text" required placeholder="$0">
-<small class="mute" id="opening-origin"></small><button>Confirmar saldo inicial</button><button type="button" class="sec" id="opening-auto" hidden>Usar cierre anterior</button></form></details>
-<details id="wallet-editor"><summary>Registrar saldo</summary><form id="wallet-form">
-<label for="wallet-source">DÃ³nde tienes el dinero</label><select id="wallet-source"></select>
-<div id="wallet-custom" hidden><label for="wallet-name">Nombre de la cuenta</label><input id="wallet-name" maxlength="60" placeholder="Nombre del banco, billetera o app"></div>
-<label for="wallet-amount">Saldo actual en pesos</label><input data-pesos id="wallet-amount" inputmode="numeric" required placeholder="$12.000.000">
-<button>Guardar saldo</button></form></details></div><div id="imeta" hidden></div><div class="card"><h2><span aria-hidden="true">ğŸ“ˆ</span> Este mes contra el anterior</h2><div id="icmp"></div></div><div id="iapp" hidden></div><div class="card"><h2><span aria-hidden="true">ğŸ””</span> PrÃ³ximas obligaciones</h2><div id="ialert"></div></div><div id="icash" hidden></div></section><section id="t-mot" class="sec-tab"><div class="card"><h2>Ficha de la moto</h2><label for="vehicle-select">VehÃ­culo activo</label><div class="row"><select id="vehicle-select" aria-label="VehÃ­culo activo"></select><button type="button" id="add-vehicle" class="sec">ï¼‹ Agregar moto</button></div><small class="mute">Cada moto guarda su ficha, documentos, obligaciones e historial de mantenimiento. Ingresos y gastos se comparten en los informes.</small><div class="row"><div><label for="mp">Placa</label><input id="mp" autocomplete="off"></div><div><label for="ma">AÃ±o modelo</label><input id="ma" inputmode="numeric"></div></div><div class="row"><div><label for="mbrand">Marca</label><input id="mbrand" placeholder="Ej. Suzuki"></div><div><label for="mline">LÃ­nea</label><input id="mline" placeholder="Ej. Gixxer 150"></div></div><div class="row"><div><label for="mcc">Cilindraje (cc)</label><input id="mcc" type="number" min="1" inputmode="numeric" placeholder="Ej. 155"></div><div><label for="mreg">Fecha de matrÃ­cula</label><input id="mreg" type="date"></div></div><div class="row"><div><label for="mdept">Departamento de matrÃ­cula</label><select id="mdept"><option value="">Selecciona</option><option>BogotÃ¡ D.C.</option><option>Cundinamarca</option><option>Otro departamento</option></select></div><div><label for="mk">Km actual</label><input id="mk" inputmode="numeric"></div></div><label for="mc">Color</label><input id="mc"><label for="mval">AvalÃºo oficial 2026 (SIBGA)</label><input id="mval" data-pesos inputmode="numeric" placeholder="Solo si paga impuesto vehicular"><label for="mrate">Tarifa de impuesto (%) segÃºn Hacienda</label><input id="mrate" inputmode="decimal" value="1,5"><small class="mute">Referencia nacional 1,5%; en algunas jurisdicciones se suma 0,2 puntos. Confirma la tarifa que aparece en la factura.</small><button id="mfs">Guardar ficha y calcular obligaciones</button><div class="vehicle-links" style="margin-top:10px"><a class="button-link" target="_blank" rel="noopener" href="https://www.runt.gov.co/actores/ciudadano/consulta-de-vehiculos-por-placa">Consultar placa en RUNT</a><a class="button-link" target="_blank" rel="noopener" href="https://web.mintransporte.gov.co/sibga/">Consultar avalÃºo SIBGA</a><a class="button-link" target="_blank" rel="noopener" href="https://www.superfinanciera.gov.co/publicaciones/10115953/superfinanciera-divulga-las-tarifas-maximas-del-soat-para-2026/">Tarifas SOAT 2026</a><a class="button-link" target="_blank" rel="noopener" href="https://www.cundinamarca.gov.co/dependencias/sechacienda/impuestos/vehiculos">Hacienda Cundinamarca</a><a class="button-link" target="_blank" rel="noopener" href="https://www.haciendabogota.gov.co/es/impuestos/impuesto-sobre-vehiculos-automotores">Hacienda BogotÃ¡</a></div><p id="vehicle-data-note" class="mute"></p></div><div id="mdocs" hidden></div><button id="mds" hidden>Guardar fechas</button><div class="card"><h2>Obligaciones vehiculares</h2><div id="obl"></div><div id="obt"></div><div id="ob-help" class="card nota"></div><button type="button" class="sec" id="edit-ob" aria-controls="ob-editor" aria-expanded="false">âœï¸ Editar obligaciones</button><div id="ob-editor" hidden><label for="obn">ObligaciÃ³n</label><select id="obn"></select><label for="obv">Fecha de vencimiento (confirma en RUNT o en tu pÃ³liza)</label><input id="obv" type="date"><label for="obb">Valor de referencia o cotizado (COP)</label><input data-pesos id="obb" inputmode="numeric"><small class="mute">SOAT se estima segÃºn el cilindraje. Puedes reemplazar el valor por el de tu recibo. La tecnomecÃ¡nica varÃ­a segÃºn el CDA; ingresa allÃ­ el precio cotizado.</small><button id="obs">Guardar cambios</button><label for="ob-remind">Mostrar aviso en Inicio</label><select id="ob-remind"><option value="30">30 dÃ­as antes</option><option value="15">15 dÃ­as antes</option><option value="7">7 dÃ­as antes</option><option value="1">1 dÃ­a antes</option></select></div></div><div class="card"><h2>Historial de renovaciones</h2><div id="ob-history"></div></div><div class="card"><h2>Nuevo mantenimiento</h2><label for="mcmp">Componente</label><select id="mcmp"></select><label for="mf">Fecha</label><input id="mf" type="date"><div class="row"><div><label for="mkm">Km</label><input id="mkm" inputmode="numeric"></div><div><label for="mv">Valor total (COP)</label><input data-pesos id="mv" inputmode="numeric"></div></div><label for="mint">Cada cuÃ¡ntos km toca de nuevo</label><input id="mint" inputmode="numeric" placeholder="SegÃºn su manual o su mecÃ¡nico"><label for="mmes">Cada cuÃ¡ntos meses (opcional)</label><input id="mmes" inputmode="numeric"><label style="display:flex;align-items:center;margin-top:12px"><input type="checkbox" id="mpag" checked style="width:auto;margin-right:10px">Ya lo paguÃ©: registrarlo como gasto</label><label for="mn">Nota (repuesto, mano de obra)</label><input id="mn"><button id="addM">Guardar mantenimiento</button></div><div class="card"><h2>ğŸ§© Repuestos y precios</h2><div id="parts-list" class="parts-list"></div><details class="part-editor"><summary>Agregar o editar cotizaciÃ³n</summary><label for="pcc">Componente</label><select id="pcc"></select><label for="pdesc">DescripciÃ³n del repuesto</label><textarea id="pdesc" rows="2" maxlength="300" placeholder="Marca, referencia o especificaciÃ³n"></textarea><div class="row"><div><label for="pr1">Repuesto mÃ­n.</label><input data-pesos id="pr1" inputmode="numeric"></div><div><label for="pr2">Repuesto mÃ¡x.</label><input data-pesos id="pr2" inputmode="numeric"></div></div><div class="row"><div><label for="pl1">Mano de obra mÃ­n.</label><input data-pesos id="pl1" inputmode="numeric"></div><div><label for="pl2">Mano de obra mÃ¡x.</label><input data-pesos id="pl2" inputmode="numeric"></div></div><button id="addP" class="sec">Guardar cotizaciÃ³n</button><div class="brow" style="grid-template-columns:1fr auto"><input id="mcn" placeholder="Nuevo componente"><button id="mca" class="x" style="color:var(--acc)">Agregar</button></div></details></div><div class="card"><h2><span aria-hidden="true">ğŸ”§</span> PrÃ³ximos mantenimientos</h2><div id="mnext"></div></div><div class="card"><h2>Historial de mant.</h2><div id="mhist"></div></div></section><section id="t-reg" class="sec-tab">
-  <div class="card">
-    <div class="close-heading"><label for="f">Fecha</label><input id="f" type="date"></div>
-    <div id="approws" class="row income-grid"></div>
-    <div class="row close-totals">
-      <div><label for="km">Km totales</label><input id="km" inputmode="decimal" placeholder="45"></div>
-      <div><label for="h">Horas totales</label><input id="h" inputmode="decimal" placeholder="4,5"></div>
-      <div><label for="day-value">Valor total</label><output id="day-value" class="field-output"></output></div>
-    </div>
-    <button id="addD">Guardar jornada</button>
-  </div><div class="card"><h2><span aria-hidden="true">ğŸ—“ï¸</span> Historial de jornadas</h2><div id="histI"></div></div></section><section id="t-gas" class="sec-tab">
-  <div class="card">
-    <h2>Registrar gasto</h2>
-    <div class="row field-pair">
-      <div><label for="gt">Tipo de gasto</label><select id="gt"><option value="moto">Moto</option><option value="personal">Personal</option></select></div>
-      <div><label for="gf">Fecha</label><input id="gf" type="date"></div>
-    </div>
-    <label for="gc">CategorÃ­a</label>
-    <div class="category-picker"><select id="gc"></select><button id="edit-categories" type="button" class="sec" aria-label="Editar categorÃ­as">âœï¸</button></div>
-    <label for="gv">Valor (COP)</label><input data-pesos id="gv" inputmode="numeric" placeholder="$25.000">
-    <label for="expense-note">ObservaciÃ³n (opcional)</label><input id="expense-note"><label for="expense-receipt">Foto del recibo (opcional)</label><input id="expense-receipt" type="file" accept="image/*" capture="environment"><small id="receipt-note" class="mute">La foto se comprime y se guarda con el gasto.</small>
-    <button id="addG">Guardar gasto</button><button id="cancel-expense" class="sec" hidden>Cancelar ediciÃ³n</button>
-
-  </div>
-  <div class="card"><h2><span aria-hidden="true">ğŸ§¾</span> Gastos registrados</h2><div class="fil"><select id="gft" aria-label="Tipo de gasto en historial"><option value="moto">Moto</option><option value="personal">Personal</option></select><input id="gfm" type="month" aria-label="Mes"><select id="gfc" aria-label="CategorÃ­a"></select></div><div id="gsum"></div><div id="hist"></div></div>
-</section>
-
-<section id="t-res" class="sec-tab">
-  <div class="chips" id="chips"><button data-p="hoy">Hoy</button><button data-p="semana" class="sec">Semana</button><button data-p="cal" class="sec">Este mes</button><button data-p="ant" class="sec">Mes ant.</button><button data-p="cus" class="sec">Rango</button></div><div class="row date-range" id="fcus" hidden><div><label for="fc1">Desde</label><input type="date" id="fc1"></div><div><label for="fc2">Hasta</label><input type="date" id="fc2"></div></div>
-  
-  <div class="card"><h2><span aria-hidden="true">ğŸ“Š</span> Estado de resultados</h2><div id="kv"></div></div><div class="card nota"><h2><span aria-hidden="true">ğŸ’°</span> CuÃ¡nto separar</h2><div id="fnota"></div></div>
-<div class="card"><h2>Rentabilidad de la moto</h2><div id="frent"></div></div><div class="card"><h2>ğŸ“… Rentabilidad por dÃ­a de la semana</h2><div id="weekday-profit"></div></div><div class="card"><h2>Costos de operaciÃ³n</h2><div id="fcat"></div></div>
-  <div class="card"><h2>Ãšltimos 14 dÃ­as</h2><div id="ievo"></div></div><div class="card"><h2>Por aplicaciÃ³n</h2><div class="tbl" id="apps"></div></div>
-</section>
-
-<section id="t-mas" class="sec-tab"><div class="card"><button class="go" data-go="bud">ğŸ’° Presupuesto personal</button><button class="go sec" data-go="set">âš™ï¸ Ajustes y copias de seguridad</button></div></section><section id="t-bud" class="sec-tab"><button class="go sec" data-go="mas" style="margin:0 0 8px">â† MÃ¡s</button><div class="card"><h2>Mes</h2><input id="bm" type="month"></div><div class="card"><h2>Resultado del mes</h2><div id="bbal"></div></div><button class="go sec" data-go="gas" id="personal-expense">ğŸ§¾ Registrar gasto personal</button><div class="card"><h2>En quÃ© se va la plata</h2><div id="bdon"></div></div><div class="card"><h2>Presupuesto vs gastado</h2><div id="bbars"></div></div><div class="card"><h2>Gastos del mes</h2><div id="bhist"></div></div><div class="card" id="personal-categories"><h2>CategorÃ­as y presupuesto mensual</h2><div id="bcat"></div><div class="brow" style="grid-template-columns:1fr auto"><input id="bnew" placeholder="Nueva categorÃ­a"><button id="badd" class="x" style="color:var(--acc)">Agregar</button></div><button id="saveB">Guardar cambios</button></div></section><section id="t-set" class="sec-tab"><button class="go sec" data-go="mas" style="margin:0 0 8px">â† MÃ¡s</button>
-  <div class="card" id="cloud-card"><h2>â˜ï¸ Sincronizar mis datos</h2><p class="mute">Con tu cuenta puedes ver estos registros en otros dispositivos. La copia de este dispositivo se conserva.</p>
-    <p id="cloud-config-warning" class="mute" hidden></p>
-    <div id="cloud-signed-out"><label for="cloud-email">Correo electrÃ³nico</label><input id="cloud-email" type="email" autocomplete="email" inputmode="email" placeholder="tu@correo.com"><label for="cloud-password">ContraseÃ±a</label><input id="cloud-password" type="password" autocomplete="current-password" minlength="8" placeholder="MÃ­nimo 8 caracteres"><div class="row"><button id="cloud-login">Iniciar sesiÃ³n</button><button id="cloud-signup" class="sec">Crear cuenta</button></div><p id="cloud-auth-msg" class="mute" role="status"></p></div>
-    <div id="cloud-signed-in" hidden><p id="cloud-user" class="mute"></p><button id="cloud-logout" class="sec">Cerrar sesiÃ³n</button></div>
-  </div>
-  <div class="card">
-    <h2>Sus datos</h2>
-    <label for="sg">Precio del galÃ³n (COP)</label><input data-pesos id="sg" inputmode="numeric">
-    <label for="sk">Km por galÃ³n (Gixxer 150 en ciudad: 100 a 130)</label><input id="sk" inputmode="decimal">
-    <label for="sm">Desgaste por km: aceite, llantas, kit de arrastre, frenos (COP)</label><input data-pesos id="sm" inputmode="numeric">
-    <label for="sf">Gastos fijos del mes: SOAT, tecno, seguro, cuota, datos (COP)</label><input data-pesos id="sf" inputmode="numeric"><label for="sd">DÃ­as que trabaja al mes</label><input id="sd" inputmode="numeric"><label for="smeta">Meta de utilidad por km (COP)</label><input data-pesos id="smeta" inputmode="numeric"><label for="sgm">Gasolina</label><select id="sgm"><option value="calc">Calculada con los km</option><option value="real">La que yo registro</option></select><label for="smm">Mantenimiento y desgaste</label><select id="smm"><option value="calc">Calculado por km</option><option value="real">Lo que yo registro</option></select><label for="sfm">Gastos fijos</label><select id="sfm"><option value="real">Los que yo registro</option><option value="calc">Prorrateados por dÃ­a trabajado</option></select>
-    <h2 style="margin-top:16px">ComisiÃ³n de cada app</h2><div id="comis" class="row"></div><div class="brow" style="grid-template-columns:1fr auto"><input id="apn" placeholder="Otra aplicaciÃ³n"><button id="apa" class="x" style="color:var(--acc)">Agregar</button></div><div id="apl"></div><button id="saveS">Guardar ajustes</button>
-    <p class="mute" id="cpk"></p>
-  </div>
-  <div class="card" id="moto-categories"><h2>CategorÃ­as de moto</h2><div id="gcl"></div><div class="brow" style="grid-template-columns:1fr auto"><input id="gcn" placeholder="Nueva categorÃ­a"><button id="gca" class="x" style="color:var(--acc)">Agregar</button></div></div><div class="card">
-    <h2>Copia de seguridad</h2>
-    <p class="mute">Para traer tus registros anteriores, copia los datos del sitio original y pÃ©galos aquÃ­.</p>
-    <div class="html-exports"><button id="export-full" disabled>â¬‡ Descargar HTML con mis datos</button>
-    <button id="export-empty" class="sec">â¬‡ Descargar HTML sin datos</button>
-    <p class="mute">Cada archivo funciona sin conexiÃ³n. La copia con datos incluye tus registros y ajustes actuales.</p></div>
-    <button id="exp" class="sec">Copiar mis datos</button><button id="csv" class="sec">Copiar CSV (ingresos y gastos)</button><button id="bk" class="sec">Copiar respaldo inicial (antes de esta versiÃ³n)</button>
-    <label for="imp">Pegar datos para restaurar</label><input id="imp" placeholder="Pegue aquÃ­ la copia">
-    <button id="impb" class="sec">Restaurar</button>
-  </div>
-  <div class="card"><h2>Limpiar datos</h2><button id="reset-data" class="sec">Limpiar todos los datos</button><p id="reset-result" role="status" class="mute"></p>
-  </div>
-</section>
-
-<nav aria-label="NavegaciÃ³n principal">
-  <button data-t="ini" class="on"><span class="nav-icon" aria-hidden="true">ğŸ </span><span class="nav-label">INICIO</span></button><button data-t="reg"><span class="nav-icon" aria-hidden="true">ğŸ’µ</span><span class="nav-label">INGRESOS</span></button><button data-t="gas"><span class="nav-icon" aria-hidden="true">ğŸ§¾</span><span class="nav-label">GASTOS</span></button>
-  <button data-t="res"><span class="nav-icon" aria-hidden="true">ğŸ“Š</span><span class="nav-label">FINANZAS</span></button><button data-t="mot"><span class="nav-icon" aria-hidden="true">ğŸï¸</span><span class="nav-label">MI MOTO</span></button>
-  <button data-t="mas"><span class="nav-icon" aria-hidden="true">âš™ï¸</span><span class="nav-label">MÃS</span></button>
-</nav>
-<div id="msg" role="status"></div>
-
-<script src="./supabase-config.js"></script>
-<script id="portable-data" type="application/json">null</script>
-<script>
-const portable = document.documentElement.hasAttribute("data-portable");
-var K=portable ? "cuentasmoto-portatil-" + document.documentElement.dataset.portable : "cuentasmoto1",S=null;
-if(!portable){
-  try {
-    const legacyKey="cuentasmoto-portatil-iphone";
-    ["","_bak","_cloud","_auth","_owner"].forEach(suffix=>{
-      const previous=legacyKey+suffix,current=K+suffix;
-      if(!localStorage.getItem(current)){const value=localStorage.getItem(previous);if(value)localStorage.setItem(current,value);}
-    });
-  } catch(e) {}
-}
-try{var _raw=localStorage.getItem(K);if(_raw&&!localStorage.getItem(K+"_bak"))localStorage.setItem(K+"_bak",_raw);S=JSON.parse(_raw)}catch(e){}
-if(portable && !S) S=JSON.parse(document.getElementById("portable-data").textContent);
-if(!S||!S.s){S={s:{galon:15500,kmgal:110,mant:120,fijos:0,dias:26},d:[],g:[]}}
-var P="hoy";
-var VEHICLE_FIELDS=["mo","doc","p27","ov","ohist","m","t","dp","iv","pc","cx"];
-function vehicleCopy(value){return JSON.parse(JSON.stringify(value==null?{}:value))}
-function vehicleSnapshot(id){var v={id:id};VEHICLE_FIELDS.forEach(function(k){v[k]=vehicleCopy(S[k])});return v}
-function storeActiveVehicle(){if(!Array.isArray(S.vehicles)||!S.activeVehicleId)return;var i=S.vehicles.findIndex(function(v){return v.id===S.activeVehicleId});if(i<0)return;var v=vehicleSnapshot(S.activeVehicleId);S.vehicles[i]=v}
-function restoreActiveVehicle(){var v=(S.vehicles||[]).find(function(x){return x.id===S.activeVehicleId});if(v)VEHICLE_FIELDS.forEach(function(k){S[k]=vehicleCopy(v[k])})}
-function ensureVehicles(){if(!Array.isArray(S.vehicles)||!S.vehicles.length){S.activeVehicleId="moto-1";S.vehicles=[vehicleSnapshot(S.activeVehicleId)]}else{if(!S.activeVehicleId||!S.vehicles.some(function(v){return v.id===S.activeVehicleId}))S.activeVehicleId=S.vehicles[0].id;restoreActiveVehicle()}if(!Array.isArray(S.ohist))S.ohist=[];if(!S.ov)S.ov={}}
-function renderVehicles(){var s=$("vehicle-select");if(!s)return;var id=S.activeVehicleId;s.replaceChildren(...S.vehicles.map(function(v,i){var m=v.mo||{},name=[m.placa,m.marca,m.linea].filter(Boolean).join(" Â· ")||("Mi moto "+(i+1));return new Option(name,v.id)}));s.value=id}
-function save(){storeActiveVehicle();S.ts=Date.now();queueSave()}
-function $(i){return document.getElementById(i)}
-const pesos = new Intl.NumberFormat("es-CO", {useGrouping:"always", maximumFractionDigits:0});
-function cop(n) {
-  const value = Math.round(Number(n) || 0);
-  return (value < 0 ? "-$" : "$") + pesos.format(Math.abs(value));
-}
-function moneyField(value) { return value === "" || value == null ? "" : cop(value); }
-document.addEventListener("input", event => {
-  const field = event.target;
-  if (!field.matches("input[data-pesos]") || event.isComposing) return;
-  const signed = field.id === "opening-amount" && field.value.startsWith("-");
-  const raw = signed ? field.value.slice(1) : field.value;
-  if (!/^[$\s.\d]*$/.test(raw)) return;
-  const digitsAfter = field.value.slice(field.selectionStart).replace(/\D/g, "").length;
-  const digits = raw.replace(/\D/g, "");
-  if (digits && !Number.isSafeInteger(Number(digits))) return;
-  field.value = (signed ? "-" : "") + moneyField(digits);
-  let cursor = field.value.length;
-  for (let left = digitsAfter; left && cursor; ) {
-    if (/\d/.test(field.value[--cursor])) left--;
-  }
-  field.setSelectionRange(cursor, cursor);
-}, true);
-function iso(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
-function money(v){return parseInt(String(v).replace(/\D/g,""),10)||0}
-function num(v){return parseFloat(String(v).replace(",","."))||0}
-function msg(t){var m=$("msg");m.textContent=t;m.className="show";setTimeout(function(){m.className=""},1600)}
-function uid(){return Date.now()+Math.floor(Math.random()*1000)}
-function range(){return rng(P,"f")}
-function currentWeek(today = new Date()) {
-  const monday = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-  monday.setDate(monday.getDate() - (monday.getDay() + 6) % 7);
-  const sunday = new Date(monday);
-  sunday.setDate(monday.getDate() + 6);
-  const thursday = new Date(Date.UTC(monday.getFullYear(), monday.getMonth(), monday.getDate() + 3));
-  const yearStart = Date.UTC(thursday.getUTCFullYear(), 0, 1);
-  const number = Math.ceil(((thursday - yearStart) / 86400000 + 1) / 7);
-  return { start: iso(monday), end: iso(sunday), number };
-}
-function updateWeekLabels() {
-  const week = currentWeek();
-  document.querySelectorAll('button[data-p="semana"]').forEach(button => {
-    button.textContent = "Semana " + week.number;
-    button.title = dmy(week.start) + " a " + dmy(week.end);
-  });
-}
-function calc(rr, dates){var r=rr||range(),s=S.s;
-  const included = f => f>=r[0] && f<=r[1] && (!dates || dates.has(f));
-  var d=S.d.filter(function(x){return included(x.f)});
-  var g=S.g.filter(function(x){return included(x.f)});
-  var sn={},o={ing:0,com:0,km:0,h:0,gas:0,apps:{}};
-  d.forEach(function(x){var kk=x.f+x.app,c;if(x.com!=null)c=x.com;else if(s.cm&&s.cm[x.app]=="fix"){c=sn[kk]?0:((s.cf&&s.cf[x.app])||0);sn[kk]=1}else c=x.ing*((s.com&&s.com[x.app])||0)/100;o.ing+=x.ing;o.com+=c;o.km+=x.km;o.h+=x.h;
-    var a=o.apps[x.app]||(o.apps[x.app]={ing:0,com:0,km:0,h:0});a.ing+=x.ing;a.com+=c;a.km+=x.km;a.h+=x.h});
-  Object.keys(S.k||{}).forEach(function(f){if(included(f)){o.km+=S.k[f].km;o.h+=S.k[f].h}});Object.keys(S.x||{}).forEach(function(f){if(included(f))o.ing+=S.x[f].bon+S.x[f].prop+S.x[f].otr});o.comb=s.kmgal>0?o.km/s.kmgal*s.galon:0;
-  o.mant=o.km*s.mant;
-  var gs=0,ms=0,fs=0;o.cats=Object.create(null);g.forEach(function(x){const group=motoGroup(x.c);if(group==="fuel")gs+=x.v;else if(group==="maintenance")ms+=x.v;else if(group==="fixed")fs+=x.v;else{o.gas+=x.v;o.cats[x.c]=(o.cats[x.c]||0)+x.v}});o.eg=o.comb;o.em=o.mant;o.gs=gs;if(s.gmode=="real")o.comb=gs;if(s.mmode=="real")o.mant=ms;
-  var dw={};d.forEach(function(x){dw[x.f]=1});o.dias=Object.keys(dw).length;o.ef=s.fijos/(s.dias||26)*o.dias;o.fijos=s.fmode=="real"?fs:o.ef;o.ob=((["soat","tec","imp","seg"].reduce((sum,key)=>sum+projectedValue(key),0))/12)/(s.dias||26)*o.dias;
-  o.neta=o.ing-o.com-o.comb-o.mant-o.gas-o.fijos;
-  o.personal=(S.b?.e || []).reduce((total,gasto) =>
-    included(gasto.f) ? total+gasto.v : total, 0);
-  o.disponible=o.neta-o.personal;
-  o.cashMovement=o.ing-o.com-g.reduce((sum,expense)=>sum+expense.v,0)-o.personal;
-  return o}
-function openingBalance(month) {
-  const balances = S.openingBalances || {};
-  const anchor = Object.keys(balances).filter(key => key <= month).sort().pop();
-  if (anchor === month) return balances[anchor];
-  const [year, number] = month.split("-").map(Number);
-  const previousEnd = iso(new Date(year, number - 1, 0));
-  const movement = calc([anchor ? anchor + "-01" : "0000-01-01", previousEnd, 1]).cashMovement;
-  return (anchor ? balances[anchor] : 0) + movement;
-}
-function row(a,b,c){return'<div class="kv"><span>'+a+'</span><b'+(c?' class="'+c+'"':'')+'>'+b+'</b></div>'}
-function renderRes(){var o=calc();
-  var nh=o.h>0?o.neta/o.h:0;
-  $("nh").textContent=cop(o.neta);$("nh").className="big "+(o.neta>=0?"pos":"neg");
-  $("nv").textContent=o.ing>0?cop(nh)+" por hora trabajada ("+o.h.toFixed(1).replace(".",",")+" h)":"AÃºn no hay ingresos en este periodo";
-  var gt=o.com+o.comb+o.mant+o.gas+o.fijos;$("mini").innerHTML='<div class="card tile"><div class="mute">Ingresos</div><div class="num">'+cop(o.ing)+'</div></div><div class="card tile"><div class="mute">Gastos totales</div><div class="num neg">'+cop(gt)+'</div></div>';var pk=o.km>0?o.neta/o.km:0;$("fmini").innerHTML=[["Bruto por km",o.km>0?cop(o.ing/o.km):"â€”"],["Tras comisiÃ³n por km",o.km>0?cop((o.ing-o.com)/o.km):"â€”"],["Gastos por km",o.km>0?cop((o.com+o.comb+o.mant+o.gas+o.fijos)/o.km):"â€”"],["Neto por km",o.km>0?cop(pk):"â€”"]].map(function(x){return'<div class="card tile"><div class="mute">'+x[0]+'</div><div class="num" style="font-size:22px">'+x[1]+'</div></div>'}).join("");
-  $("kv").innerHTML=row("Ingreso bruto",cop(o.ing))+row("ComisiÃ³n de las apps","âˆ’ "+cop(o.com))+row("Gasolina"+(S.s.gmode=="real"?" (registrada)":" (calculada)"),"âˆ’ "+cop(o.comb))+row(S.s.mmode=="real"?"Mantenimiento (registrado)":"Desgaste de la moto (calculado)","âˆ’ "+cop(o.mant))+Object.keys(o.cats).map(function(k){return row(esc(k),"âˆ’ "+cop(o.cats[k]))}).join("")+row("Gastos fijos"+(S.s.fmode=="real"?" (los que usted registra)":" ("+o.dias+" dÃ­as trabajados)"),"âˆ’ "+cop(o.fijos))+row("Ganancia neta",cop(o.neta),o.neta>=0?"pos":"neg")+row("Neta por hora",cop(nh),nh>=0?"pos":"neg")+row("Neta por km",cop(pk),pk>=0?"pos":"neg")+row("KilÃ³metros",o.km.toFixed(1).replace(".",","))+'<p class="mute">Referencia calculada, solo informativa: gasolina '+cop(o.eg)+' Â· desgaste '+cop(o.em)+' Â· fijos '+cop(o.ef)+'. Lo que cuenta es lo que usted registra como gasto.</p>';
-  var k=Object.keys(o.apps);
-  if(!k.length){$("apps").innerHTML='<p class="mute">Sin ingresos en este perÃ­odo.</p>';return}
-  k.sort(function(a,b){var x=o.apps[a],y=o.apps[b];return(y.ing-y.com)-(x.ing-x.com)});
-  var h="<table><tr><th>App</th><th>Ingreso</th><th>ComisiÃ³n</th><th>Neto</th></tr>";
-  k.forEach(function(n){var a=o.apps[n];h+="<tr><td>"+n+"</td><td>"+cop(a.ing)+"</td><td>"+cop(a.com)+"</td><td>"+cop(a.ing-a.com)+"</td></tr>"});
-  $("apps").innerHTML=h+"</table><p class=\"mute\">Neto es el ingreso menos la comisiÃ³n, antes de gasolina y desgaste.</p>"}
-function renderHistOld(){var l=[];
-  S.d.forEach(function(x){l.push({t:"d",id:x.id,f:x.f,a:x.app+" Â· "+cop(x.ing),b:x.day?"cierre del dÃ­a":x.km+" km, "+x.h+" h"})});
-  S.g.forEach(function(x){l.push({t:"g",id:x.id,f:x.f,a:x.c+" Â· âˆ’ "+cop(x.v),b:""})});
-  l.sort(function(a,b){return a.f<b.f?1:a.f>b.f?-1:b.id-a.id});
-  if(!l.length){$("hist").innerHTML='<p class="mute">TodavÃ­a no hay registros. Empiece con el ingreso de hoy.</p>';return}
-  $("hist").innerHTML=l.slice(0,10).map(function(x){return'<div class="item"><div><div>'+x.a+'</div><div class="mute">'+dmy(x.f)+(x.b?" Â· "+x.b:"")+'</div></div><button class="x" data-t="'+x.t+'" data-id="'+x.id+'" aria-label="Borrar registro">Borrar</button></div>'}).join("")}
-function renderSet(){var s=S.s;$("sg").value=moneyField(s.galon);$("sk").value=String(s.kmgal).replace(".",",");$("sm").value=moneyField(s.mant);$("sf").value=moneyField(s.fijos);$("sd").value=s.dias||26;$("smeta").value=moneyField(s.meta||1000);$("sfm").value=s.fmode||"real";$("sgm").value=s.gmode||"calc";$("smm").value=s.mmode||"calc";$("comis").innerHTML=APPS.map(function(a){return'<div><label for="cp_'+a+'">'+a+'</label><input id="cp_'+a+'" inputmode="decimal" value="'+String((s.com&&s.com[a])||0).replace('.',',')+'"></div>'}).join("");
-  $("cpk").textContent="Costo variable actual: "+cop(s.kmgal>0?s.galon/s.kmgal+s.mant:0)+" por km. Su tarifa por km debe quedar por encima de esto."}
-function all(){fix();updateWeekLabels();renderHist();renderRes();renderSet();renderBud();renderGC();renderIni();renderIni2();renderMoto();renderMoto2();renderCom();renderJ();renderAx();renderOb();refreshDateWeekdays()}
-$("f").value=iso(new Date());
-$("saveS").onclick=function(){S.s={galon:money($("sg").value),kmgal:num($("sk").value),mant:money($("sm").value),fijos:money($("sf").value),dias:money($("sd").value)||26,meta:money($("smeta").value)||1000,fmode:$("sfm").value,com:getCom(),cf:_cf,cm:_cm,gmode:$("sgm").value,mmode:$("smm").value};save();all();msg("Ajustes guardados")};
-$("chips").onclick=function(e){var b=e.target.closest("button");if(!b)return;P=b.dataset.p;$("fcus").hidden=P!="cus";
-  [].forEach.call($("chips").children,function(c){c.className=c==b?"":"sec"});renderRes()};
-var APPS=["Didi","Picap","Uber","Yango","inDrive"];var COL=["#1b4fd8","#0b7d56","#e08a00","#c23b2e","#7a4fd0","#0097a7","#b0408a","#7d8a96"];
-function esc(t){return String(t).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
-function fix(){if(!S.k)S.k={};Object.keys(S.k).forEach(function(f){if(!S.d.some(function(x){return x.f==f}))delete S.k[f]});if(!S.gc)S.gc=["Gasolina","Mantenimiento","Parqueadero","Peajes","Comida","Multa","Repuestos","Otro"];S.s.gmode=S.s.gmode||"calc";if(!S.v3){S.v3=1;Object.assign(S.s,{galon:16500,kmgal:110,mant:130,fijos:1200000,dias:24,meta:1000})}if(!S.mo)S.mo={};if(!S.m)S.m=[];if(!S.t)S.t=[];if(!S.doc)S.doc={};if(!S.x)S.x={};if(!S.v5){S.v5=1;S.s.gmode="real";S.s.mmode="real";S.s.fmode="real";if(S.gc&&S.gc.indexOf("Gastos fijos")<0)S.gc.push("Gastos fijos")}if(!S.ax)S.ax=[];if(!S.ob)S.ob={soat:0,tec:0,imp:0};if(!S.dp)S.dp={};if(!S.p27)S.p27={soat:S.ob.soat||0,tec:S.ob.tec||0,imp:S.ob.imp||0,seg:S.ob.seg||0};if(S.ob.seg==null)S.ob.seg=0;syncApps();if(!S.iv)S.iv={};if(!S.pc)S.pc={};if(!S.cx)S.cx=[];if(!S.v6){S.v6=1;["Repuestos","Aceite","Llantas","Kit de arrastre","Frenos","Lavadas"].forEach(function(c){if(S.gc.indexOf(c)<0)S.gc.push(c)})}Object.keys(S.x).forEach(function(f){if(!S.d.some(function(x){return x.f==f}))delete S.x[f]});S.s.mmode=S.s.mmode||"calc";if(!S.s.com)S.s.com={Didi:15,Picap:15,Uber:15,Yango:15,inDrive:15};if(!S.b)S.b={cat:{Arriendo:0,Servicios:0,Mercado:0,Comida:0,Transporte:0,Salud:0,Ocio:0,Otros:0},e:[]};if(!S.v4){S.v4=1;["Deudas","Parqueadero","Plan","SOAT y tecnomecÃ¡nica"].forEach(function(c){if(!(c in S.b.cat))S.b.cat[c]=0})}ensureVehicles()}
-function getCom(){var c={};APPS.forEach(function(a){c[a]=num($("cp_"+a).value)});return c}
-function buildBudOld(){fix();var ks=Object.keys(S.b.cat);$("bc").innerHTML=ks.map(function(k){return"<option>"+k+"</option>"}).join("");$("bcat").innerHTML=ks.map(function(k){return'<label for="bc_'+k+'">'+k+'</label><input id="bc_'+k+'" inputmode="numeric" value="'+moneyField(S.b.cat[k]||"")+'">'}).join("")}
-function renderBud(){fix();var m=$("bm").value||iso(new Date()).slice(0,7),b=S.b,ks=Object.keys(b.cat),tot=Object.create(null),T=0;
-var es=b.e.filter(function(x){return x.f.slice(0,7)==m});es.forEach(function(x){tot[x.c]=(tot[x.c]||0)+x.v;T+=x.v});Object.keys(tot).forEach(function(k){if(!Object.hasOwn(b.cat,k))ks.push(k)});
-var mo=calc([m+"-01",m+"-31",30]),opening=openingBalance(m),rest=opening+mo.cashMovement;
-$("bbal").innerHTML=row("Saldo inicial",cop(opening))+row("Ingresos de moto menos comisiones y gastos pagados",cop(mo.cashMovement+T))+row("Gastos personales","âˆ’ "+cop(T))+row("Le queda",cop(rest),rest>=0?"pos":"neg");
-var sv='<svg viewBox="0 0 42 42" width="170" height="170" role="img" aria-label="Gastos por categorÃ­a"><circle cx="21" cy="21" r="15.9155" fill="none" stroke="var(--line)" stroke-width="6"/>',off=25,lg="";
-ks.forEach(function(k,i){var v=tot[k]||0;if(!v)return;var p=v/T*100;sv+='<circle cx="21" cy="21" r="15.9155" fill="none" stroke="'+COL[i%8]+'" stroke-width="6" stroke-dasharray="'+p+' '+(100-p)+'" stroke-dashoffset="'+off+'"/>';off-=p;lg+='<div class="kv"><span><i class="dot" style="background:'+COL[i%8]+'"></i>'+esc(k)+'</span><b>'+cop(v)+' Â· '+Math.round(p)+'%</b></div>'});
-$("bdon").innerHTML=T?'<div style="text-align:center">'+sv+'</svg></div>'+lg:'<p class="mute">Registre un gasto personal para ver el grÃ¡fico.</p>';
-var h="";ks.forEach(function(k,i){var bud=Object.hasOwn(b.cat,k)?b.cat[k]:0,sp=tot[k]||0;if(!bud&&!sp)return;var p=bud?Math.min(100,sp/bud*100):100,over=bud&&sp>bud;h+='<div style="margin:12px 0"><div class="kv" style="border:0;padding:0"><span>'+esc(k)+'</span><span class="'+(over?'neg':'')+'">'+cop(sp)+(bud?' de '+cop(bud):'')+'</span></div><div class="bar"><div style="width:'+p+'%;background:'+(over?'var(--neg)':COL[i%8])+'"></div></div></div>'});
-$("bbars").innerHTML=h||'<p class="mute">Ponga un presupuesto por categorÃ­a abajo para ver el avance.</p>';
-var bl=es.slice().sort(function(a,b){return a.f<b.f?1:a.f>b.f?-1:b.id-a.id});
-$("bhist").innerHTML=bl.length?bl.slice(0,15).map(function(x){return'<div class="item"><div><div>'+esc(x.c)+' Â· '+cop(x.v)+'</div><div class="mute">'+dmy(x.f)+(x.n?' Â· '+esc(x.n):'')+'</div></div><button class="x" data-id="'+x.id+'" aria-label="Editar gasto personal">Editar</button></div>'}).join(""):'<p class="mute">Sin gastos personales en este mes.</p>'}
-$("f").onchange=loadDay;fix();buildDay();loadDay();
-$("bm").value=iso(new Date()).slice(0,7);$("bm").onchange=renderBud;
-$("saveB").onclick=function(){Object.keys(S.b.cat).forEach(function(k){S.b.cat[k]=money($("bc_"+k).value)});save();renderBud();msg("Presupuesto guardado")};
-var BK=[];
-function buildBud(){fix();BK=Object.keys(S.b.cat);$("bcat").innerHTML='<div class="brow mute"><span>Nombre</span><span>Presupuesto</span><button type="button" class="x" aria-hidden="true" disabled>Borrar</button></div>'+BK.map(function(k,i){return'<div class="brow"><input id="bn_'+i+'" value="'+esc(k)+'" aria-label="Nombre"><input data-pesos id="ba_'+i+'" inputmode="numeric" value="'+moneyField(S.b.cat[k]||"")+'" aria-label="Presupuesto de '+esc(k)+'"><button class="x" data-i="'+i+'" aria-label="Borrar '+esc(k)+'">Borrar</button></div>'}).join("")}
-function applyBud(removed, added) {
-  const rows = BK.map((previous, index) => ({
-    previous,
-    name: $("bn_" + index).value.trim() || previous,
-    amount: money($("ba_" + index).value),
-  })).filter((entry, index) => index !== removed);
-  if (added) rows.push({name:added, amount:0});
-  if (new Set(rows.map(entry => entry.name)).size !== rows.length) {
-    msg("Cada categorÃ­a debe tener un nombre distinto");
-    return false;
-  }
-  const renames = new Map(rows.filter(entry => entry.previous).map(entry => [entry.previous, entry.name]));
-  S.b.e.forEach(record => { record.c = renames.get(record.c) ?? record.c; });
-  S.b.cat = Object.fromEntries(rows.map(entry => [entry.name, entry.amount]));
-  return true;
-}
-function saveBudgetCategories(message) {
-  save();
-  buildBud();
-  renderBud();
-  renderGC();
-  renderHist();
-  msg(message);
-}
-$("saveB").onclick = () => { if (applyBud()) saveBudgetCategories("Cambios guardados"); };
-$("badd").onclick = function() {
-  const name = $("bnew").value.trim();
-  if (!name) return msg("Escribe un nombre");
-  if (!applyBud(undefined, name)) return;
-  $("bnew").value = "";
-  saveBudgetCategories("CategorÃ­a agregada");
-};
-$("bcat").onclick = function(event) {
-  const button = event.target.closest("button[data-i]");
-  if (button && applyBud(Number(button.dataset.i))) {
-    saveBudgetCategories("CategorÃ­a quitada. Se conservÃ³ el historial.");
-  }
-};
-var IP="hoy",COMP=["Aceite y filtro","Filtro de aire","BujÃ­a","Llantas","Kit de arrastre","Pastillas","Freno trasero","BaterÃ­a","LÃ­quido de frenos","SuspensiÃ³n","Rodamientos","Guayas","Otro"],DOCS=["SOAT","TecnomecÃ¡nica","Seguro"];
-function rng(p,q){var t=new Date(),e=iso(t),a=new Date(t);if(p=="cus")return[$(q+"c1").value||e,$(q+"c2").value||e,1];if(p=="ant")return[iso(new Date(t.getFullYear(),t.getMonth()-1,1)),iso(new Date(t.getFullYear(),t.getMonth(),0)),1];if(p=="hoy")return[e,e,1];if(p=="semana"){const w=currentWeek(t);return[w.start,w.end,7]}if(p=="mes"){a.setDate(t.getDate()-29);return[iso(a),e,30]}return[iso(new Date(t.getFullYear(),t.getMonth(),1)),e,t.getDate()]}
-function bump(k){if(k>(S.mo.km||0))S.mo.km=k}
-function nextM(){var L={},r=[];S.m.forEach(function(x){if(x.int>0&&(!L[x.c]||x.km>=L[x.c].km))L[x.c]=x});Object.keys(L).forEach(function(c){var n=L[c].km+L[c].int;r.push({c:c,next:n,left:n-(S.mo.km||0)})});return r.sort(function(a,b){return a.left-b.left})}
-function alertsOld(){var a=[],km=S.mo.km||0,t0=new Date(iso(new Date())).getTime();DOCS.forEach(function(d){var f=obligationDate(d);if(!f)return;var n=Math.round((new Date(f).getTime()-t0)/864e5);if(n<0)a.push(d+" vencido hace "+(-n)+" dÃ­as");else if(n<=30)a.push(d+" vence en "+n+" dÃ­as ("+dmy(f)+")")});nextM().forEach(function(x){if(km&&x.left<=300)a.push(x.c+(x.left<0?": pasado por "+(-x.left)+" km":": toca en "+x.left+" km"))});return a}
-function renderIni(){var o=calc(rng(IP,"i")),s=S.s,t=new Date(),nh=o.h>0?o.neta/o.h:0,pk=o.km>0?o.neta/o.km:0,cost=o.comb+o.mant+o.gas+o.fijos,meta=s.meta||1000;
-$("in").textContent=cop(o.neta);$("in").className="big "+(o.neta>=0?"pos":"neg");$("inv").textContent=o.ing>0?cop(pk)+" por km Â· "+cop(nh)+" por hora":"AÃºn no hay ingresos en este periodo";
-$("imini").innerHTML=[["Ingreso bruto",cop(o.ing),(o.km>0?cop(o.ing/o.km):"â€”")+" por km<br>"+(o.h>0?cop(o.ing/o.h):"â€”")+" por hora"],["Ingreso neto",cop(o.ing-o.com),(o.km>0?cop((o.ing-o.com)/o.km):"â€”")+" por km<br>"+(o.h>0?cop((o.ing-o.com)/o.h):"â€”")+" por hora"],["Costos de operaciÃ³n",cop(cost),""],["Km y horas",Math.round(o.km)+" km<br>"+o.h.toLocaleString("es-CO",{maximumFractionDigits:1})+" h",""]].map(function(x){return'<div class="card tile"><div class="mute">'+x[0]+'</div><div class="num">'+x[1]+'</div>'+(x[2]?'<div class="mute sub">'+x[2]+'</div>':"")+'</div>'}).join("");
-if(o.km>0){var tc=cost/o.km,ik=(o.ing-o.com)/o.km;$("imeta").innerHTML=row("Utilidad por km",cop(pk),pk>=meta?"pos":"neg")+row("Meta de utilidad",cop(meta))+row("Costo total por km",cop(tc))+row("Debe ingresar por km",cop(tc+meta))+row("Ingresa por km (despuÃ©s de comisiÃ³n)",cop(ik),ik>=tc+meta?"pos":"neg")+'<div class="bar"><div style="width:'+Math.min(100,Math.max(0,pk/meta*100))+'%;background:'+(pk>=meta?"var(--pos)":"var(--neg)")+'"></div></div>'}else $("imeta").innerHTML='<p class="mute">Registre km para medir la meta.</p>';
-var c=calc([iso(new Date(t.getFullYear(),t.getMonth(),1)),iso(t),1]),p=calc([iso(new Date(t.getFullYear(),t.getMonth()-1,1)),iso(new Date(t.getFullYear(),t.getMonth(),0)),1]);
-$("icmp").innerHTML=row("Mes actual",cop(c.neta),c.neta>=0?"pos":"neg")+row("Mes anterior",cop(p.neta),p.neta>=0?"pos":"neg")+row("Diferencia",cop(c.neta-p.neta),c.neta>=p.neta?"pos":"neg");
-var al=alerts();$("ialert").innerHTML=al.length?al.map(function(x){return'<div class="kv"><span class="'+(x.u?"neg":"")+'">'+esc(x.t)+'</span></div>'}).join(""):'<p class="mute">Sin alertas. Cargue sus documentos y mantenimientos en Mi moto.</p>';
-var ym=iso(t).slice(0,7),gp=0;S.b.e.forEach(function(x){if(x.f.slice(0,7)==ym)gp+=x.v});var al2=calc(["0000-01-01","9999-12-31",1]),gen=al2.km*s.mant,us=0;S.m.forEach(function(x){us+=x.v});
-$("icash").innerHTML=row("Neta del mes",cop(c.neta))+row("Gastos personales del mes","âˆ’ "+cop(gp))+row("Le queda (estimado)",cop(c.disponible),c.neta-gp>=0?"pos":"neg")+row("Reserva generada",cop(gen))+row("Mantenimientos pagados","âˆ’ "+cop(us))+row("Saldo del fondo",cop(gen-us),gen-us>=0?"pos":"neg")+'<p class="mute">La reserva es contable: no es plata guardada en una cuenta. La utilidad no es el saldo del banco.</p>'}
-function renderMoto(){renderVehicles();var m=S.mo||{};$("mp").value=m.placa||"";$("ma").value=m.anio||"";$("mbrand").value=m.marca||"";$("mline").value=m.linea||"";$("mcc").value=m.cc||"";$("mreg").value=m.matricula||"";$("mdept").value=m.departamento||"";$("mval").value=moneyField(m.avaluo||"");$("mrate").value=String(m.tarifa||1.5).replace(".",",");$("mc").value=m.color||"";$("mk").value=m.km||"";$("vehicle-data-note").textContent="Datos de placa no se consultan automÃ¡ticamente: RUNT solicita placa y documento del propietario. Ingresa los datos de tu tarjeta y confirma avalÃºo y vencimientos en fuentes oficiales.";DOCS.forEach(function(d){$("d_"+d).value=S.doc[d]||""});
-var nx=nextM();$("mnext").innerHTML=nx.length?nx.map(function(x){return row(esc(x.c),"a los "+x.next+" km"+(m.km?(x.left>=0?" (faltan "+x.left+")":" (pasado "+(-x.left)+")"):""),m.km&&x.left<=300?"neg":"")}).join(""):'<p class="mute">Registre un mantenimiento con su intervalo en km para ver cuÃ¡ndo toca el siguiente.</p>';
-var l=[];S.m.forEach(function(x){l.push({k:"m",id:x.id,f:x.f,a:esc(x.c)+" Â· "+cop(x.v),b:x.km+" km"+(x.n?" Â· "+esc(x.n):"")})});l.sort(function(a,b){return a.f<b.f?1:a.f>b.f?-1:b.id-a.id});
-$("mhist").innerHTML=l.length?l.slice(0,15).map(function(x){return'<div class="item"><div><div>'+x.a+'</div><div class="mute">'+dmy(x.f)+" Â· "+x.b+'</div></div><button class="x" data-k="'+x.k+'" data-id="'+x.id+'" aria-label="Borrar registro">Borrar</button></div>'}).join(""):'<p class="mute">Sin registros de la moto todavÃ­a.</p>'}
-$("mcmp").innerHTML=COMP.map(function(c){return"<option>"+c+"</option>"}).join("");$("mdocs").innerHTML=DOCS.map(function(d){return'<label for="d_'+d+'">'+d+' vence</label><input type="date" id="d_'+d+'">'}).join("");$("mf").value=iso(new Date());
-$("ichips").onclick=function(e){var b=e.target.closest("button");if(!b)return;IP=b.dataset.p;$("icus").hidden=IP!="cus";[].forEach.call($("ichips").children,function(c){c.className=c==b?"":"sec"});renderIni();renderIni2()};
-$("vehicle-select").onchange=function(){storeActiveVehicle();S.activeVehicleId=$("vehicle-select").value;all();save();msg("VehÃ­culo cambiado")};$("add-vehicle").onclick=function(){var id="moto-"+Date.now();S.mo={};S.doc={};S.p27={};S.ov={};S.ohist=[];S.m=[];S.t=[];S.dp={};S.iv={};S.pc={};S.cx=[];S.activeVehicleId=id;S.vehicles.push(vehicleSnapshot(id));all();save();msg("Nueva moto agregada. Completa su ficha")};$("mfs").onclick=function(){S.mo={...S.mo,placa:$("mp").value.trim(),anio:$("ma").value.trim(),marca:$("mbrand").value.trim(),linea:$("mline").value.trim(),cc:num($("mcc").value),matricula:$("mreg").value,departamento:$("mdept").value,avaluo:money($("mval").value),tarifa:num($("mrate").value),color:$("mc").value.trim(),km:num($("mk").value)};save();all();msg("Ficha guardada y obligaciones recalculadas")};
-$("mds").onclick=function(){DOCS.forEach(function(d){S.doc[d]=$("d_"+d).value});save();all();msg("Fechas guardadas")};
-$("addM").onclick=function(){var v=money($("mv").value),k=num($("mkm").value);if(!v||!k){msg("Escriba el km y el valor");return}S.m.push({id:uid(),c:$("mcmp").value,f:$("mf").value||iso(new Date()),km:k,v:v,int:num($("mint").value),n:$("mn").value});bump(k);save();["mv","mkm","mint","mn"].forEach(function(i){$(i).value=""});all();msg("Mantenimiento guardado")};
-$("mhist").onclick=function(e){var x=e.target.closest("button");if(!x)return;var id=+x.dataset.id;if(x.dataset.k=="m")S.m=S.m.filter(function(y){return y.id!=id});else{S.t=S.t.filter(function(y){return y.id!=id});S.g=S.g.filter(function(y){return y.id!=id})}save();all();msg("Registro borrado")};
-$("csv").onclick=function(){var r=["fecha,app,ingreso,comision"];S.d.slice().sort(function(a,b){return a.f<b.f?-1:1}).forEach(function(x){r.push([x.f,x.app,x.ing,x.com==null?"":x.com].join(","))});r.push("","fecha,km,horas");Object.keys(S.k).sort().forEach(function(f){r.push([f,S.k[f].km,S.k[f].h].join(","))});var t=r.join("\n");try{navigator.clipboard.writeText(t).then(function(){msg("CSV copiado")},function(){$("imp").value=t;msg("Copie el texto del cuadro")})}catch(e){$("imp").value=t;msg("Copie el texto del cuadro")}};
-function alerts(){var a=[],km=S.mo.km||0,t0=new Date(iso(new Date())).getTime(),up=[],lead=Number(S.remindDays)||30;DOCS.forEach(function(d){var f=S.doc[d];if(!f)return;var n=Math.round((new Date(f).getTime()-t0)/864e5);if(n<0)a.push({t:"ğŸ“„ "+d+" vencido hace "+(-n)+" dÃ­as",u:1});else if(n<=lead)a.push({t:"ğŸ“„ "+d+" vence en "+n+" dÃ­as ("+dmy(f)+")",u:1});else up.push({n:n,t:"ğŸ“„ PrÃ³ximo: "+d+" vence el "+dmy(f)+" (en "+n+" dÃ­as)"})});var nx=nextM();nx.forEach(function(x){if(km&&x.left<=300)a.push({t:"ğŸ”§ "+x.c+(x.left<0?": pasado por "+(-x.left)+" km":": toca en "+x.left+" km"),u:1})});if(a.length)return a;up.sort(function(p,q){return p.n-q.n});if(up[0])a.push({t:up[0].t});if(nx[0])a.push({t:"ğŸ”§ PrÃ³ximo: "+nx[0].c+" a los "+nx[0].next+" km"+(km?" (faltan "+nx[0].left+")":"")});return a}
-function reserveLine(label, amount, detail) {
-  return '<div class="kv reserve-line"><span>' + label + '</span><b class="reserve-amount">' +
-    cop(amount) + '</b>' + (detail ? '<small class="mute">' + detail + '</small>' : "") + '</div>';
-}
-function evo() {
-  const today = new Date();
-  const days = Array.from({length:14}, (_, index) => {
-    const date = new Date(today);
-    date.setDate(today.getDate() - 13 + index);
-    const day = iso(date);
-    return {day, net:calc([day, day, 1]).disponible};
-  });
-  const largest = Math.max(1, ...days.map(({net}) => Math.abs(net)));
-  const hasLosses = days.some(({net}) => net < 0);
-  const hasGains = days.some(({net}) => net > 0);
-  const scale = hasLosses && hasGains ? "mixed" : hasLosses ? "losses" : "gains";
-  const items = days.map(({day, net}) => {
-    const fraction = Math.abs(net) / largest * 100;
-    const bar = net === 0 ? "" : '<span class="daily-bar ' + (net < 0 ? "loss" : "gain") +
-      '" style="--bar-width:' + fraction.toFixed(2) + '%"></span>';
-    return '<li class="daily-row"><time datetime="' + day + '" aria-label="' + dmy(day) + '">' +
-      fd(day) + '</time><div class="daily-track" aria-hidden="true">' + bar +
-      '</div><b class="daily-value' + (net < 0 ? " neg" : "") + '">' + cop(net) + '</b></li>';
-  }).join("");
-  return '<div class="daily-head mute"><span>Fecha</span><span>Saldo disponible</span></div>' +
-    '<ol class="daily-chart ' + scale + '" aria-label="Saldo diario despuÃ©s de gastos personales en COP">' + items + '</ol>';
-}
-function renderIni2(){$("ievo").innerHTML=evo();var o=calc(rng(IP,"i")),k=Object.keys(o.apps),T=0;k.forEach(function(n){T+=o.apps[n].ing-o.apps[n].com});$("iapp").innerHTML=k.length&&T>0?k.sort(function(a,b){return(o.apps[b].ing-o.apps[b].com)-(o.apps[a].ing-o.apps[a].com)}).map(function(n,i){var v=o.apps[n].ing-o.apps[n].com,p=Math.max(0,v/T*100);return'<div style="margin:10px 0"><div class="kv" style="border:0;padding:0"><span>'+n+'</span><span>'+cop(v)+' Â· '+Math.round(p)+'%</span></div><div class="bar"><div style="width:'+p+'%;background:'+COL[i%8]+'"></div></div></div>'}).join(""):'<p class="mute">Sin ingresos en este periodo.</p>'}
-$("ic1").value=$("ic2").value=$("fc1").value=$("fc2").value=iso(new Date());bindDateRange("i", function(){renderIni();renderIni2()});
-bindDateRange("f", renderRes);
-function bindDateRange(prefix, render) {
-  const start = $(prefix + "c1");
-  const end = $(prefix + "c2");
-  function update(changed, other) {
-    if (start.value && end.value && start.value > end.value) other.value = changed.value;
-    render();
-    updateDateWeekday(start);
-    updateDateWeekday(end);
-  }
-  start.onchange = () => update(start, end);
-  end.onchange = () => update(end, start);
-}
-var _cf={},_cm={};
-function getCom(){var c={},s=S.s;_cf={};_cm={};APPS.forEach(function(a){var m=$("cm_"+a).value,v=m==="fix"?money($("cp_"+a).value):num($("cp_"+a).value);_cm[a]=m;if(m=="fix"){_cf[a]=v;c[a]=(s.com&&s.com[a])||0}else{c[a]=v;_cf[a]=(s.cf&&s.cf[a])||0}});return c}
-function renderCom(){var s=S.s;$("comis").innerHTML=APPS.map(function(a){var m=(s.cm&&s.cm[a])=="fix";return'<div><label for="cm_'+a+'">'+a+'</label><select id="cm_'+a+'" data-a="'+a+'"><option value="pct"'+(m?'':' selected')+'>Porcentaje (%)</option><option value="fix"'+(m?' selected':'')+'>Fijo por dÃ­a (COP)</option></select><input '+(m?"data-pesos":"")+' id="cp_'+a+'" inputmode="decimal" aria-label="Valor de la comisiÃ³n de '+a+'" style="margin-top:6px" value="'+(m?cop((s.cf&&s.cf[a])||0):String((s.com&&s.com[a])||0).replace(".",","))+'"></div>'}).join("")}
-$("comis").onchange=function(e){var t=e.target;if(!t.dataset||!t.dataset.a)return;var a=t.dataset.a,s=S.s;const field=$("cp_"+a), fixed=t.value==="fix";field.toggleAttribute("data-pesos",fixed);field.value=fixed?cop((s.cf&&s.cf[a])||0):String((s.com&&s.com[a])||0).replace(".",",")};
-var MC=["Mantenimiento","Repuestos","Aceite","Llantas","Kit de arrastre","Frenos"];
-var IV0={"Aceite de motor":{km:2000},"Filtro de aceite":{km:2000},"Filtro de aire":{km:6000},"BujÃ­a":{km:8000},"LubricaciÃ³n de cadena":{km:500},"Kit de arrastre":{km:20000},"Aceite de suspensiÃ³n":{km:15000},"LÃ­quido de frenos":{mes:12}};
-var BASEC=["Aceite de motor","Filtro de aceite","Filtro de aire","BujÃ­a","LubricaciÃ³n de cadena","Kit de arrastre","Pastillas de freno","Disco de freno","LÃ­quido de frenos","Llantas","BaterÃ­a","Sistema elÃ©ctrico","SuspensiÃ³n delantera","Aceite de suspensiÃ³n","Luces","RevisiÃ³n general","Limpieza y lubricaciÃ³n"];
-function cnt(o){return(o.d||[]).length+(o.g||[]).length+(o.m||[]).length+(o.t||[]).length+((o.b&&o.b.e)||[]).length}
-function comps(){var a=Array.from(new Set(BASEC.concat(S.cx||[],Object.keys(S.pc||{}))));S.m.forEach(function(x){if(a.indexOf(x.c)<0)a.push(x.c)});return a}
-function ivOf(c){var v=S.iv[c]||IV0[c]||{};return{km:v.km||0,mes:v.mes||0}}
-function copyT(t){try{navigator.clipboard.writeText(t).then(function(){msg("Copiado")},function(){$("imp").value=t;msg("Copie el texto del cuadro")})}catch(e){$("imp").value=t;msg("Copie el texto del cuadro")}}
-function cdel(b,fn){if(b.dataset.c){b.dataset.c="";fn();return}b.dataset.c="1";var o=b.textContent;b.textContent="Â¿Seguro?";setTimeout(function(){b.dataset.c="";b.textContent=o},3000)}
-function showTab(t){[].forEach.call(document.querySelectorAll(".sec-tab"),function(c){c.className="sec-tab"+(c.id=="t-"+t?" on":"")});var h=(t=="bud"||t=="set")?"mas":t;[].forEach.call(document.querySelectorAll("nav button"),function(c){c.className=c.dataset.t==h?"on":""});window.scrollTo(0,0)}
-document.addEventListener("click",function(e){var b=e.target.closest(".go");if(b)showTab(b.dataset.go)});
-function nextM(){var L={},r=[],km=S.mo.km||0,t0=new Date(iso(new Date())).getTime();S.m.forEach(function(x){if(!L[x.c]||x.km>=L[x.c].km)L[x.c]=x});Object.keys(L).forEach(function(c){var x=L[c],iv=ivOf(c),ik=x.int>0?x.int:iv.km,im=x.mes>0?x.mes:iv.mes;if(!ik&&!im)return;var o={c:c,last:x.f,lastKm:x.km};if(ik){o.next=x.km+ik;o.left=o.next-km}if(im){var d=new Date(x.f);d.setMonth(d.getMonth()+im);o.nd=iso(d);o.dleft=Math.round((d.getTime()-t0)/864e5)}o.urg=!!((ik&&km&&o.left<=300)||(im&&o.dleft<=30));o.ord=ik?o.left:99999;r.push(o)});return r.sort(function(a,b){return a.ord-b.ord})}
-function alerts(){var a=[],km=S.mo.km||0,t0=new Date(iso(new Date())).getTime(),up=[],lead=Number(S.remindDays)||30;DOCS.forEach(function(d){var f=S.doc[d];if(!f)return;var n=Math.round((new Date(f).getTime()-t0)/864e5);if(n<0)a.push({t:"ğŸ“„ "+d+" vencido hace "+(-n)+" dÃ­as",u:1});else if(n<=lead)a.push({t:"ğŸ“„ "+d+" vence en "+n+" dÃ­as ("+dmy(f)+")",u:1});else up.push({n:n,t:"ğŸ“„ PrÃ³ximo: "+d+" vence el "+dmy(f)+" (en "+n+" dÃ­as)"})});
-var nx=nextM();nx.forEach(function(x){if(x.urg){var m=[];if(x.next!=null&&km&&x.left<=300)m.push(x.left<0?"pasado por "+(-x.left)+" km":"toca en "+x.left+" km");if(x.nd&&x.dleft<=30)m.push(x.dleft<0?"vencido hace "+(-x.dleft)+" dÃ­as":"vence en "+x.dleft+" dÃ­as");a.push({t:"ğŸ”§ "+x.c+": "+m.join(" Â· "),u:1})}});
-var ym=iso(new Date()).slice(0,7),sp={};S.b.e.forEach(function(x){if(x.f.slice(0,7)==ym)sp[x.c]=(sp[x.c]||0)+x.v});Object.keys(S.b.cat).forEach(function(k){var b=S.b.cat[k];if(b>0&&(sp[k]||0)>=b*.9)a.push({t:"ğŸ’° "+k+": "+Math.round((sp[k]||0)/b*100)+"% del presupuesto",u:1})});
-if(a.length)return a;up.sort(function(p,q){return p.n-q.n});if(up[0])a.push({t:up[0].t});if(nx[0])a.push({t:"ğŸ”§ PrÃ³ximo: "+nx[0].c+(nx[0].next!=null?" a los "+nx[0].next+" km"+(km?" (faltan "+nx[0].left+")":""):" el "+dmy(nx[0].nd))});return a}
-function renderMoto2(){var cs=comps(),o="";cs.forEach(function(c){o+="<option>"+esc(c)+"</option>"});["mcmp","pcc"].forEach(function(id){var v=$(id).value;$(id).innerHTML=o;if(cs.indexOf(v)>-1)$(id).value=v});
-renderParts();
-var nx=nextM(),km=S.mo.km||0,mn=0,mx=0,ok=0;
-$("mnext").innerHTML=nx.length?nx.map(function(x){var p=S.pc[x.c],pr="Sin informaciÃ³n de precios";if(p&&(p.rmin||p.rmax||p.lmin||p.lmax)){var a=(p.rmin||0)+(p.lmin||0),b=(p.rmax||0)+(p.lmax||0);pr=cop(a)+" â€“ "+cop(b);mn+=a;mx+=b;ok=1}var w=[];if(x.next!=null)w.push("a los "+x.next+" km"+(km?(x.left>=0?" (faltan "+x.left+")":" (pasado "+(-x.left)+")"):""));if(x.nd)w.push(dmy(x.nd)+" ("+(x.dleft>=0?"en "+x.dleft+" dÃ­as":"vencido")+")");return'<div class="kv"><span>'+esc(x.c)+'<div class="mute">Ãšltimo: '+dmy(x.last)+' Â· '+x.lastKm+' km<br>Estimado: '+pr+'</div></span><b class="'+(x.urg?"neg":"")+'">'+w.join("<br>")+'</b></div>'}).join("")+(ok?'<p class="mute">Estimado de los listados: '+cop(mn)+' â€“ '+cop(mx)+'. No afecta la ganancia hasta que lo registre como pagado.</p>':""):'<p class="mute">Registre un mantenimiento para ver cuÃ¡ndo toca el siguiente.</p>'}
-$("histI").onclick=function(e){var b=e.target.closest("button");if(!b)return;if(b.dataset.a=="e"){$("f").value=b.dataset.f;loadDay();window.scrollTo(0,0);msg("Jornada cargada: edite y guarde");return}var id=+b.dataset.id;cdel(b,function(){S.d=S.d.filter(function(y){return y.id!=id});save();all();msg("Registro borrado")})};
-$("addM").onclick=function(){var v=money($("mv").value),k=num($("mkm").value);if(!v||!k){msg("Escriba el km y el valor");return}var id=uid(),f=$("mf").value||iso(new Date()),c=$("mcmp").value,ik=num($("mint").value),im=num($("mmes").value),pg=$("mpag").checked;S.m.push({id:id,c:c,f:f,km:k,v:v,int:ik,mes:im,n:$("mn").value,g:pg?1:0});if(pg)S.g.push({id:id,f:f,c:maintenanceExpenseCategory(),v:v,km:k,d:c,m:1});S.iv[c]={km:ik||ivOf(c).km,mes:im||ivOf(c).mes};bump(k);save();["mv","mkm","mint","mmes","mn"].forEach(function(i){$(i).value=""});all();msg("Mantenimiento guardado")};
-$("mcmp").onchange=function(){var v=ivOf($("mcmp").value);$("mint").value=v.km||"";$("mmes").value=v.mes||""};
-$("mhist").onclick=function(e){var x=e.target.closest("button");if(!x)return;var id=+x.dataset.id,k=x.dataset.k;cdel(x,function(){if(k=="m"){S.m=S.m.filter(function(y){return y.id!=id});S.g=S.g.filter(function(y){return!(y.id==id&&y.m)})}else{S.t=S.t.filter(function(y){return y.id!=id});S.g=S.g.filter(function(y){return!(y.id==id&&y.t)})}save();all();msg("Registro y gasto relacionado borrados")})};
-function partDescription(name, quote) {
-  return quote.desc ?? (name === "Aceite de motor" ? "Suzuki Ecstar 9000 10W-40" : "");
-}
-
-function quoteRange(min, max) {
-  if (min && max) return min === max ? cop(min) : cop(min) + " â€“ " + cop(max);
-  if (min) return "Desde " + cop(min);
-  if (max) return "Hasta " + cop(max);
-  return "Sin cotizaciÃ³n";
-}
-
-function renderParts() {
-  const names = Object.keys(S.pc);
-  $("parts-list").innerHTML = names.length ? names.map(name => {
-    const quote = S.pc[name] || {};
-    const description = partDescription(name, quote);
-    const labor = quote.lmin || quote.lmax
-      ? '<div class="kv mute"><span>Mano de obra</span><b>' + quoteRange(quote.lmin, quote.lmax) + '</b></div>'
-      : "";
-    return '<article class="part-quote"><h3>' + esc(name) + '</h3>' +
-      (description ? '<p class="mute">' + esc(description) + '</p>' : "") +
-      '<div class="kv"><span>Repuesto</span><b>' + quoteRange(quote.rmin, quote.rmax) + '</b></div>' + labor +
-      '<button type="button" class="sec part-edit" data-part="' + esc(name) + '">Editar</button></article>';
-  }).join("") : '<p class="mute">Agrega una cotizaciÃ³n para ver aquÃ­ el repuesto y su rango de precio.</p>';
-}
-
-function loadPartQuote() {
-  const name = $("pcc").value;
-  const quote = S.pc[name] || {};
-  $("pdesc").value = partDescription(name, quote);
-  $("pr1").value = moneyField(quote.rmin || "");
-  $("pr2").value = moneyField(quote.rmax || "");
-  $("pl1").value = moneyField(quote.lmin || "");
-  $("pl2").value = moneyField(quote.lmax || "");
-}
-
-$("parts-list").onclick = function(event) {
-  const button = event.target.closest("button[data-part]");
-  if (!button) return;
-  const editor = document.querySelector(".part-editor");
-  editor.open = true;
-  $("pcc").value = button.dataset.part;
-  loadPartQuote();
-  $("pdesc").focus();
-};
-$("pcc").onchange = loadPartQuote;
-$("addP").onclick = function() {
-  const quote = {
-    desc: $("pdesc").value.trim(),
-    rmin: money($("pr1").value),
-    rmax: money($("pr2").value),
-    lmin: money($("pl1").value),
-    lmax: money($("pl2").value),
-  };
-  if ((quote.rmax && quote.rmin > quote.rmax) || (quote.lmax && quote.lmin > quote.lmax)) {
-    msg("El precio mÃ­nimo debe ser menor o igual al mÃ¡ximo");
-    return;
-  }
-  const name = $("pcc").value;
-  if (!name) return;
-  S.pc = {...S.pc, [name]:quote};
-  save();
-  all();
-  document.querySelector(".part-editor").open = false;
-  msg("CotizaciÃ³n guardada");
-};
-$("mca").onclick=function(){var n=$("mcn").value.trim();if(!n||comps().indexOf(n)>-1){msg("Escriba un nombre nuevo");return}S.cx.push(n);$("mcn").value="";save();all();$("pcc").value=n;loadPartQuote();msg("Componente agregado")};
-$("csv").onclick=function(){var r=["tipo,fecha,categoria_o_app,valor,comision_o_km,descripcion"];S.d.forEach(function(x){r.push(["ingreso",x.f,x.app,x.ing,x.com==null?"":x.com,""].join(","))});S.g.forEach(function(x){r.push(["gasto",x.f,x.c,x.v,x.km||"",String(x.d||"").replace(/,/g," ")].join(","))});S.b.e.forEach(function(x){r.push(["gasto_personal",x.f,x.c,x.v,"",String(x.n||"").replace(/,/g," ")].join(","))});Object.keys(S.k).sort().forEach(function(f){r.push(["jornada",f,"km_horas",S.k[f].km,S.k[f].h,""].join(","))});Object.keys(S.x).sort().forEach(function(f){r.push(["extras",f,"bonos_propinas_otros",S.x[f].bon+S.x[f].prop+S.x[f].otr,"",""].join(","))});copyT(r.join("\n"))};
-$("bk").onclick=function(){var t="";try{t=localStorage.getItem(K+"_bak")||""}catch(e){}if(!t){msg("No hay respaldo inicial");return}copyT(t)};
-var TT={ini:"Inicio",reg:"Ingresos",gas:"Gastos",res:"Finanzas",mot:"Mi moto",mas:"MÃ¡s",bud:"Presupuesto",set:"Ajustes"};
-function setTtl(t){$("ttl").textContent=(TT[t]||"Cuentas de moto").toLocaleUpperCase("es-CO")}
-function showTab(t){[].forEach.call(document.querySelectorAll(".sec-tab"),function(c){c.className="sec-tab"+(c.id=="t-"+t?" on":"")});var h=(t=="bud"||t=="set")?"mas":t;[].forEach.call(document.querySelectorAll("nav button"),function(c){c.className=c.dataset.t==h?"on":""});setTtl(t);refreshDateWeekdays();window.scrollTo(0,0)}
-document.querySelector("nav").addEventListener("click",function(e){var b=e.target.closest("button");if(b)setTtl(b.dataset.t)});
-function syncApps(){APPS=["Didi","Picap","Uber","Yango","inDrive"].concat(S.ax||[])}
-function cn(n){return new Intl.NumberFormat("es-CO",{maximumFractionDigits:0}).format(Math.round(n||0))}
-function buildDay() {
-  const fields = APPS.map(name => ({id:"i_" + name, name})).concat({id:"xp", name:"Propinas"});
-  $("approws").innerHTML = fields.map(({id, name}) =>
-    '<label class="income-field"><span>' + esc(name) + '</span><input id="' + esc(id) +
-    '" data-pesos inputmode="numeric" placeholder="$0"></label>').join("");
-}
-function updateDayValue() {
-  const total = Array.from($("approws").querySelectorAll("input")).reduce((sum, input) => sum + money(input.value), 0);
-  $("day-value").textContent = cop(total);
-}
-$("approws").oninput = updateDayValue;
-function loadDay(){var f=$("f").value,k=S.k[f]||{},lk=0,lh=0,xx=S.x[f]||{};S.d.forEach(function(x){if(x.f==f&&!x.day){lk+=x.km;lh+=x.h}});APPS.forEach(function(a){var t=0;S.d.forEach(function(x){if(x.f==f&&x.app==a)t+=x.ing});$("i_"+a).value=moneyField(t||"")});$("km").value=k.km||lk||"";$("h").value=(k.h||lh)?String(k.h||lh).replace(".",","):"";$("xp").value=moneyField((xx.bon||0)+(xx.prop||0)+(xx.otr||0)||"");updateDayValue()}
-$("addD").onclick=function(){var f=$("f").value||iso(new Date()),rows=[];APPS.forEach(function(a){var v=money($("i_"+a).value);if(!v)return;var old=S.d.filter(function(x){return x.f==f&&x.app==a}),si=0,sc=0,ac=old.length>0;old.forEach(function(x){si+=x.ing;if(x.com==null)ac=false;else sc+=x.com});rows.push({id:uid(),f:f,app:a,ing:v,com:(ac&&si==v)?sc:null,km:0,h:0,day:1})});if(!rows.length){msg("Escriba lo ganado en al menos una app");return}S.d=S.d.filter(function(x){return x.f!=f}).concat(rows);S.k[f]={km:num($("km").value),h:num($("h").value)};S.x[f]={bon:0,prop:money($("xp").value),otr:0};save();all();msg("Jornada guardada")};
-function renderJ(){var fs=[];S.d.forEach(function(x){if(fs.indexOf(x.f)<0)fs.push(x.f)});fs.sort().reverse();if(!fs.length){$("histI").innerHTML='<p class="mute">Sin jornadas registradas.</p>';return}
-var T={b:0,p:0,c:0,n:0,k:0,h:0},h='<div class="tbl"><table class="jt"><tr><th>Fecha</th><th>Bruto</th><th>Prop.</th><th>Com.</th><th>Neto</th><th>Km</th><th>H</th><th></th></tr>';
-fs.slice(0,31).forEach(function(f){var o=calc([f,f,1]),xx=S.x[f]||{},p=(xx.bon||0)+(xx.prop||0)+(xx.otr||0),b=o.ing-p,n=o.ing-o.com;T.b+=b;T.p+=p;T.c+=o.com;T.n+=n;T.k+=o.km;T.h+=o.h;h+='<tr><td>'+f.slice(8)+'/'+f.slice(5,7)+'/'+f.slice(2,4)+'</td><td>'+cn(b)+'</td><td>'+cn(p)+'</td><td>'+cn(o.com)+'</td><td>'+cn(n)+'</td><td>'+Math.round(o.km)+'</td><td>'+Math.round(o.h)+'</td><td><button class="x ic" data-a="e" data-f="'+f+'" aria-label="Editar jornada">âœï¸</button><button class="x ic" data-f="'+f+'" aria-label="Borrar jornada">ğŸ—‘ï¸</button></td></tr>'});
-$("histI").innerHTML=h+'<tr class="tot"><td>Total</td><td>'+cn(T.b)+'</td><td>'+cn(T.p)+'</td><td>'+cn(T.c)+'</td><td>'+cn(T.n)+'</td><td>'+Math.round(T.k)+'</td><td>'+Math.round(T.h)+'</td><td></td></tr></table></div><p class="mute">Valores en COP. Prop. = propinas, Com. = comisiones, Neto = bruto + propinas âˆ’ comisiones.'+(fs.length>31?' Se muestran las 31 jornadas mÃ¡s recientes.':'')+'</p>'}
-$("histI").onclick=function(e){var b=e.target.closest("button");if(!b)return;var f=b.dataset.f;if(b.dataset.a=="e"){$("f").value=f;loadDay();window.scrollTo(0,0);msg("Jornada cargada: edite y guarde");return}cdel(b,function(){S.d=S.d.filter(function(y){return y.f!=f});delete S.k[f];delete S.x[f];save();all();msg("Jornada borrada")})};
-function renderAx(){$("apl").innerHTML=(S.ax||[]).map(function(a){var u=S.d.some(function(x){return x.app==a});return'<div class="item"><span>'+esc(a)+'</span>'+(u?'<span class="mute">con registros</span>':'<button class="x" data-a="'+esc(a)+'">Borrar</button>')+'</div>'}).join("")}
-$("apa").onclick=function(){var n=$("apn").value.replace(/["'<>&]/g,"").trim();if(!n||APPS.indexOf(n)>-1){msg("Escriba un nombre nuevo");return}if(!S.ax)S.ax=[];S.ax.push(n);if(S.s.com)S.s.com[n]=S.s.com[n]||0;$("apn").value="";save();syncApps();buildDay();loadDay();all();msg("AplicaciÃ³n agregada")};
-$("apl").onclick=function(e){var b=e.target.closest("button");if(!b)return;var n=b.dataset.a;cdel(b,function(){S.ax=S.ax.filter(function(x){return x!=n});save();syncApps();buildDay();loadDay();all();msg("AplicaciÃ³n borrada")})};
-var DS=["Domingo","Lunes","Martes","MiÃ©rcoles","Jueves","Viernes","SÃ¡bado"];
-function weekdayIndex(date) {
-  const [year, month, day] = date.split("-").map(Number);
-  return new Date(year, month - 1, day).getDay();
-}
-function fd(f) {
-  if (!f) return "";
-  const [year, month, day] = f.split("-");
-  return DS[weekdayIndex(f)] + " | " + day + " - " + month + " - " + year.slice(2);
-}
-
-function updateDateWeekday(input) {
-  const hint = $(input.id + "-weekday");
-  if (!hint) return;
-  hint.textContent = input.value ? fd(input.value) : "Elegir fecha";
-}
-function setupDateWeekdays() {
-  document.querySelectorAll('input[type="date"]').forEach(input => {
-    const hint = document.createElement("small");
-    hint.className = "mute date-weekday";
-    hint.id = input.id + "-weekday";
-    const box = document.createElement("span");
-    box.className = "date-box";
-    input.before(box);
-    box.append(input, hint);
-    updateDateWeekday(input);
-    input.addEventListener("click", () => {
-      try { input.showPicker?.(); } catch { /* The native control handles the tap. */ }
-    });
-    input.setAttribute("aria-describedby", hint.id);
-    input.addEventListener("input", () => updateDateWeekday(input));
-    input.addEventListener("change", () => updateDateWeekday(input));
-  });
-}
-function refreshDateWeekdays() {
-  document.querySelectorAll('input[type="date"]').forEach(updateDateWeekday);
-}
-function dmy(f){return fd(f)}
-function renderOb(){var b=S.ob||{};$("ob1").value=b.soat||"";$("ob2").value=b.tec||"";$("ob3").value=b.imp||"";var t=(b.soat||0)+(b.tec||0)+(b.imp||0);$("obt").innerHTML=row("ProvisiÃ³n mensual",cop(t/12))+'<p class="mute">Si ya incluyÃ³ estos valores en los gastos fijos mensuales de Ajustes, no los repita aquÃ­: se contarÃ­an dos veces.</p>'}
-$("obs").onclick=function(){S.ob={soat:money($("ob1").value),tec:money($("ob2").value),imp:money($("ob3").value)};save();all();msg("Valores guardados")};
-function renderIni(){updateWeekLabels();var o=calc(rng(IP,"i")),t=new Date();
-var c=calc([iso(new Date(t.getFullYear(),t.getMonth(),1)),iso(t),1]),p=calc([iso(new Date(t.getFullYear(),t.getMonth()-1,1)),iso(new Date(t.getFullYear(),t.getMonth(),0)),1]);
-const available=openingBalance(iso(t).slice(0,7))+c.cashMovement;
-$("in").textContent=cop(available);
-$("in").className="big "+(available>=0?"pos":"neg");
-renderWallet(available);
-if (!$("opening-editor").open) refreshOpening();
-$("imini").innerHTML=[["Ingreso bruto",cop(o.ing),(o.km>0?cop(o.ing/o.km):"â€”")+" por km<br>"+(o.h>0?cop(o.ing/o.h):"â€”")+" por hora"],["Ingreso neto",cop(o.ing-o.com),(o.km>0?cop((o.ing-o.com)/o.km):"â€”")+" por km<br>"+(o.h>0?cop((o.ing-o.com)/o.h):"â€”")+" por hora"],["Km y horas",Math.round(o.km)+" km<br>"+o.h.toLocaleString("es-CO",{maximumFractionDigits:1})+" h",""]].map(function(x){return'<div class="card tile"><div class="mute">'+x[0]+'</div><div class="num">'+x[1]+'</div>'+(x[2]?'<div class="mute sub">'+x[2]+'</div>':"")+'</div>'}).join("");
-$("icmp").innerHTML=row("Mes actual",cop(c.neta),c.neta>=0?"pos":"neg")+row("Mes anterior",cop(p.neta),p.neta>=0?"pos":"neg")+row("Diferencia",cop(c.neta-p.neta),c.neta>=p.neta?"pos":"neg");
-$("ialert").innerHTML=oblAlerts()}
-function renderWeekdayProfit(period) {
-  const hoursByDate = new Map();
-  for (const entry of S.d) {
-    if (entry.f < period[0] || entry.f > period[1]) continue;
-    const hours = hoursByDate.get(entry.f) ?? Number(S.k?.[entry.f]?.h || 0);
-    hoursByDate.set(entry.f, hours + Number(entry.h || 0));
-  }
-  const groups = Array.from({length:7}, () => new Set());
-  for (const [date, hours] of hoursByDate) {
-    if (hours > 0) groups[(weekdayIndex(date) + 6) % 7].add(date);
-  }
-  const rows = groups.map((dates, index) => {
-    const net = dates.size ? calc(period, dates) : null;
-    const rate = net ? cop(net.neta / net.h) : "â€”";
-    return '<tr><th scope="row">' + DS[(index+1)%7] + '</th><td>' + dates.size +
-      '</td><td>' + rate + '</td></tr>';
-  });
-  $("weekday-profit").innerHTML = hoursByDate.size && groups.some(group=>group.size)
-    ? '<div class="tbl"><table><thead><tr><th>DÃ­a</th><th>Jornadas</th><th>Utilidad/h</th></tr></thead><tbody>' +
-      rows.join("") + '</tbody></table></div><p class="mute">Utilidad de las jornadas con horas registradas Ã· horas trabajadas.</p>'
-    : '<p class="mute">Sin jornadas con horas registradas en este perÃ­odo.</p>';
-}
-function renderRes(){updateWeekLabels();const period=range();renderWeekdayProfit(period);var o=calc(period),s=S.s,km=o.km,h=o.h,op=o.comb+o.mant+o.gas+o.fijos,pk=function(x){return km>0?cop(x/km):"â€”"};
-const share = new Intl.NumberFormat("es-CO", {style:"percent", maximumFractionDigits:1});
-function amountShare(amount, cost = false) {
-  const value = (cost ? "âˆ’ " : "") + cop(amount);
-  return value + (o.ing > 0 ? ' <small class="gross-share">' + share.format(amount / o.ing) + '</small>' : "");
-}
-$("kv").innerHTML = '<p class="mute">' + (o.ing > 0 ? 'Porcentaje del ingreso bruto del perÃ­odo.' : 'Sin ingreso bruto en este perÃ­odo para calcular porcentajes.') + '</p>' +
-  row("Ingreso bruto (con propinas)", amountShare(o.ing)) +
-  row("Comisiones de las apps", amountShare(o.com, true)) +
-  row("Ingresos despuÃ©s de comisiones", cop(o.ing - o.com)) +
-  row("Gasolina" + (s.gmode === "real" ? " (registrada)" : " (calculada)"), amountShare(o.comb, true)) +
-  row(s.mmode === "real" ? "Mantenimiento (registrado)" : "Desgaste de la moto (calculado)", amountShare(o.mant, true)) +
-  Object.keys(o.cats).map(k => row(esc(k), amountShare(o.cats[k], true))).join("") +
-  row("Gastos fijos" + (s.fmode === "real" ? " (registrados)" : " (prorrateados)"), amountShare(o.fijos, true)) +
-  row("Utilidad neta de la moto", amountShare(o.neta), o.neta >= 0 ? "pos" : "neg") +
-  row("Gastos personales", "âˆ’ " + cop(o.personal)) +
-  row("Resultado del perÃ­odo", cop(o.disponible), o.disponible >= 0 ? "pos" : "neg");
-$("frent").innerHTML=row("Ingreso bruto por km",pk(o.ing))+row("ComisiÃ³n por km",pk(o.com))+row("Gasolina por km",pk(o.comb))+row("Mantenimiento por km",pk(o.mant))+row("Costo operativo total por km",pk(op))+row("Ganancia neta por km",km>0?cop(o.neta/km):"â€”",o.neta>=0?"pos":"neg")+row("Ganancia neta por hora",h>0?cop(o.neta/h):"â€”",o.neta>=0?"pos":"neg")+row("Costo total por jornada",o.dias>0?cop((op+o.com)/o.dias):"â€”")+row("Km Â· horas Â· jornadas",Math.round(km)+" Â· "+h.toFixed(1).replace(".",",")+" Â· "+o.dias);
-var cs=[["Comisiones",o.com],["Gasolina",o.comb],[s.mmode=="real"?"Mantenimiento":"Desgaste",o.mant]].concat(Object.keys(o.cats).map(function(k){return[k,o.cats[k]]})).concat([["Gastos fijos",o.fijos]]).filter(function(x){return x[1]>0}),TC=0;cs.forEach(function(x){TC+=x[1]});cs.sort(function(a,b){return b[1]-a[1]});
-$("fcat").innerHTML=cs.length?cs.map(function(x,i){var q=x[1]/TC*100;return'<div style="margin:10px 0"><div class="kv" style="border:0;padding:0"><span>'+esc(x[0])+'</span><span>'+cop(x[1])+' Â· '+Math.round(q)+'%</span></div><div class="bar"><div style="width:'+q+'%;background:'+COL[i%8]+'"></div></div></div>'}).join(""):'<p class="mute">Sin costos en este periodo.</p>';
-const motoReserve = o.em + o.ob;
-const totalReserve = o.eg + motoReserve;
-$("fnota").innerHTML =
-
-  reserveLine("â›½ Para gasolina", o.eg, "Ya registrada: " + cop(o.gs)) +
-  reserveLine("ğŸï¸ Para guardar de la moto", motoReserve, "Reserva de mant. " + cop(o.em) + "<br>Obligaciones " + cop(o.ob)) +
-  reserveLine("Total para separar", totalReserve, km > 0 ? cop(totalReserve / km) + " por km" : "");
-var ks=Object.keys(o.apps).sort(function(a,b){return(o.apps[b].ing-o.apps[b].com)-(o.apps[a].ing-o.apps[a].com)});
-$("apps").innerHTML=ks.length?'<table><tr><th>App</th><th>Ingreso</th><th>ComisiÃ³n</th><th>Neto</th></tr>'+ks.map(function(n){var a=o.apps[n];return'<tr><td>'+esc(n)+'</td><td>'+cop(a.ing)+'</td><td>'+cop(a.com)+'</td><td>'+cop(a.ing-a.com)+'</td></tr>'}).join("")+'</table>':'<p class="mute">Sin ingresos en este perÃ­odo.</p>'}
-function renderJ(){var fs=[];S.d.forEach(function(x){if(fs.indexOf(x.f)<0)fs.push(x.f)});fs.sort().reverse();if(!fs.length){$("histI").innerHTML='<p class="mute">Sin jornadas registradas.</p>';return}
-var T={n:0,k:0,h:0},h='<div class="tbl"><table class="jt"><tr><th>Fecha</th><th>Ingreso neto</th><th>Km</th><th>Horas</th><th></th></tr>';
-fs.slice(0,31).forEach(function(f){var o=calc([f,f,1]),n=o.ing-o.com;T.n+=n;T.k+=o.km;T.h+=o.h;h+='<tr><td>'+fd(f)+'</td><td>'+cop(n)+'</td><td>'+Math.round(o.km)+'</td><td>'+Math.round(o.h)+'</td><td><button class="x ic" data-a="e" data-f="'+f+'" aria-label="Editar jornada">âœï¸</button><button class="x ic" data-f="'+f+'" aria-label="Borrar jornada">ğŸ—‘ï¸</button></td></tr>'});
-$("histI").innerHTML=h+'<tr class="tot"><td>Total</td><td>'+cop(T.n)+'</td><td>'+Math.round(T.k)+'</td><td>'+Math.round(T.h)+'</td><td></td></tr></table></div>'+(fs.length>31?'<p class="mute">Ãšltimas 31 jornadas.</p>':'')}
-var OBL=["SOAT","TecnomecÃ¡nica","Impuesto vehicular","Seguro"],OK={"SOAT":"soat","TecnomecÃ¡nica":"tec","Impuesto vehicular":"imp","Seguro":"seg"};
-function dd(d){return Math.round((new Date(d).getTime()-new Date(iso(new Date())).getTime())/864e5)}
-function addYearsISO(day, years){const [y,m,d]=day.split("-").map(Number),target=y+years,last=new Date(target,m,0).getDate();return target+"-"+String(m).padStart(2,"0")+"-"+String(Math.min(d,last)).padStart(2,"0")}
-function obligationDate(name){if(S.doc[name])return S.doc[name];if(name!=="TecnomecÃ¡nica"||!S.mo?.matricula)return"";let due=addYearsISO(S.mo.matricula,2),today=iso(new Date()),guard=0;while(due<today&&guard++<80)due=addYearsISO(due,1);return due}
-function soatReference(){if(new Date().getFullYear()!==2026)return null;const cc=Number(S.mo?.cc)||0;if(!cc)return null;return cc<100?256200:cc<=200?343300:761400}
-function taxReference(){if(new Date().getFullYear()!==2026)return null;const m=S.mo||{},cc=Number(m.cc)||0,base=Number(m.avaluo)||0,rate=num(m.tarifa||1.5);if(!cc)return null;if(cc<=125)return 0;if(!base||!rate)return null;return Math.round(base*rate/100)}
-function oblList(){var r=[];OBL.forEach(function(n){var d=obligationDate(n);if(!d)return;var k=OK[n],v=projectedValue(k);r.push({n:n,d:d,days:dd(d),v:v})});return r.sort(function(x,y){return x.days-y.days})}
+YªçŠx-®éÜj×¢ëiºÚ+Š§j[h‘éÜ¢éíçM´İ:-jZ.¶›­–)Ş³SÂFö7G—R‡FÖÃà£Æ‡FÖÂÆæsÒ&W2#à£Æ†VCà£ÆÖWF6†'6WCÒ'WFbÓ‚#à£ÆÖWFæÖSÒ'f–Ww÷'B"6öçFVçCÒ'v–GFƒÖFWf–6R×v–GF‚Â–æ—F–Â×66ÆSÓÂf–Ww÷'BÖf—CÖ6÷fW"#à£ÆÖWFæÖSÒ&ÆRÖÖö&–ÆR×vV"ÖÖ6&ÆR"6öçFVçCÒ'–W2#à£ÆÖWFæÖSÒ&ÆRÖÖö&–ÆR×vV"Ö×7FGW2Ö&"×7G–ÆR"6öçFVçCÒ&&Æ6²×G&ç6ÇV6VçB#à£ÆÖWFæÖSÒ'F†VÖRÖ6öÆ÷""6öçFVçCÒ"3#cFb#à£ÆÖWFæÖSÒ&ÆRÖÖö&–ÆR×vV"Ö×F—FÆR"6öçFVçCÒ$7VVçF2Ö÷Fò#à£ÆÆ–æ²&VÃÒ&Öæ–fW7B"‡&VcÒ&Öæ–fW7BçvV&Öæ–fW7B#à£ÆÆ–æ²&VÃÒ&–6öâ"‡&VcÒ&–6öâç7fr"G—SÒ&–ÖvR÷7fr·†ÖÂ#à£ÆÆ–æ²&VÃÒ&ÆR×F÷V6‚Ö–6öâ"6—¦W3Ò#ƒƒƒ"‡&VcÒ&–6öâÓƒçær#à£Ç7G–ÆSâæ'WGFöâÖÆ–æ·¶F—7Æ“¦fÆWƒ¶Æ–vâÖ—FV×3¦6VçFW#¶§W7F–g’Ö6öçFVçC¦6VçFW#·FW‡BÖÆ–vã¦6VçFW#·FW‡BÖFV6÷&F–öã¦æöæS·FF–æs£—‚gƒ¶&÷&FW#£‚6öÆ–Bf"‚ÒÖÆ–æR“¶&÷&FW"×&F—W3£'ƒ¶6öÆ÷#§f"‚ÒÖ62“¶föçB×6—¦S£'ƒ¶föçB×vV–v‡C£s¶Ö–âÖ†V–v‡C£CG‡ÒçfV†–6ÆRÖÆ–æ·7¶F—7Æ“¦w&–C¶w&–B×FV×ÆFRÖ6öÇVÖç3§&WVBƒ"ÆÖ–æÖ‚ƒÃg"’“¶v£‡‡ÓÂ÷7G–ÆSà£Ç7G–ÆSà¦‡FÖÂ²×vV&¶—B×FW‡B×6—¦RÖF§W7C¢S²Ğ¦'WGFöâÂ–çWBÂ6VÆV7BÂFW‡F&VÂ7VÖÖ'’²F÷V6‚Ö7F–öã¢Öæ—VÆF–öã²Ğ¦'WGFöâ²Ö–âÖ†V–v‡C¢CGƒ²G&ç6—F–öã¢f–ÇFW"ãW2V6RÂG&ç6f÷&ÒãW2V6S²Ğ¦'WGFöã¦7F—fR²G&ç6f÷&Ó¢66ÆR‚ã“ƒR“²Ğ¦æb²&÷‚×6†F÷s¢Ó‡‚#G‚&v"ƒb3‚s’ò‚R“²&6¶G&÷Öf–ÇFW#¢&ÇW"ƒ‡‚“²×vV&¶—BÖ&6¶G&÷Öf–ÇFW#¢&ÇW"ƒ‡‚“²&6¶w&÷VæC¢6öÆ÷"ÖÖ—‚†–â7&v"Âf"‚ÒÖ6&B’“"RÂG&ç7&VçB“²Ğ¤ÖVF–†Ö‚×v–GFƒ¢Cƒ‚’²&öG’²FF–ærÖ&÷GFöÓ¢6Æ2ƒg‚²Vçb‡6fRÖ&VÖ–ç6WBÖ&÷GFöÒÂ‚’“²Òæ6&B²Ö&v–âÖ&Æö6³¢ƒ²ÒĞ¤ÖVF–‡&VfW'2×&VGV6VBÖÖ÷F–öã¢&VGV6R’²¢Â££¦&Vf÷&RÂ££¦gFW"²67&öÆÂÖ&V†f–÷#¢WFò–×÷'FçC²G&ç6—F–öâÖGW&F–öã¢ã×2–×÷'FçC²ÒĞ£Â÷7G–ÆSà£ÇF—FÆSä7VVçF2FRÖ÷FóÂ÷F—FÆSà £Ç7G–ÆSà£§&ö÷G²ÒÖ&s¢6VVc&cC²ÒÖ6&C¢6ffc²ÒÖ–æ³¢3C#&#²ÒÖ×WFS¢3VCf#sƒ²ÒÖÆ–æS¢6CVFFS3²ÒÖ63¢3#FfCƒ²ÒÖ66–æ³¢6ffc²Ò×÷3¢3#vCSc²ÒÖæVs¢63#6#&S¶6öÆ÷"×66†VÖS¦Æ–v‡C¶&÷‚×6—¦–æs¦&÷&FW"Ö&÷ƒ·FF–ær×F÷¦Vçb‡6fRÖ&VÖ–ç6WB×F÷Ã‚“·FF–ærÖ&÷GFöÓ¦Vçb‡6fRÖ&VÖ–ç6WBÖ&÷GFöÒÃ‚—Ğ¤ÖVF–‡&VfW'2Ö6öÆ÷"×66†VÖS¦F&²—³§&ö÷C¦æ÷B…¶FF×F†VÖSÒ&Æ–v‡B%Ò—²ÒÖ&s¢3cs#²ÒÖ6&C¢3ƒ#3&S²ÒÖ–æ³¢6S†VVc3²ÒÖ×WFS¢3“66#²ÒÖÆ–æS¢3&#3“Cs²ÒÖ63¢3f#“6fc²ÒÖ66–æ³¢3###²Ò×÷3¢36V6c–²ÒÖæVs¢6fcvCfS¶6öÆ÷"×66†VÖS¦F&·×Ğ£§&ö÷E¶FF×F†VÖSÒ&F&²%×²ÒÖ&s¢3cs#²ÒÖ6&C¢3ƒ#3&S²ÒÖ–æ³¢6S†VVc3²ÒÖ×WFS¢3“66#²ÒÖÆ–æS¢3&#3“Cs²ÒÖ63¢3f#“6fc²ÒÖ66–æ³¢3###²Ò×÷3¢36V6c–²ÒÖæVs¢6fcvCfS¶6öÆ÷"×66†VÖS¦F&·Ğ¢¢Â££¦&Vf÷&RÂ££¦gFW'¶&÷‚×6—¦–æs¦&÷&FW"Ö&÷‡Ğ¦‡FÖÇ·67&öÆÂ×FF–ær×F÷¦Vçb‡6fRÖ&VÖ–ç6WB×F÷Ã‚—Ğ¦&öG—¶Ö&v–ã£¶&6¶w&÷VæC§f"‚ÒÖ&r“¶6öÆ÷#§f"‚ÒÖ–æ²“¶föçC£Sg‚óãB&&Æ÷rÇ7—7FVÒ×V’ÂÖÆR×7—7FVÒÂ%6VvöRT’"Ç6ç2×6W&–c·FF–æs£g‚g‚ƒ‡ƒ¶Ö‚×v–GFƒ£Scƒ¶Ö&v–âÖ–æÆ–æS¦WF÷Ğ¦&öG“£¦&Vf÷&W¶6öçFVçC¢"#·÷6—F–öã¦f—†VC¶–ç6WC£WFó¶†V–v‡C¦Vçb‡6fRÖ&VÖ–ç6WB×F÷Ã‚“¶&6¶w&÷VæC§f"‚ÒÖ&r“·¢Ö–æFWƒ£Ğ¦ƒÆƒ'¶föçBÖfÖ–Ç“¢$&&Æ÷r6öæFVç6VB"Ç7—7FVÒ×V’Ç6ç2×6W&–c¶Ö&v–ã£Ğ¦ƒ¶föçB×6—¦S£#‡ƒ¶föçB×vV–v‡C£sĞ¦ƒ'¶föçB×6—¦S£#ƒ¶föçB×vV–v‡C£s¶Ö&v–âÖ&÷GFöÓ£‡Ğ¢æ6&G¶&6¶w&÷VæC§f"‚ÒÖ6&B“¶&÷&FW#£‚6öÆ–Bf"‚ÒÖÆ–æR“¶&÷&FW"×&F—W3£Gƒ·FF–æs£Gƒ¶Ö&v–ã£'‚Ğ¦Æ&VÇ¶F—7Æ“¦&Æö6³¶föçB×6—¦S£Gƒ¶6öÆ÷#§f"‚ÒÖ×WFR“¶Ö&v–ã£‚G‡Ğ¦–çWBÇ6VÆV7G·v–GFƒ£S¶föçC¦–æ†W&—C¶föçB×6—¦S£wƒ¶6öÆ÷#§f"‚ÒÖ–æ²“¶&6¶w&÷VæC§f"‚ÒÖ&r“¶&÷&FW#£‚6öÆ–Bf"‚ÒÖÆ–æR“¶&÷&FW"×&F—W3£ƒ·FF–æs£‚'‡Ğ¦–çWC¦fö7W2×f—6–&ÆRÇ6VÆV7C¦fö7W2×f—6–&ÆRÆ'WGFöã¦fö7W2×f—6–&ÆW¶÷WFÆ–æS£7‚6öÆ–Bf"‚ÒÖ62“¶÷WFÆ–æRÖöfg6WC£‡Ğ¢ç&÷w¶F—7Æ“¦w&–C¶w&–B×FV×ÆFRÖ6öÇVÖç3£g"g#¶v£‡Ğ¦'WGFöç¶föçC£cw‚&&Æ÷rÇ7—7FVÒ×V’Ç6ç2×6W&–c¶&÷&FW#£¶&÷&FW"×&F—W3£ƒ·FF–æs£'‚Gƒ¶&6¶w&÷VæC§f"‚ÒÖ62“¶6öÆ÷#§f"‚ÒÖ66–æ²“·v–GFƒ£S¶Ö&v–â×F÷£G‡Ğ¦'WGFöâç6V7¶&6¶w&÷VæC§G&ç7&VçC¶6öÆ÷#§f"‚ÒÖ62“¶&÷&FW#£‚6öÆ–Bf"‚ÒÖÆ–æR—Ğ¦'WGFöâç‡·v–GFƒ¦WFó¶Ö&v–ã£·FF–æs£G‚ƒ¶föçB×6—¦S£Gƒ¶&6¶w&÷VæC§G&ç7&VçC¶6öÆ÷#§f"‚ÒÖæVr“¶&÷&FW#£‚6öÆ–Bf"‚ÒÖÆ–æR—Ğ¦æg·÷6—F–öã¦f—†VC¶ÆVgC£·&–v‡C£¶&÷GFöÓ£¶F—7Æ“¦fÆWƒ¶&6¶w&÷VæC§f"‚ÒÖ6&B“¶&÷&FW"×F÷£‚6öÆ–Bf"‚ÒÖÆ–æR“·FF–æs£g‚‡‚6Æ2ƒg‚²Vçb‡6fRÖ&VÖ–ç6WBÖ&÷GFöÒÃ‚’“·¢Ö–æFWƒ£WĞ¦æb'WGFöç¶Ö&v–ã£¶&6¶w&÷VæC§G&ç7&VçC¶6öÆ÷#§f"‚ÒÖ×WFR“¶&÷&FW"×&F—W3£‡ƒ·FF–æs£g‚¶föçB×6—¦S£‡Ğ¦æb'WGFöâæöç¶6öÆ÷#§f"‚ÒÖ62“¶&6¶w&÷VæC§f"‚ÒÖ&r—Ğ¢æ6†—7¶F—7Æ“¦fÆWƒ¶v£‡‡Òæ6†—2'WGFöç¶Ö&v–ã£·FF–æs£‡‚gƒ¶föçB×6—¦S£W‡Ğ¢æ†W&÷·FW‡BÖÆ–vã¦6VçFW#·FF–æs£‡‚G‡Ğ¢æ&–w¶föçC£sSG‚ó$&&Æ÷r6öæFVç6VB"Ç7—7FVÒ×V’Ç6ç2×6W&–gĞ¢ç÷7¶6öÆ÷#§f"‚Ò×÷2—ÒææVw¶6öÆ÷#§f"‚ÒÖæVr—Ğ¢æ×WFW¶6öÆ÷#§f"‚ÒÖ×WFR“¶föçB×6—¦S£G‡Ğ¢æ·g¶F—7Æ“¦fÆWƒ¶§W7F–g’Ö6öçFVçC§76RÖ&WGvVVã·FF–æs£w‚¶&÷&FW"Ö&÷GFöÓ£‚6öÆ–Bf"‚ÒÖÆ–æR—Ğ¢æ·c¦Æ7BÖ6†–ÆG¶&÷&FW#£Ğ¢çF&Ç¶÷fW&fÆ÷r×ƒ¦WF÷×F&ÆW·v–GFƒ£S¶&÷&FW"Ö6öÆÆ6S¦6öÆÆ6S¶föçB×6—¦S£W‡Ğ§F‚ÇFG·FW‡BÖÆ–vã§&–v‡C·FF–æs£w‚Gƒ¶&÷&FW"Ö&÷GFöÓ£‚6öÆ–Bf"‚ÒÖÆ–æR“·v†—FR×76S¦æ÷w&Ğ§Fƒ¦f—'7BÖ6†–ÆBÇFC¦f—'7BÖ6†–ÆG·FW‡BÖÆ–vã¦ÆVgG×F‡¶6öÆ÷#§f"‚ÒÖ×WFR“¶föçB×vV–v‡C£SĞ¢æ—FV×¶F—7Æ“¦fÆWƒ¶§W7F–g’Ö6öçFVçC§76RÖ&WGvVVã¶Æ–vâÖ—FV×3¦6VçFW#¶v£‡ƒ·FF–æs£‡‚¶&÷&FW"Ö&÷GFöÓ£‚6öÆ–Bf"‚ÒÖÆ–æR—Ğ¢æ—FVÓ¦Æ7BÖ6†–ÆG¶&÷&FW#£Ğ¢æ'&÷w¶F—7Æ“¦w&–C¶w&–B×FV×ÆFRÖ6öÇVÖç3£g"‚WFó¶v£‡ƒ¶Ö&v–ã£‡‚¶Æ–vâÖ—FV×3¦6VçFW'Òæ'&÷r–çWG¶Ö–â×v–GFƒ£·FF–æs£—‚ƒ¶föçB×6—¦S£g‡Ò6Ö–æ’Â6–Ö–æ’Â6fÖ–æ—¶F—7Æ“¦w&–C¶w&–B×FV×ÆFRÖ6öÇVÖç3£g"g#¶v£ƒ¶Ö&v–ã£'‚ÒçF–ÆW¶Ö&v–ã£·FW‡BÖÆ–vã¦6VçFW#·FF–æs£‡ÒçF–ÆRæçV×¶föçC£s#‡‚óã$&&Æ÷r6öæFVç6VB"Ç7—7FVÒ×V’Ç6ç2×6W&–gÖ–çWE·G—SÖFFUÒÆ–çWE·G—SÖÖöçF…×¶F—7Æ“¦&Æö6³·v–GFƒ£S¶Ö–â×v–GFƒ£¶Ö‚×v–GFƒ£S²×vV&¶—BÖV&æ6S¦æöæS¶V&æ6S¦æöæS¶†V–v‡C£C‡ƒ¶Æ–æRÖ†V–v‡C£ã#·FW‡BÖÆ–vã¦ÆVgGÖ–çWE·G—SÖFFUÓ£¢×vV&¶—BÖFFRÖæB×F–ÖR×fÇVRÆ–çWE·G—SÖÖöçF…Ó£¢×vV&¶—BÖFFRÖæB×F–ÖR×fÇVW·FW‡BÖÆ–vã¦ÆVgC¶Ö–â×v–GFƒ£Õ¶†–FFVå×¶F—7Æ“¦æöæR–×÷'FçGÒææ÷F¶&÷&FW"ÖÆVgC£G‚6öÆ–Bf"‚ÒÖ62—ÒæÇ·FF–æs£‚¶&÷&FW"Ö&÷GFöÓ£‚6öÆ–Bf"‚ÒÖÆ–æR—ÒæÃ¦Æ7BÖ6†–ÆG¶&÷&FW#£ÒæÃæF—g¶Ö&v–â×F÷£'ƒ¶÷fW&fÆ÷r×w&¦ç—v†W&WÒæÆ‡¶F—7Æ“¦fÆWƒ¶§W7F–g’Ö6öçFVçC§76RÖ&WGvVVã¶Æ–vâÖ—FV×3¦&6VÆ–æS¶v£ƒ¶fÆW‚×w&§w&ÒæÆ‚7ç¶föçB×vV–v‡C£cÒæf–Ç¶F—7Æ“¦w&–C¶w&–B×FV×ÆFRÖ6öÇVÖç3£g#¶v£‡ƒ¶Ö&v–âÖ&÷GFöÓ£‡‡Òæf–Â–çWBÂæf–Â6VÆV7G·v–GFƒ£S¶Ö‚×v–GFƒ£S¶Ö–â×v–GFƒ£¶föçB×6—¦S£Wƒ·FF–æs£—‚ƒ¶†V–v‡C£Cgƒ¶÷fW&fÆ÷s¦†–FFVã·FW‡BÖ÷fW&fÆ÷s¦VÆÆ—6—3²×vV&¶—BÖV&æ6S¦æöæS¶V&æ6S¦æöæWÒçF–ÆW¶Ö–â×v–GFƒ£ÒçF–ÆRæ×WFW¶föçB×6—¦S£7ƒ¶Æ–æRÖ†V–v‡C£ã'ÒçF–ÆRç7V'¶föçB×6—¦S£'ƒ¶Ö&v–â×F÷£G‡ÒçF–ÆRæçV×¶föçB×6—¦S¦6Æ×ƒW‚ÃWgrÃ#'‚’–×÷'FçC¶Æ–æRÖ†V–v‡C£ãS¶÷fW&fÆ÷r×w&¦ç—v†W&WÒæ·g¶v£‡Òæ·b7ç¶Ö–â×v–GFƒ£¶÷fW&fÆ÷r×w&¦ç—v†W&WÒæ·b'·FW‡BÖÆ–vã§&–v‡C¶÷fW&fÆ÷r×w&¦ç—v†W&WÒæ—FVÓæF—g¶Ö–â×v–GFƒ£¶÷fW&fÆ÷r×w&¦ç—v†W&WÒç&÷sâ§¶Ö–â×v–GFƒ£Òæ6†—7¶fÆW‚×w&§w&Òæ6†—2'WGFöç¶fÆWƒ£¶Ö–â×v–GFƒ£·v†—FR×76S¦æ÷w&¶föçB×6—¦S£7ƒ·FF–æs£‡‚G‡Òæ§G¶föçB×6—¦S£'‡Òæ§BF‚Âæ§BFG·FF–æs£g‚7‡Òæ§Bæ–7·FF–æs£'‚Wƒ¶Ö&v–âÖÆVgC£'ƒ¶föçB×6—¦S£G‡Òæ§BG"çF÷BFG¶föçB×vV–v‡C£sÖæb'WGFöâ7ç¶F—7Æ“¦&Æö6³¶föçB×6—¦S£—ƒ¶Æ–æRÖ†V–v‡C£ã#WÒæF÷G¶F—7Æ“¦–æÆ–æRÖ&Æö6³·v–GFƒ£ƒ¶†V–v‡C£ƒ¶&÷&FW"×&F—W3£SS¶Ö&v–â×&–v‡C£‡‡Òæ&'¶†V–v‡C£‡ƒ¶&6¶w&÷VæC§f"‚ÒÖÆ–æR“¶&÷&FW"×&F—W3£Gƒ¶÷fW&fÆ÷s¦†–FFVã¶Ö&v–â×F÷£g‡Òæ&#æF—g¶†V–v‡C£WÒç6V2×F'¶F—7Æ“¦æöæWÒç6V2×F"æöç¶F—7Æ“¦&Æö6·Ğ¢6×6w·÷6—F–öã¦f—†VC¶ÆVgC£SS·G&ç6f÷&Ó§G&ç6ÆFU‚‚ÓSR“¶&÷GFöÓ¦6Æ2ƒsg‚²Vçb‡6fRÖ&VÖ–ç6WBÖ&÷GFöÒÃ‚’“¶&6¶w&÷VæC§f"‚ÒÖ–æ²“¶6öÆ÷#§f"‚ÒÖ&r“·FF–æs£‡‚gƒ¶&÷&FW"×&F—W3£#ƒ¶föçB×6—¦S£Wƒ¶÷6—G“£·ö–çFW"ÖWfVçG3¦æöæS·G&ç6—F–öã¦÷6—G’ã'3·¢Ö–æFWƒ£gĞ¢6×6rç6†÷w¶÷6—G“£Ğ£Â÷7G–ÆSà£Ç7G–ÆSã§&ö÷BÂ§&ö÷E¶FF×F†VÖSÒ&Æ–v‡B%Ò°¢ÒÖ&s¢6ccVf#°¢ÒÖ6&C¢6ffc°¢ÒÖ–æ³¢3#ƒF°¢ÒÖ×WFS¢3CcVSvC°¢ÒÖÆ–æS¢6CVSc°¢ÒÖ63¢3#3SVS°¢ÒÖ66–æ³¢6ffc°¢Ò×÷3¢3ƒCƒ“c°¢ÒÖæVs¢633S&C°§Ğ ¦&öG’°¢Ö‚×v–GFƒ¢ƒƒ°¢FF–æs¢#‡‚#G‚6Æ2ƒ‚²Vçb‡6fRÖ&VÖ–ç6WBÖ&÷GFöÒÂ‚’“°¢föçC¢CW‚óã3R7—7FVÒ×V’Â6ç2×6W&–c°¢÷fW&fÆ÷r×w&¢'&V²×v÷&C°§Ğ¦'WGFöâ²7W'6÷#¢ö–çFW#²föçC¢cG‚óã#R7—7FVÒ×V’Â6ç2×6W&–c²Ğ¦'WGFöã¦†÷fW"²f–ÇFW#¢'&–v‡FæW72‚ã“R“²Ğ¦–çWBÂ6VÆV7B²Ö–â×v–GFƒ¢²Ö‚×v–GFƒ¢S²föçB×6—¦S¢gƒ²Ğ¦ƒÂƒ"ÂçF–ÆRæçVÒÂæ&–r²föçBÖfÖ–Ç“¢7—7FVÒ×V’Â6ç2×6W&–c²Ğ¦ƒ²föçB×6—¦S¢6Æ×ƒ3‚ÂWgrÂCg‚“²Æ–æRÖ†V–v‡C¢ãS²ÆWGFW"×76–æs¢Òã3VVÓ²Ğ¦ƒ"²föçB×6—¦S¢—ƒ²ÆWGFW"×76–æs¢Òã#VVÓ²Ğ¢æÖ7B°¢F—7Æ“¢w&–C°¢w&–B×FV×ÆFRÖ6öÇVÖç3¢WFòÖ–æÖ‚ƒÂg"’WFòWFó°¢Æ–vâÖ—FV×3¢6VçFW#°¢v¢ƒ°¢&÷&FW"Ö&÷GFöÓ¢‚6öÆ–Bf"‚ÒÖÆ–æR“°¢FF–ærÖ&÷GFöÓ¢—ƒ°¢Ö&v–âÖ&÷GFöÓ¢'ƒ°§Ğ¢æÖ&²°¢v–GFƒ¢C'ƒ°¢†V–v‡C¢C'ƒ°¢&÷&FW"×&F—W3¢ƒ°¢F—7Æ“¢&Æö6³°¢ö&¦V7BÖf—C¢6öçF–ã°§Ğ¢66Æ÷VB×&V6÷fW'’ÖF–Æör²v–GFƒ¢Ö–âƒC#‚Â6Æ2ƒRÒ#G‚’“²Ö‚×v–GFƒ¢æöæS²FF–æs¢#'ƒ²&÷&FW#¢‚6öÆ–Bf"‚ÒÖÆ–æR“²&÷&FW"×&F—W3¢‡ƒ²&6¶w&÷VæC¢f"‚ÒÖ6&B“²6öÆ÷#¢f"‚ÒÖ–æ²“²&÷‚×6†F÷s¢#‚c‚&v"ƒò#‚R“²Ğ¢66Æ÷VB×&V6÷fW'’ÖF–Æös£¦&6¶G&÷²&6¶w&÷VæC¢&v"ƒb#CòS‚R“²&6¶G&÷Öf–ÇFW#¢&ÇW"ƒ7‚“²Ğ¢66Æ÷VB×&V6÷fW'’ÖF–Æörƒ"²Ö&v–âÖ&÷GFöÓ¢gƒ²Ğ¢66Æ÷VB×&V6÷fW'’ÖF–Æörf÷&Ò²Ö&v–ã¢²Ğ¢66Æ÷VB×&V6÷fW'’Ö×6r²Ö–âÖ†V–v‡C¢#ƒ²Ğ¢æÖ7B×F—FÆR²Ö–â×v–GFƒ¢²Ğ¢ç&öf–ÆRÖÖVçR²÷6—F–öã¢&VÆF—fS²¢Ö–æFWƒ¢ƒ²6öÆ÷#¢f"‚ÒÖ–æ²“²Ğ¢ç&öf–ÆRÖÖVçRâ7VÖÖ'’²÷6—F–öã¢&VÆF—fS²F—7Æ“¢w&–C²Æ6RÖ—FV×3¢6VçFW#²v–GFƒ¢C'ƒ²†V–v‡C¢C'ƒ²÷fW&fÆ÷s¢†–FFVã²FF–æs¢²&÷&FW#¢‚6öÆ–Bf"‚ÒÖÆ–æR“²&÷&FW"×&F—W3¢SS²&6¶w&÷VæC¢f"‚ÒÖ6&B“²6öÆ÷#¢f"‚ÒÖ62“²7W'6÷#¢ö–çFW#²Æ—7B×7G–ÆS¢æöæS²Ğ¢ç&öf–ÆRÖÖVçRâ7VÖÖ'“£¢×vV&¶—BÖFWF–Ç2ÖÖ&¶W"²F—7Æ“¢æöæS²Ğ¢ç&öf–ÆRÖÖVçRâ7VÖÖ'“¦†÷fW"Âç&öf–ÆRÖÖVçU¶÷VåÒâ7VÖÖ'’²&6¶w&÷VæC¢f"‚ÒÖ&r“²Ğ¢ç&öf–ÆRÖÖVçRâ7VÖÖ'“¦fö7W2×f—6–&ÆR²÷WFÆ–æS¢7‚6öÆ–Bf"‚ÒÖ62“²÷WFÆ–æRÖöfg6WC¢7ƒ²Ğ¢ç&öf–ÆRÖÖVçRâ7VÖÖ'’ç&öf–ÆRÖ–6öâ²v–GFƒ¢#Gƒ²†V–v‡C¢#Gƒ²Ğ¢ç&öf–ÆRÖ–6öâ²f–ÆÃ¢æöæS²7G&ö¶S¢7W'&VçD6öÆ÷#²7G&ö¶R×v–GFƒ¢ãƒ²7G&ö¶RÖÆ–æV6¢&÷VæC²7G&ö¶RÖÆ–æV¦ö–ã¢&÷VæC²Ğ¢ç&öf–ÆRÖfF"²÷6—F–öã¢'6öÇWFS²–ç6WC¢²F—7Æ“¢&Æö6³²v–GFƒ¢S²†V–v‡C¢S²&÷&FW"×&F—W3¢SS²ö&¦V7BÖf—C¢6÷fW#²Ğ¢ç&öf–ÆRÖfF%¶†–FFVåÒÂç&öf–ÆRÖfF"×&Wf–Wu¶†–FFVåÒ²F—7Æ“¢æöæR–×÷'FçC²Ğ¢ç&öf–ÆR×÷÷fW"²÷6—F–öã¢'6öÇWFS²¢Ö–æFWƒ¢3²F÷¢6Æ2ƒR²—‚“²&–v‡C¢²v–GFƒ¢Ö–âƒ3c‚Â6Æ2ƒgrÒ#G‚’“²Ö‚Ö†V–v‡C¢Ö–âƒsgf‚ÂcC‚“²÷fW&fÆ÷s¢WFó²FF–æs¢gƒ²&÷&FW#¢‚6öÆ–Bf"‚ÒÖÆ–æR“²&÷&FW"×&F—W3¢gƒ²&6¶w&÷VæC¢f"‚ÒÖ6&B“²6öÆ÷#¢f"‚ÒÖ–æ²“²&÷‚×6†F÷s¢g‚C'‚&v"ƒò#BR“²Ğ¢ç&öf–ÆR×÷÷fW"ƒ"ç&öf–ÆRÖ†VF–ær²Ö&v–ã¢Gƒ²Ğ¢ç&öf–ÆR×÷÷fW"Æ&VÂ²Ö&v–ã¢—‚Gƒ²Ğ¢ç&öf–ÆR×÷÷fW"–çWB²v–GFƒ¢S²Ö–â×v–GFƒ¢²FF–æs¢—‚ƒ²&÷&FW#¢‚6öÆ–Bf"‚ÒÖÆ–æR“²&÷&FW"×&F—W3¢—ƒ²&6¶w&÷VæC¢f"‚ÒÖ&r“²6öÆ÷#¢f"‚ÒÖ–æ²“²Ğ¢ç&öf–ÆR×÷÷fW"'WGFöâ²Ö&v–â×F÷¢‡ƒ²Ö–âÖ†V–v‡C¢Cƒ²föçB×6—¦S¢Gƒ²Ğ¢ç&öf–ÆR×÷÷fW"ç&öf–ÆRÖ7F–öç2²F—7Æ“¢w&–C²w&–B×FV×ÆFRÖ6öÇVÖç3¢g"g#²v¢‡ƒ²Ğ¢ç&öf–ÆR×÷÷fW"ç&öf–ÆRÖ7F–öç2'WGFöâ²Ö&v–â×F÷¢'ƒ²Ğ¢ç&öf–ÆRÖæ÷FRÂç&öf–ÆRÖÖW76vR²Ö&v–ã¢w‚ƒ²6öÆ÷#¢f"‚ÒÖ×WFR“²föçB×6—¦S¢'ƒ²Ğ¢ç&öf–ÆRÖÖW76vR²Ö–âÖ†V–v‡C¢‡ƒ²Ğ¢ç&öf–ÆRÖ–FVçF—G’²F—7Æ“¢fÆWƒ²Æ–vâÖ—FV×3¢6VçFW#²v¢ƒ²Ö&v–ã¢ƒ²Ğ¢ç&öf–ÆRÖfF"Ög&ÖR²÷6—F–öã¢&VÆF—fS²fÆWƒ¢S'ƒ²v–GFƒ¢S'ƒ²†V–v‡C¢S'ƒ²Ğ¢ç&öf–ÆRÖfF"×&Wf–Wr²v–GFƒ¢S'ƒ²†V–v‡C¢S'ƒ²&÷&FW#¢'‚6öÆ–Bf"‚ÒÖÆ–æR“²&÷&FW"×&F—W3¢SS²ö&¦V7BÖf—C¢6÷fW#²Ğ¢ç&öf–ÆR×Æ6V†öÆFW"²v–GFƒ¢S'ƒ²†V–v‡C¢S'ƒ²FF–æs¢‡ƒ²&÷&FW#¢‚6öÆ–Bf"‚ÒÖÆ–æR“²&÷&FW"×&F—W3¢SS²&6¶w&÷VæC¢f"‚ÒÖ&r“²6öÆ÷#¢f"‚ÒÖ×WFR“²Ğ¢ç&öf–ÆRÖ–FVçF—G’Ö6÷’²Ö–â×v–GFƒ¢²Ğ¢ç&öf–ÆRÖ–FVçF—G’Ö6÷’ƒ"²Ö&v–ã¢7ƒ²föçB×6—¦S¢wƒ²Ğ¢ç&öf–ÆRÖVÖ–Â²Ö&v–ã¢²6öÆ÷#¢f"‚ÒÖ×WFR“²föçB×6—¦S¢'ƒ²÷fW&fÆ÷r×w&¢ç—v†W&S²Ğ¢ç&öf–ÆR×6V7F–öâ²Ö&v–ã¢'‚²&÷&FW#¢‚6öÆ–Bf"‚ÒÖÆ–æR“²&÷&FW"×&F—W3¢ƒ²&6¶w&÷VæC¢f"‚ÒÖ&r“²÷fW&fÆ÷s¢†–FFVã²Ğ¢ç&öf–ÆR×6V7F–öââ7VÖÖ'’²F—7Æ“¢fÆWƒ²§W7F–g’Ö6öçFVçC¢76RÖ&WGvVVã²FF–æs¢‚'ƒ²föçB×vV–v‡C¢s²7W'6÷#¢ö–çFW#²Æ—7B×7G–ÆS¢æöæS²Ğ¢ç&öf–ÆR×6V7F–öââ7VÖÖ'“£¢×vV&¶—BÖFWF–Ç2ÖÖ&¶W"²F—7Æ“¢æöæS²Ğ¢ç&öf–ÆR×6V7F–öââ7VÖÖ'“£¦gFW"²6öçFVçC¢"²#²6öÆ÷#¢f"‚ÒÖ×WFR“²Ğ¢ç&öf–ÆR×6V7F–öå¶÷VåÒâ7VÖÖ'“£¦gFW"²6öçFVçC¢.(‰"#²Ğ¢ç&öf–ÆR×6V7F–öâf÷&Ò²F—7Æ“¢w&–C²v¢Gƒ²FF–æs¢'‚'ƒ²Ğ¢ç&öf–ÆR×6V7F–öâf÷&Ò'WGFöâ²v–GFƒ¢S²Ğ¢æ'&æB²föçB×vV–v‡C¢sS²ÆWGFW"×76–æs¢ÒãFVÓ²föçB×6—¦S¢—ƒ²Ğ¢æÖ7B6ÖÆÂ²6öÆ÷#¢f"‚ÒÖ×WFR“²föçB×6—¦S¢'ƒ²Ö‚×v–GFƒ¢3ƒ²FW‡BÖÆ–vã¢&–v‡C²Ğ¢677B²Ö–âÖ†V–v‡C¢#ƒ²föçB×6—¦S¢'ƒ²Ö&v–ã¢²Ğ ¢æ6†—2°¢F—7Æ“¢w&–C°¢w&–B×FV×ÆFRÖ6öÇVÖç3¢&WVBƒBÂÖ–æÖ‚ƒÂg"’“°¢v–GFƒ¢Ö–âƒRÂCC‚“°¢FF–æs¢Gƒ°¢v¢'ƒ°¢&÷&FW#¢‚6öÆ–Bf"‚ÒÖÆ–æR“°¢&÷&FW"×&F—W3¢#ƒ°¢&6¶w&÷VæC¢f"‚ÒÖ6&B“°§Ğ¢66†—2²w&–B×FV×ÆFRÖ6öÇVÖç3¢&WVBƒRÂÖ–æÖ‚ƒÂg"’“²Ğ¢æ6†—2'WGFöâ°¢v–GFƒ¢S°¢&÷&FW#¢°¢&÷&FW"×&F—W3¢Wƒ°¢FF–æs¢‡‚'ƒ°¢föçB×6—¦S¢ƒ°¢föçB×vV–v‡C¢s°¢ÆWGFW"×76–æs¢ãFVÓ°¢FW‡B×G&ç6f÷&Ó¢WW&66S°¢FW‡BÖÆ–vã¢6VçFW#°¢v†—FR×76S¢æ÷&ÖÃ°§Ğ¢æ6†—2ç6V2²6öÆ÷#¢f"‚ÒÖ×WFR“²Ğ ¢æ6&B²FF–æs¢6Æ×ƒ'‚Â'grÂg‚“²&÷&FW"×&F—W3¢gƒ²Ö–â×v–GFƒ¢²Ğ¢æ6&Bâƒ"²Ö&v–âÖ&÷GFöÓ¢wƒ²Ğ¢æ6&B²Ö&v–âÖ&÷GFöÓ¢²Ğ¢æ†W&ò°¢&6¶w&÷VæC¢Æ–æV"Öw&F–VçBƒ#FVrÂ3#cFbÂ3F#“b“°¢6öÆ÷#¢6ffc°¢÷6—F–öã¢&VÆF—fS°¢—6öÆF–öã¢—6öÆFS°¢FW‡BÖÆ–vã¢ÆVgC°¢FF–æs¢3‚6Æ×ƒ#‚ÂGgrÂC‡‚“°¢&÷&FW#¢°¢Ö–âÖ†V–v‡C¢sgƒ°¢F—7Æ“¢fÆWƒ°¢fÆW‚ÖF—&V7F–öã¢6öÇVÖã°¢§W7F–g’Ö6öçFVçC¢6VçFW#°§Ğ¢æ†W&òæ×WFRÂæ†W&òç÷2²6öÆ÷#¢6SVffc²Ğ¢æ†W&òææVr²6öÆ÷#¢6ffC&6#²Ğ¢æ†W&òâæÖ²æ×WFRÂçF–ÆRâæ×WFS¦f—'7BÖ6†–ÆB°¢FW‡B×G&ç6f÷&Ó¢WW&66S°¢ÆWGFW"×76–æs¢ãvVÓ°¢föçB×6—¦S¢ƒ°¢föçB×vV–v‡C¢sS°¢FW‡BÖÆ–vã¢6VçFW#°§Ğ¢æ†W&òâæÖ²æ×WFR°¢Æ–vâ×6VÆc¢fÆW‚×7F'C°¢&6¶w&÷VæC¢3#sF3ƒ3°¢FF–æs¢G‚ƒ°¢&÷&FW"×&F—W3¢‡ƒ°§Ğ¢æ&–r°¢föçB×6—¦S¢6Æ×ƒ3‚ÂggrÂc‚“°¢Æ–æRÖ†V–v‡C¢ãS°¢ÆWGFW"×76–æs¢ÒãFVÓ°¢Ö&v–ã¢g‚—ƒ°¢föçB×f&–çBÖçVÖW&–3¢F'VÆ"ÖçV×3°§Ğ¢æÖ°¢÷6—F–öã¢'6öÇWFS°¢–ç6WC¢WFó°¢†V–v‡C¢S°¢v–GFƒ¢C‚S°¢¢Ö–æFWƒ¢Ó°¢÷6—G“¢ãcS°¢&÷&FW"×&F—W3¢–æ†W&—C°¢Ö6²Ö–ÖvS¢Æ–æV"Öw&F–VçBƒ“FVrÂG&ç7&VçBÂ3SR“°§Ğ¢æ†W&ò6–çb²föçB×6—¦S¢7ƒ²Ğ¢æ7F–öç2°¢F—7Æ“¢w&–C°¢w&–B×FV×ÆFRÖ6öÇVÖç3¢&WVBƒ"ÂÖ–æÖ‚ƒÂg"’“°¢v¢‡ƒ°¢Ö&v–âÖ&÷GFöÓ¢Gƒ°§Ğ¢æ7F–öç2'WGFöâ²Ö&v–ã¢²Ö–â×v–GFƒ¢²FF–æs¢'‚gƒ²Ğ¢6Ö–æ’Â6–Ö–æ’Â6fÖ–æ’Âç&÷r²w&–B×FV×ÆFRÖ6öÇVÖç3¢&WVBƒ"ÂÖ–æÖ‚ƒÂg"’“²Ğ¢çF–ÆR²6öçF–æW"×G—S¢–æÆ–æR×6—¦S²FF–æs¢‡‚ƒ²Ğ¢çF–ÆRæçVÒ°¢föçB×vV–v‡C¢s°¢föçB×6—¦S¢6Æ×ƒ7‚Â–7rÂ3‚’–×÷'FçC°¢Æ–æRÖ†V–v‡C¢ã3S°¢Ö&v–ã¢g‚°¢v†—FR×76S¢æ÷w&°¢föçB×f&–çBÖçVÖW&–3¢F'VÆ"ÖçV×3°§Ğ¢çF–ÆRæçVÕ¶FFÖf—EÒ²föçB×6—¦S¢f"‚ÒÖf—B’–×÷'FçC²Ğ¢çF–ÆRç7V"²föçB×6—¦S¢'ƒ²Ğ¢æ·b²Æ–vâÖ—FV×3¢&6VÆ–æS²Ğ¢æ·bâ¦Æ7BÖ6†–ÆB²FW‡BÖÆ–vã¢&–v‡C²Ö–â×v–GFƒ¢²Ğ¢æ·bâ¦Æ7BÖ6†–ÆB²föçB×f&–çBÖçVÖW&–3¢F'VÆ"ÖçV×3²Ğ¢æ—FVÒâ7âÂæÆ‚â¢²Ö–â×v–GFƒ¢²Ğ¢æf–Â6VÆV7B²FW‡BÖ÷fW&fÆ÷s¢6Æ—²FF–ær×&–v‡C¢ƒ²Ğ¢çF&Â²Ö‚×v–GFƒ¢S²Ğ¢æ6&Bææ÷F²&6¶w&÷VæC¢f"‚ÒÖ&r“²&÷&FW"ÖÆVgC¢7‚6öÆ–Bf"‚ÒÖ62“²Ğ¢6×6r²Ö‚×v–GFƒ¢6Æ2ƒRÒ#G‚“²FW‡BÖÆ–vã¢6VçFW#²Ğ¢ç6V2×F"²Ö–â×v–GFƒ¢²Ğ ¦æb°¢F—7Æ“¢w&–C°¢w&–B×FV×ÆFRÖ6öÇVÖç3¢&WVBƒbÂÖ–æÖ‚ƒÂg"’“°¢v¢'ƒ°¢FF–ærÖ–æÆ–æS¢Wƒ°§Ğ¦æb'WGFöâ°¢Ö–â×v–GFƒ¢°¢Ö–âÖ†V–v‡C¢C—ƒ°¢F—7Æ“¢w&–C°¢v¢7ƒ°¢Æ–vâÖ6öçFVçC¢6VçFW#°¢§W7F–g’Ö—FV×3¢6VçFW#°¢FF–æs¢G‚°¢FW‡BÖÆ–vã¢6VçFW#°¢föçB×vV–v‡C¢sS°§Ğ¦æbææbÖ–6öâ²föçB×6—¦S¢‡ƒ²Æ–æRÖ†V–v‡C¢ã#²Ğ¦æbææbÖÆ&VÂ²föçB×6—¦S¢6Æ×ƒ‡‚Â"ãGgrÂ‚“²Æ–æRÖ†V–v‡C¢ã#²Ğ¦æb'WGFöâæöâ²&6¶w&÷VæC¢f"‚ÒÖ&r“²6öÆ÷#¢f"‚ÒÖ62“²Ğ ¤ÖVF–†Ö–â×v–GFƒ¢sƒ‚’°¢&öG’²FF–ærÖÆVgC¢#‡ƒ²FF–ær×&–v‡C¢3'ƒ²Ğ¢æb°¢–ç6WC¢WFò°¢v–GFƒ¢Ö‚ƒsg‚Â6Æ2‚ƒgrÒƒ‚’ò"²sg‚’“°¢FF–æs¢“g‚G‚#‚Ö‚ƒG‚Â6Æ2‚ƒgrÒƒ‚’ò"²G‚’“°¢w&–B×FV×ÆFRÖ6öÇVÖç3¢Ö–æÖ‚ƒÂg"“°¢Æ–vâÖ6öçFVçC¢7F'C°¢v¢gƒ°¢&÷&FW#¢°¢&÷&FW"×&–v‡C¢‚6öÆ–Bf"‚ÒÖÆ–æR“°¢÷fW&fÆ÷r×“¢WFó°¢Ğ¢æb'WGFöâ°¢w&–B×FV×ÆFRÖ6öÇVÖç3¢#G‚Ö–æÖ‚ƒÂg"“°¢Æ–vâÖ—FV×3¢6VçFW#°¢§W7F–g’Ö—FV×3¢7F'C°¢v¢ƒ°¢FF–æs¢‚'ƒ°¢FW‡BÖÆ–vã¢ÆVgC°¢Ğ¢æbææbÖÆ&VÂ²föçB×6—¦S¢'ƒ²Ğ¢ç6V2×F"7BÖ–æ’æöâ°¢F—7Æ“¢w&–C°¢w&–B×FV×ÆFRÖ6öÇVÖç3¢&WVBƒ"ÂÖ–æÖ‚ƒÂg"’“°¢v¢'ƒ°¢Ğ¢ç6V2×F"7BÖ–æ’æöââ¢²w&–BÖ6öÇVÖã¢òÓ²Ö&v–ã¢²Ğ¢7BÖ–æ’æöââæ6&C¦æ÷B‚æ†W&ò’²w&–BÖ6öÇVÖã¢7â²Ğ¢6–Ö–æ’²w&–B×FV×ÆFRÖ6öÇVÖç3¢&WVBƒBÂÖ–æÖ‚ƒÂg"’“²Ğ¢æ†W&ò²Ö–âÖ†V–v‡C¢#ƒ²Ğ§Ğ¤ÖVF–†Ö‚×v–GFƒ¢CS‚’°¢&öG’²FF–æs¢g‚7‚6Æ2ƒƒ‡‚²Vçb‡6fRÖ&VÖ–ç6WBÖ&÷GFöÒÂ‚’“²Ğ¢æ†W&ò²FF–æs¢#'ƒ²Ğ¢çF–ÆR²FF–æs¢7‚‡ƒ²Ğ¢æÖ²÷6—G“¢ãCƒ²Ğ¢æ'&÷r²w&–B×FV×ÆFRÖ6öÇVÖç3¢Ö–æÖ‚ƒÂg"’Ö–æÖ‚ƒSW‚ÂƒW‚’WFó²Ğ§Ğ¤ÖVF–‡&VfW'2Ö6öÆ÷"×66†VÖS¢F&²’°¢§&ö÷C¦æ÷B…¶FF×F†VÖSÒ&Æ–v‡B%Ò’°¢ÒÖ&s¢33s&°¢ÒÖ6&C¢3S#C6S°¢ÒÖ–æ³¢6V6cFfc°¢ÒÖ×WFS¢6#v6S3°¢ÒÖÆ–æS¢33CC“cƒ°¢ÒÖ63¢3–F3ffc°¢ÒÖ66–æ³¢3##sCS°¢Ò×÷3¢6–C6fc°¢Ğ§Ğ£§&ö÷E¶FF×F†VÖSÒ&F&²%Ò°¢ÒÖ&s¢33s&°¢ÒÖ6&C¢3S#C6S°¢ÒÖ–æ³¢6V6cFfc°¢ÒÖ×WFS¢6#v6S3°¢ÒÖÆ–æS¢33CC“cƒ°¢ÒÖ63¢3–F3ffc°¢ÒÖ66–æ³¢3##sCS°¢Ò×÷3¢6–C6fc°§Ğ ¢æFFR×&ævRÀ¢ç6V2×F"7BÖ–æ’æöââæFFR×&ævR°¢v–GFƒ¢Ö–âƒRÂCC‚“°¢Ö&v–ã¢'‚°§Ğ¢æFFR×&ævRÆ&VÂ²Ö&v–ã¢Wƒ²föçB×vV–v‡C¢cS²Ğ¢æFFR×&ævR–çWB²FF–ærÖ–æÆ–æS¢‡ƒ²föçB×6—¦S¢gƒ²Ğ ¢6&6Bæ'&÷r°¢w&–B×FV×ÆFRÖ6öÇVÖç3¢Ö–æÖ‚ƒÂg"’Ö–æÖ‚ƒ‚ÂãcVg"’WFó°¢6öÇVÖâÖv¢gƒ°§Ğ¢6&6Bæ'&÷ræ×WFR°¢föçB×6—¦S¢7ƒ°¢föçB×vV–v‡C¢cS°§Ğ¢6&6Bæ'&÷ræ×WFRâ¦Æ7BÖ6†–ÆB²f—6–&–Æ—G“¢†–FFVã²Ğ¢6&6Bæ'&÷ræ×WFRâ¦çF‚Ö6†–ÆBƒ"’²v†—FR×76S¢æ÷w&²Ğ ¢ç'G2ÖÆ—7B²F—7Æ“¢w&–C²w&–B×FV×ÆFRÖ6öÇVÖç3¢&WVB†WFòÖf—BÂÖ–æÖ‚†Ö–âƒRÂ#CW‚’Âg"’“²v¢ƒ²Ğ¢ç'B×V÷FR²Ö–â×v–GFƒ¢²&÷&FW#¢‚6öÆ–Bf"‚ÒÖÆ–æR“²&÷&FW"×&F—W3¢'ƒ²FF–æs¢'ƒ²Ğ¢ç'B×V÷FRƒ2²Ö&v–ã¢²föçB×6—¦S¢gƒ²Ğ¢ç'B×V÷FR²Ö&v–ã¢7‚gƒ²v†—FR×76S¢&R×w&²Ğ¢ç'BÖVF—B²FF–æs¢w‚ƒ²Ö&v–â×F÷¢‡ƒ²Ğ¢ç'BÖVF—F÷"²Ö&v–â×F÷¢'ƒ²Ğ¢ç'BÖVF—F÷"7VÖÖ'’²6öÆ÷#¢f"‚ÒÖ62“²föçB×vV–v‡C¢cS²FF–ærÖ&Æö6³¢gƒ²7W'6÷#¢ö–çFW#²Ğ¢ç'BÖVF—F÷"FW‡F&V°¢v–GFƒ¢S°¢FF–æs¢‚'ƒ°¢&÷&FW#¢‚6öÆ–Bf"‚ÒÖÆ–æR“°¢&÷&FW"×&F—W3¢ƒ°¢&6¶w&÷VæC¢f"‚ÒÖ&r“°¢6öÆ÷#¢f"‚ÒÖ–æ²“°¢föçC¢–æ†W&—C°¢föçB×6—¦S¢gƒ°¢&W6—¦S¢fW'F–6Ã°§Ğ ¢æ6FVv÷'’×&÷r²w&–B×FV×ÆFRÖ6öÇVÖç3¢Ö–æÖ‚ƒÂg"’WFòWFó²Ğ¢æW‡Vç6RÖ7F–öç2²F—7Æ“¢fÆWƒ²fÆW‚×w&¢w&²§W7F–g’Ö6öçFVçC¢fÆW‚ÖVæC²v¢Gƒ²Ğ¤ÖVF–†Ö‚×v–GFƒ¢3s‚’°¢66†—2'WGFöå¶FF×Ò'6VÖæ%Ò²föçB×6—¦S¢—ƒ²ÆWGFW"×76–æs¢²Ğ§Ğ ¢6fæ÷Fâ²Ö&v–ã¢gƒ²Ğ¢ç&W6W'fRÖÆ–æR°¢F—7Æ“¢w&–C°¢w&–B×FV×ÆFRÖ6öÇVÖç3¢Ö–æÖ‚ƒÂg"’Ö‚Ö6öçFVçC°¢v¢'‚ƒ°§Ğ¢ç&W6W'fRÖÖ÷VçBÂæF–Ç’×fÇVR°¢v†—FR×76S¢æ÷w&°¢föçB×f&–çBÖçVÖW&–3¢F'VÆ"ÖçV×3°§Ğ¢6fæ÷Fç&W6W'fRÖÆ–æRâ6ÖÆÂ²w&–BÖ6öÇVÖã¢òÓ²FW‡BÖÆ–vã¢7F'C²Ğ ¢æF–Ç’Ö†VB°¢F—7Æ“¢fÆWƒ°¢§W7F–g’Ö6öçFVçC¢76RÖ&WGvVVã°¢FF–ærÖ&÷GFöÓ¢gƒ°§Ğ¢æF–Ç’Ö6†'B°¢Ò×¦W&ó¢S°¢F—7Æ“¢w&–C°¢w&–B×FV×ÆFRÖ6öÇVÖç3¢Ö–æÖ‚ƒÂãW&VÒ’Ö–æÖ‚ƒÂg"’Ö‚Ö6öçFVçC°¢6öÇVÖâÖv¢‡ƒ°¢Ö&v–ã¢°¢FF–æs¢°¢Æ—7B×7G–ÆS¢æöæS°§Ğ¢æF–Ç’Ö6†'BæÖ—†VB²Ò×¦W&ó¢SS²Ğ¢æF–Ç’Ö6†'BæÆ÷76W2²Ò×¦W&ó¢S²Ğ¢æF–Ç’×&÷r°¢F—7Æ“¢w&–C°¢w&–BÖ6öÇVÖã¢òÓ°¢w&–B×FV×ÆFRÖ6öÇVÖç3¢7V&w&–C°¢Æ–vâÖ—FV×3¢6VçFW#°¢v¢‡ƒ°¢Ö–âÖ†V–v‡C¢3ƒ°¢&÷&FW"×F÷¢‚6öÆ–Bf"‚ÒÖÆ–æR“°¢föçB×6—¦S¢7ƒ°§Ğ¢æF–Ç’×&÷rF–ÖR²6öÆ÷#¢f"‚ÒÖ×WFR“²föçB×f&–çBÖçVÖW&–3¢F'VÆ"ÖçV×3²v†—FR×76S¢æ÷w&²Ğ¢æF–Ç’×fÇVR²FW‡BÖÆ–vã¢&–v‡C²Ö–â×v–GFƒ¢ƒWƒ²Ğ¢æF–Ç’×G&6²²÷6—F–öã¢&VÆF—fS²†V–v‡C¢'ƒ²Ğ¢æF–Ç’×G&6³£¦gFW"°¢6öçFVçC¢"#°¢÷6—F–öã¢'6öÇWFS°¢–ç6WC¢WFòf"‚Ò×¦W&ò“°¢&÷&FW"ÖÆVgC¢‚6öÆ–Bf"‚ÒÖÆ–æR“°§Ğ¢æF–Ç’Ö&"°¢÷6—F–öã¢'6öÇWFS°¢–ç6WBÖ&Æö6³¢'ƒ°¢v–GFƒ¢f"‚ÒÖ&"×v–GF‚“°¢Ö–â×v–GFƒ¢'ƒ°¢&÷&FW"×&F—W3¢7ƒ°§Ğ¢æÖ—†VBæF–Ç’Ö&"²v–GFƒ¢6Æ2‡f"‚ÒÖ&"×v–GF‚’ò"“²Ğ¢æF–Ç’Ö&"æv–â²ÆVgC¢f"‚Ò×¦W&ò“²&6¶w&÷VæC¢f"‚Ò×÷2“²Ğ¢æF–Ç’Ö&"æÆ÷72²&–v‡C¢6Æ2ƒRÒf"‚Ò×¦W&ò’“²&6¶w&÷VæC¢f"‚ÒÖæVr“²Ğ  ¢ò¢v—fRf–ææ6–Â7VÖÖ&–W22Öç’WVÂ6öÇVÖç22F†V—"6öçF–æW"6â†öÆBâ¢ğ¢6–Ö–æ’Â6Ö–æ’Â6fÖ–æ’°¢w&–B×FV×ÆFRÖ6öÇVÖç3¢&WVB†WFòÖf—BÂÖ–æÖ‚†Ö–âƒRÂ’ãsW&VÒ’Âg"’“°§Ğ¢æ†W&ò²6öçF–æW"×G—S¢–æÆ–æR×6—¦S²Ğ¢æ&–r°¢föçB×6—¦S¢6Æ×ƒ#G‚Â7rÂc‚“°¢v†—FR×76S¢æ÷w&°§Ğ¢æ·c¦æ÷B‚ç&W6W'fRÖÆ–æR’°¢fÆW‚×w&¢w&°¢v¢'‚'ƒ°§Ğ¢æ·bâ¦çF‚Ö6†–ÆBƒ"’°¢Ö‚×v–GFƒ¢S°¢Ö&v–âÖ–æÆ–æR×7F'C¢WFó°¢÷fW&fÆ÷r×w&¢æ÷&ÖÃ°§Ğ¢çF–ÆRç7V"Âæ—FVÒÂæÂâF—bÂç&W6W'fRÖÆ–æR²÷fW&fÆ÷r×w&¢æ÷&ÖÃ²Ğ¢æ—FVÒ²fÆW‚×w&¢w&²Ğ¢æ—FVÒâ¦f—'7BÖ6†–ÆB²fÆWƒ¢'&VÓ²Ö–â×v–GFƒ¢²÷fW&fÆ÷r×w&¢'&V²×v÷&C²Ğ¢æ—FVÒâ¦Æ7BÖ6†–ÆC¦æ÷Bƒ¦f—'7BÖ6†–ÆB’²Ö&v–âÖ–æÆ–æR×7F'C¢WFó²Ğ¢ç&÷râ¢²Ö–â×v–GFƒ¢²Ğ¢6&6Bæ'&÷r²w&–B×FV×ÆFRÖ6öÇVÖç3¢Ö–æÖ‚ƒÂg"’Ö–æÖ‚ƒ&6‚Âã†g"’WFó²Ğ¤ÖVF–†Ö‚×v–GFƒ¢C#‚’°¢6&6Bæ'&÷s¦æ÷B‚æ×WFR’²w&–B×FV×ÆFRÖ6öÇVÖç3¢Ö–æÖ‚ƒÃg"’WFó²Ğ¢6&6Bæ'&÷s¦æ÷B‚æ×WFR’â¦f—'7BÖ6†–ÆB²w&–BÖ6öÇVÖã¢òÓ²Ğ¢6&6Bæ'&÷ræ×WFR²F—7Æ“¢æöæS²Ğ§Ğ¢æ&–u¶FFÖf—EÒ²föçB×6—¦S¢f"‚ÒÖf—B“²Ğ¢çF–ÆRæçVÒ²föçB×6—¦S¢6Æ×ƒ‡‚Â67rÂ3‚’–×÷'FçC²Ğ¤ÖVF–†Ö‚×v–GFƒ¢C#‚’°¢6&6Bæ'&÷s¦æ÷B‚æ×WFR“£¦&Vf÷&R°¢6öçFVçC¢%&W7WVW7FòÖVç7VÂ#°¢w&–BÖ6öÇVÖã¢òÓ°¢w&–B×&÷s¢#°¢6öÆ÷#¢f"‚ÒÖ×WFR“°¢föçB×6—¦S¢7ƒ°¢Ğ§Ğ ¢7vÆÆWB×7VÖÖ'’°¢F—7Æ“¢w&–C°¢w&–B×FV×ÆFRÖ6öÇVÖç3¢&WVB†WFòÖf—BÂÖ–æÖ‚†Ö–âƒRÂ66‚’Âg"’“°¢v¢‡ƒ°¢Ö&v–âÖ&Æö6³¢ƒ°§Ğ¢7vÆÆWB×7VÖÖ'’âF—b°¢Ö–â×v–GFƒ¢°¢F—7Æ“¢w&–C°¢Æ–vâÖ6öçFVçC¢6VçFW#°¢§W7F–g’Ö—FV×3¢6VçFW#°¢v¢Gƒ°¢&÷&FW#¢‚6öÆ–Bf"‚ÒÖÆ–æR“°¢&6¶w&÷VæC¢f"‚ÒÖ&r“°¢FF–æs¢‚Wƒ°¢&÷&FW"×&F—W3¢'ƒ°¢FW‡BÖÆ–vã¢6VçFW#°§Ğ¢7vÆÆWB×7VÖÖ'’7G&öær²föçB×6—¦S¢ƒ²ÆWGFW"×76–æs¢ãVVÓ²FW‡B×G&ç6f÷&Ó¢WW&66S²Ğ¢7vÆÆWB×7VÖÖ'’"²föçB×f&–çBÖçVÖW&–3¢F'VÆ"ÖçV×3²föçB×6—¦S¢6Æ×ƒG‚Â2ã‡grÂ#'‚“²v†—FR×76S¢æ÷w&²Ğ¢çvÆÆWB×F÷FÂ²6öÆ÷#¢f"‚ÒÖ62“²Ğ¢7vÆÆWB×7VÖÖ'’æ÷WG6–FRÖÖ&v–â²&÷‚×6†F÷s¢–ç6WBÓ7‚7W'&VçD6öÆ÷#²Ğ¢çvÆÆWBÖ66÷VçB²F—7Æ“¢fÆWƒ²Æ–vâÖ—FV×3¢6VçFW#²fÆW‚×w&¢w&²v¢G‚ƒ²FF–æs¢‡‚²&÷&FW"Ö&÷GFöÓ¢‚6öÆ–Bf"‚ÒÖÆ–æR“²Ğ¢çvÆÆWBÖ66÷VçB7G&öær²fÆWƒ¢g&VÓ²÷fW&fÆ÷r×w&¢ç—v†W&S²Ğ¢çvÆÆWBÖ66÷VçB"²v†—FR×76S¢æ÷w&²föçB×f&–çBÖçVÖW&–3¢F'VÆ"ÖçV×3²Ğ¢çvÆÆWBÖ66÷VçBâF—b²F—7Æ“¢fÆWƒ²v¢Gƒ²Ö&v–âÖÆVgC¢WFó²Ğ¢7vÆÆWBÖ6&BçvÆÆWBÖ66÷VçB'WGFöâ²&÷&FW#¢²föçB×6—¦S¢7ƒ²FF–æs¢gƒ²Ğ¢7vÆÆWBÖVF—F÷"Â6÷Væ–ærÖVF—F÷"²Ö&v–â×F÷¢ƒ²Ğ¢7vÆÆWBÖVF—F÷"7VÖÖ'’Â6÷Væ–ærÖVF—F÷"7VÖÖ'’²7W'6÷#¢ö–çFW#²6öÆ÷#¢f"‚ÒÖ62“²föçB×vV–v‡C¢cS²FF–æs¢‡‚ƒ²&6¶w&÷VæC¢f"‚ÒÖ&r“²&÷&FW#¢‚6öÆ–Bf"‚ÒÖÆ–æR“²&÷&FW"×&F—W3¢ƒ²Ğ¢çvÆÆWBÖ66÷VçB¶FFÖVF—EÒ²6öÆ÷#¢f"‚ÒÖ62“²Ğ ¢7GFÂ²FW‡BÖÆ–vã¢6VçFW#²Ğ¦æb'WGFöâ²§W7F–g’Ö6öçFVçC¢6VçFW#²Ğ¤ÖVF–†Ö–â×v–GFƒ¢sƒ‚’°¢æb'WGFöâ²F—7Æ“¢fÆWƒ²Æ–vâÖ—FV×3¢6VçFW#²§W7F–g’Ö6öçFVçC¢6VçFW#²Ğ¢7BÖ–æ’æöââ7vÆÆWBÖ6&B²w&–BÖ6öÇVÖã¢òÓ²Ğ§Ğ¢çvÆÆWB×6†÷'B²6öÆ÷#¢6#C&C33²Ğ¢çvÆÆWBÖ÷fW"²6öÆ÷#¢33sC²Ğ£§&ö÷E¶FF×F†VÖSÒ&F&²%ÒçvÆÆWB×6†÷'B²6öÆ÷#¢6ff&#²Ğ£§&ö÷E¶FF×F†VÖSÒ&F&²%ÒçvÆÆWBÖ÷fW"²6öÆ÷#¢3v&S#²Ğ¤ÖVF–‡&VfW'2Ö6öÆ÷"×66†VÖS¢F&²’°¢§&ö÷C¦æ÷B…¶FF×F†VÖSÒ&Æ–v‡B%Ò’çvÆÆWB×6†÷'B²6öÆ÷#¢6ff&#²Ğ¢§&ö÷C¦æ÷B…¶FF×F†VÖSÒ&Æ–v‡B%Ò’çvÆÆWBÖ÷fW"²6öÆ÷#¢3v&S#²Ğ§Ğ¢æw&÷72×6†&R²F—7Æ“¢–æÆ–æRÖ&Æö6³²Ö–â×v–GFƒ¢V6ƒ²FW‡BÖÆ–vã¢&–v‡C²föçB×vV–v‡C¢c²6öÆ÷#¢f"‚ÒÖ×WFR“²Ğ ¢æ–æ6öÖRÖw&–B²v¢g‚—ƒ²Ö&v–âÖ&Æö6³¢‡ƒ²Ğ¢æ–æ6öÖRÖf–VÆB²F—7Æ“¢w&–C²w&–B×FV×ÆFR×&÷w3¢g"WFó²v¢'ƒ²Æ–vâÖ—FV×3¢VæC²Ö&v–ã¢²Ğ¢æ–æ6öÖRÖf–VÆB7â²÷fW&fÆ÷r×w&¢ç—v†W&S²Ğ¢æf–VÆB×—"²Æ–vâÖ—FV×3¢VæC²Ğ¢æf–VÆBÖ÷WGWB²F—7Æ“¢&Æö6³²FF–æs¢‚ƒ²&÷&FW#¢‚6öÆ–Bf"‚ÒÖÆ–æR“²&÷&FW"×&F—W3¢ƒ²föçB×vV–v‡C¢cS²föçB×f&–çBÖçVÖW&–3¢F'VÆ"ÖçV×3²Ğ¢æ6FVv÷'’×–6¶W"²F—7Æ“¢w&–C²w&–B×FV×ÆFRÖ6öÇVÖç3¢Ö–æÖ‚ƒÃg"’Cgƒ²v¢‡ƒ²Ğ¢æ6FVv÷'’×–6¶W"'WGFöâ²Ö&v–ã¢²FF–æs¢²Ğ¢æW‡Vç6R×fÇVW3¦†2‚6W‡Vç6RÖ¶Õ¶†–FFVåÒ’²w&–B×FV×ÆFRÖ6öÇVÖç3¢g#²Ğ¢æFFRÖ&÷‚²F—7Æ“¢w&–C²÷6—F–öã¢&VÆF—fS²Æ–vâÖ—FV×3¢6VçFW#²Ö–âÖ†V–v‡C¢C‡ƒ²FF–æs¢W‚‡ƒ²&6¶w&÷VæC¢f"‚ÒÖ&r“²&÷&FW#¢‚6öÆ–Bf"‚ÒÖÆ–æR“²&÷&FW"×&F—W3¢ƒ²Ğ¢æFFRÖ&÷‚–çWE·G—SÖFFUÒ²÷6—F–öã¢'6öÇWFS²–ç6WC¢²v–GFƒ¢S²†V–v‡C¢S²÷6—G“¢²7W'6÷#¢ö–çFW#²Ğ¢æFFRÖ&÷ƒ¦fö7W2×v—F†–â²÷WFÆ–æS¢7‚6öÆ–Bf"‚ÒÖ62“²Ğ¢æFFR×vVV¶F’²ö–çFW"ÖWfVçG3¢æöæS²föçB×6—¦S¢Gƒ²Æ–æRÖ†V–v‡C¢ã3²÷fW&fÆ÷r×w&¢æ÷&ÖÃ²6öÆ÷#¢f"‚ÒÖ–æ²“²föçB×f&–çBÖçVÖW&–3¢F'VÆ"ÖçV×3²Ğ ¦Æ&VÂ²Ö&v–ã¢w‚7ƒ²Ğ¢æ·b²FF–ærÖ&Æö6³¢Wƒ²Ğ¢æ6Æ÷6RÖ†VF–ær²F—7Æ“¢w&–C²w&–B×FV×ÆFRÖ6öÇVÖç3¢WFòÖ–æÖ‚ƒÃg"“²Æ–vâÖ—FV×3¢6VçFW#²v¢gƒ²Ğ¢æ6Æ÷6RÖ†VF–ærƒ"Âæ6Æ÷6RÖ†VF–ærÆ&VÂÂæ6Æ÷6R×F÷FÇ2Æ&VÂ²Ö&v–ã¢²Ğ¢æ6Æ÷6RÖ†VF–æræFFRÖ&÷‚²Ö–âÖ†V–v‡C¢C'ƒ²FW‡BÖÆ–vã¢6VçFW#²Ğ¢æ6Æ÷6R×F÷FÇ2²w&–B×FV×ÆFRÖ6öÇVÖç3¢Ö–æÖ‚ƒÃg"’Ö–æÖ‚ƒÃg"’Ö–æÖ‚ƒÃãcVg"“²v¢gƒ²Æ–vâÖ—FV×3¢VæC²Ğ¢æ6Æ÷6R×F÷FÇ2Æ&VÂ²föçB×6—¦S¢7ƒ²Ö&v–âÖ&÷GFöÓ¢7ƒ²Ğ¢æ6Æ÷6R×F÷FÇ2–çWBÂæ6Æ÷6R×F÷FÇ2÷WGWB²†V–v‡C¢CGƒ²FF–æs¢gƒ²Ğ¢æ6Æ÷6R×F÷FÇ2÷WGWB²F—7Æ“¢fÆWƒ²Æ–vâÖ—FV×3¢6VçFW#²v†—FR×76S¢æ÷w&²föçB×6—¦S¢6Æ×ƒ7‚Ã2ãWgrÃw‚“²Ğ¢æF–Ç’×&÷rF–ÖR²v†—FR×76S¢æ÷&ÖÃ²Ğ¤ÖVF–†Ö‚×v–GFƒ¢Cƒ‚’°¢æF–Ç’Ö6†'B²F—7Æ“¢&Æö6³²Ğ¢æF–Ç’×&÷r²w&–B×FV×ÆFRÖ6öÇVÖç3¢g"WFó²v¢'‚gƒ²FF–ærÖ&Æö6³¢7ƒ²Ğ¢æF–Ç’×G&6²²w&–BÖ6öÇVÖã¢òÓ²w&–B×&÷s¢#²†V–v‡C¢wƒ²Ğ§Ğ ¢7BÖ–æ’æ†W&ò²Ö–âÖ†V–v‡C¢²FF–æs¢'‚gƒ²Ğ¢7BÖ–æ’æ†W&òæ&–r²föçB×6—¦S¢6Æ×ƒ#G‚Âv7rÂ3‡‚“²Ö&v–ã¢7‚²Ğ¢7BÖ–æ’æ†öÖR×7VÖÖ'’°¢F—7Æ“¢w&–C°¢w&–B×FV×ÆFRÖ6öÇVÖç3¢&WVBƒ2ÂÖ–æÖ‚ƒÂg"’“°¢w&–BÖWFò×&÷w3¢g#°¢v¢‡ƒ°¢Ö&v–âÖ&Æö6³¢ƒ°§Ğ¢æ†öÖR×7VÖÖ'’æ†W&ò²w&–BÖ6öÇVÖã¢òÓ²Ö&v–ã¢²Ğ¢æ†öÖR×7VÖÖ'’6–Ö–æ’²F—7Æ“¢6öçFVçG3²Ğ¢æ†öÖR×7VÖÖ'’çF–ÆR²Ö&v–ã¢²FF–æs¢'‚Wƒ²Ğ¢æ†öÖR×7VÖÖ'’çF–ÆRç7V"²föçB×6—¦S¢6Æ×ƒ‚Â"ã—grÂ'‚“²Ğ ¢æ6&B§v†W&R†FWF–Ç2Âf÷&ÒÂ–çWBÂ6VÆV7BÂFW‡F&VÂ'WGFöâ’°¢Ö–âÖ–æÆ–æR×6—¦S¢°¢Ö‚Ö–æÆ–æR×6—¦S¢S°§Ğ¢7vÆÆWBÖf÷&ÒÂ6÷Væ–ærÖf÷&Ò°¢F—7Æ“¢w&–C°¢w&–B×FV×ÆFRÖ6öÇVÖç3¢Ö–æÖ‚ƒÂg"“°¢–æÆ–æR×6—¦S¢S°¢Ö&v–ã¢°§Ğ¢7vÆÆWBÖf÷&Òâ¢²Ö–âÖ–æÆ–æR×6—¦S¢²Ğ¢7vÆÆWBÖf÷&Ò'WGFöâÂæ6&BÆ&VÂ²÷fW&fÆ÷r×w&¢ç—v†W&S²Ğ ¢7&W6WBÖFF¶6öÆ÷#§f"‚ÒÖæVr—Ğ¥¶FF×÷'F&ÆUÒæ‡FÖÂÖW‡÷'G2¶F—7Æ“¦æöæWĞ£Â÷7G–ÆSãÂö†VCà£Æ&öG“à£Æ†VFW"6Æ73Ò&Ö7B#ãÇ7fr6Æ73Ò&Ö&²"f–Wt&÷ƒÒ#S"S""&–Ö†–FFVãÒ'G'VR"†ÖÆç3Ò&‡GG¢ò÷wwrçs2æ÷&ró#÷7fr#ãÇ&V7Bv–GFƒÒ#S""†V–v‡CÒ#S""f–ÆÃÒ"3#cFb"óãÆ6—&6ÆR7ƒÒ##Sb"7“Ò##Sb"#Ò#s‚"f–ÆÃÒ"3F#“b"7G&ö¶SÒ"3“FCffb"7G&ö¶R×v–GFƒÒ#b"óãÆr7G&ö¶SÒ"6ffb"7G&ö¶RÖÆ–æV6Ò'&÷VæB"7G&ö¶RÖÆ–æV¦ö–ãÒ'&÷VæB#ãÆ6—&6ÆR7ƒÒ#c"7“Ò#3#’"#Ò#3r"f–ÆÃÒ&æöæR"7G&ö¶R×v–GFƒÒ#r"óãÆ6—&6ÆR7ƒÒ#3SB"7“Ò#3#’"#Ò#3r"f–ÆÃÒ&æöæR"7G&ö¶R×v–GFƒÒ#r"óãÇF‚CÒ&Óc3#’S’ÓSrscRSdÓ#’#s&Ã3ÓSVƒC†Ã3SVÒÓs’ÓSR#‚Ó#ƒCvÃ#’#†ÒÓ#BÓ†ƒ#&ÒÓCRÓ#’Ó3b"f–ÆÃÒ&æöæR"7G&ö¶R×v–GFƒÒ#r"óãÇF‚CÒ&Ó#’##"‚Ó#bÓrrÓvƒ3Ãb"Ób#‚ÓS—¢"f–ÆÃÒ"6ffb"7G&ö¶R×v–GFƒÒ#r"óãÇF‚CÒ&Ó#3B#c‚S2’3’Ó#"#6‚ÓC–ÂÓ#BÓ3¢"f–ÆÃÒ"6ffb"7G&ö¶R×v–GFƒÒ#r"óãÇF‚CÒ&Ó#323rÓS2‚Ó‚FÓ“"ÓS’32C‚3‚"f–ÆÃÒ&æöæR"7G&ö¶R×v–GFƒÒ#2"óãÇF‚CÒ&Ó“‚#C‚‚Ó3FÓ3’CR#bR"f–ÆÃÒ&æöæR"7G&ö¶R×v–GFƒÒ#2"óãÂösãÇF‚CÒ$Ó3’3ƒFƒ#3B"7G&ö¶SÒ"3“FCffb"7G&ö¶R×v–GFƒÒ#""7G&ö¶RÖÆ–æV6Ò'&÷VæB"óãÂ÷7fsãÆF—b6Æ73Ò&Ö7B×F—FÆR#ãÇ7â6Æ73Ò&'&æB#ä5TTåD3Â÷7ããÇ6Æ73Ò&×WFR"–CÒ&77B"&öÆSÒ'7FGW2#ãÂ÷ãÂöF—cãÇ6ÖÆÂ–CÒ'FöF’#ãÂ÷6ÖÆÃãÆFWF–Ç26Æ73Ò'&öf–ÆRÖÖVçR"–CÒ'&öf–ÆRÖÖVçR#ãÇ7VÖÖ'’–CÒ'&öf–ÆR×G&–vvW""&–ÖÆ&VÃÒ$'&—"W&f–Â"F—FÆSÒ$Ö’W&f–Â#ãÇ7fr6Æ73Ò'&öf–ÆRÖ–6öâ"f–Wt&÷ƒÒ##B#B"&–Ö†–FFVãÒ'G'VR"fö7W6&ÆSÒ&fÇ6R#ãÆ6—&6ÆR7ƒÒ#""7“Ò#‚"#Ò#2ãR#ãÂö6—&6ÆSãÇF‚CÒ$ÓBã‚#2ãbÓ2ãb2ã2ÓRãRrã"ÓRãW3bãbã’rã"RãR#ãÂ÷FƒãÂ÷7fsãÆ–Ör–CÒ'&öf–ÆRÖfF"Ö&FvR"6Æ73Ò'&öf–ÆRÖfF""ÇCÒ""†–FFVããÂ÷7VÖÖ'“ãÆF—b6Æ73Ò'&öf–ÆR×÷÷fW"#ãÇ–CÒ&6Æ÷VBÖ6öæf–r×v&æ–ær"6Æ73Ò&×WFR"†–FFVããÂ÷ãÆF—b–CÒ&6Æ÷VB×6–væVBÖ÷WB#ãÆƒ"6Æ73Ò'&öf–ÆRÖ†VF–ær#äÖ’7VVçFÂöƒ#ãÇ6Æ73Ò'&öf–ÆRÖæ÷FR#ä–æ–6–6W6œ;6â&6–æ7&öæ—¦"GW2&Vv—7G&÷2VçG&RF—7÷6—F—f÷2ãÂ÷ãÆÆ&VÂf÷#Ò&6Æ÷VBÖVÖ–Â#ä6÷'&VòVÆV7G,;6æ–6óÂöÆ&VÃãÆ–çWB–CÒ&6Æ÷VBÖVÖ–Â"G—SÒ&VÖ–Â"WFö6ö×ÆWFSÒ&VÖ–Â"–çWFÖöFSÒ&VÖ–Â"Æ6V†öÆFW#Ò'GT6÷'&Vòæ6öÒ#ãÆÆ&VÂf÷#Ò&6Æ÷VB×77v÷&B#ä6öçG&6\;ÂöÆ&VÃãÆ–çWB–CÒ&6Æ÷VB×77v÷&B"G—SÒ'77v÷&B"WFö6ö×ÆWFSÒ&7W'&VçB×77v÷&B"Ö–æÆVæwFƒÒ#‚"Æ6V†öÆFW#Ò$Ü:Öæ–Öò‚6&7FW&W2#ãÆF—b6Æ73Ò'&öf–ÆRÖ7F–öç2#ãÆ'WGFöâ–CÒ&6Æ÷VBÖÆöv–â"G—SÒ&'WGFöâ#ä–æ–6–"6W6œ;6ãÂö'WGFöããÆ'WGFöâ–CÒ&6Æ÷VB×6–vçW"G—SÒ&'WGFöâ"6Æ73Ò'6V2#ä7&V"7VVçFÂö'WGFöããÂöF—cãÆ'WGFöâ–CÒ&6Æ÷VBÖf÷&v÷B"G—SÒ&'WGFöâ"6Æ73Ò'6V2#ì+ôöÇf–F7FRGR6öçG&6\;óÂö'WGFöããÂöF—cãÆF—b–CÒ&6Æ÷VB×6–væVBÖ–â"†–FFVããÆF—b6Æ73Ò'&öf–ÆRÖ–FVçF—G’#ãÆF—b6Æ73Ò'&öf–ÆRÖfF"Ög&ÖR#ãÆ–Ör–CÒ'&öf–ÆRÖfF"×&Wf–Wr"6Æ73Ò&fF"×&Wf–Wr"ÇCÒ$f÷FòFRW&f–Â"†–FFVããÇ7fr–CÒ'&öf–ÆRÖfF"ÖfÆÆ&6²"6Æ73Ò'&öf–ÆRÖ–6öâ&öf–ÆR×Æ6V†öÆFW""f–Wt&÷ƒÒ##B#B"&–Ö†–FFVãÒ'G'VR#ãÆ6—&6ÆR7ƒÒ#""7“Ò#‚"#Ò#2ãR#ãÂö6—&6ÆSãÇF‚CÒ$ÓBã‚#2ãbÓ2ãb2ã2ÓRãRrã"ÓRãW3bãbã’rã"RãR#ãÂ÷FƒãÂ÷7fsãÂöF—cãÆF—b6Æ73Ò'&öf–ÆRÖ–FVçF—G’Ö6÷’#ãÆƒ"–CÒ'&öf–ÆRÖæÖRÖÆ&VÂ#äÖ’W&f–ÃÂöƒ#ãÇ–CÒ&6Æ÷VB×W6W""6Æ73Ò'&öf–ÆRÖVÖ–Â#ãÂ÷ãÂöF—cãÂöF—cãÆÆ&VÂf÷#Ò'&öf–ÆRÖF—7Æ’ÖæÖR#äæöÖ'&Rf—6–&ÆSÂöÆ&VÃãÆ–çWB–CÒ'&öf–ÆRÖF—7Æ’ÖæÖR"G—SÒ'FW‡B"Ö†ÆVæwFƒÒ#c"WFö6ö×ÆWFSÒ&æ–6¶æÖR"Æ6V†öÆFW#Ò%GRæöÖ'&R#ãÆ'WGFöâ–CÒ'&öf–ÆR×6fRÖæÖR"G—SÒ&'WGFöâ#äwV&F"æöÖ'&SÂö'WGFöããÆÆ&VÂf÷#Ò'&öf–ÆRÖfF"Ö–çWB#äf÷FòFRW&f–ÃÂöÆ&VÃãÆ–çWB–CÒ'&öf–ÆRÖfF"Ö–çWB"G—SÒ&f–ÆR"66WCÒ&–ÖvRò¢#ãÆ'WGFöâ–CÒ'&öf–ÆR×&VÖ÷fRÖfF""G—SÒ&'WGFöâ"6Æ73Ò'6V2#åV—F"f÷FóÂö'WGFöããÆFWF–Ç26Æ73Ò'&öf–ÆR×6V7F–öâ#ãÇ7VÖÖ'“ä6Ö&–"6öçG&6\;Â÷7VÖÖ'“ãÆf÷&Ò–CÒ'&öf–ÆR×77v÷&BÖf÷&Ò#ãÆÆ&VÂf÷#Ò'&öf–ÆRÖæWr×77v÷&B#äçVWf6öçG&6\;ÂöÆ&VÃãÆ–çWB–CÒ'&öf–ÆRÖæWr×77v÷&B"G—SÒ'77v÷&B"WFö6ö×ÆWFSÒ&æWr×77v÷&B"Ö–æÆVæwFƒÒ#‚"&WV—&VBÆ6V†öÆFW#Ò$Ü:Öæ–Öò‚6&7FW&W2#ãÆÆ&VÂf÷#Ò'&öf–ÆRÖ6öæf—&Ò×77v÷&B#ä6öæf—&ÖÆ6öçG&6\;ÂöÆ&VÃãÆ–çWB–CÒ'&öf–ÆRÖ6öæf—&Ò×77v÷&B"G—SÒ'77v÷&B"WFö6ö×ÆWFSÒ&æWr×77v÷&B"Ö–æÆVæwFƒÒ#‚"&WV—&VCãÆ'WGFöâG—SÒ'7V&Ö—B#ä7GVÆ—¦"6öçG&6\;Âö'WGFöããÂöf÷&ÓãÂöFWF–Ç3ãÆ'WGFöâ–CÒ&6Æ÷VBÖÆöv÷WB"G—SÒ&'WGFöâ"6Æ73Ò'6V2#ä6W'&"6W6œ;6ãÂö'WGFöããÂöF—cãÇ–CÒ&6Æ÷VBÖWF‚Ö×6r"6Æ73Ò'&öf–ÆRÖÖW76vR"&öÆSÒ'7FGW2"&–ÖÆ—fSÒ'öÆ—FR#ãÂ÷ãÆ'WGFöâ–CÒ&6Æ÷VB×&V6÷fW'’Ö÷Vâ"G—SÒ&'WGFöâ"6Æ73Ò'6V2"†–FFVãä6öçF–çV"6Ö&–òFR6öçG&6\;Âö'WGFöããÂöF—cãÂöFWF–Ç3ãÂö†VFW#ãÆƒ–CÒ'GFÂ#ä”ä”4”óÂöƒà  £Ç6V7F–öâ–CÒ'BÖ–æ’"6Æ73Ò'6V2×F"öâ#ãÆF—b6Æ73Ò&6†—2"–CÒ&–6†—2#ãÆ'WGFöâFF×Ò&†÷’#ä†÷“Âö'WGFöããÆ'WGFöâFF×Ò'6VÖæ"6Æ73Ò'6V2#å6VÖæÂö'WGFöããÆ'WGFöâFF×Ò&6Â"6Æ73Ò'6V2#äW7FRÖW3Âö'WGFöããÆ'WGFöâFF×Ò&7W2"6Æ73Ò'6V2#å&ævóÂö'WGFöããÂöF—cãÆF—b6Æ73Ò'&÷rFFR×&ævR"–CÒ&–7W2"†–FFVããÆF—cãÆÆ&VÂf÷#Ò&–3#äFW6FSÂöÆ&VÃãÆ–çWBG—SÒ&FFR"–CÒ&–3#ãÂöF—cãÆF—cãÆÆ&VÂf÷#Ò&–3"#ä†7FÂöÆ&VÃãÆ–çWBG—SÒ&FFR"–CÒ&–3"#ãÂöF—cãÂöF—cãÆF—b6Æ73Ò&†öÖR×7VÖÖ'’#ãÆF—b6Æ73Ò&6&B†W&ò#ãÇ7fr6Æ73Ò&Ö"f–Wt&÷ƒÒ#3C#"&W6W'fT7V7E&F–óÒ'„Ö–E”Ö–B6Æ–6R"&–Ö†–FFVãÒ'G'VR#ãÆFVg3ãÇGFW&â–CÒ&&Æö6·2"v–GFƒÒ#Cb"†V–v‡CÒ#32"GFW&åG&ç6f÷&ÓÒ'&÷FFR‚Ó#B’"GFW&åVæ—G3Ò'W6W%76TöåW6R#ãÇ&V7BƒÒ#2"“Ò#2"v–GFƒÒ#3’"†V–v‡CÒ##b"'ƒÒ#2"f–ÆÃÒ"3#C#vB"7G&ö¶SÒ"3Cc†"óãÂ÷GFW&ããÂöFVg3ãÇ&V7Bv–GFƒÒ#3C"†V–v‡CÒ##"f–ÆÃÒ'W&Â‚6&Æö6·2’"óãÇF‚CÒ$ÒÓ#ƒ‚c"Sƒ"RC"s‚cR###B“B#S"C23C‚Ó"f–ÆÃÒ&æöæR"7G&ö¶SÒ"3“FCffb"7G&ö¶R×v–GFƒÒ#B"7G&ö¶RÖÆ–æV¦ö–ãÒ'&÷VæB"óãÆ6—&6ÆR7ƒÒ#cR"7“Ò##"#Ò#r"f–ÆÃÒ"6CfVffb"7G&ö¶SÒ"3S3Scr"7G&ö¶R×v–GFƒÒ#2"óãÂ÷7fsãÆF—b6Æ73Ò&×WFR#äF—7öæ–&ÆRFVÂÖW3ÂöF—cãÆF—b6Æ73Ò&&–r"–CÒ&–â#âCÂöF—cãÂöF—cãÆF—b–CÒ&–Ö–æ’#ãÂöF—cãÂöF—cãÆF—b6Æ73Ò&7F–öç2#ãÆ'WGFöâöæ6Æ–6³Ò'6†÷uF"‚w&Vrr’#ï	ù+R&Vv—7G&"¦÷&æFÂö'WGFöããÆ'WGFöâ6Æ73Ò'6V2"öæ6Æ–6³Ò'6†÷uF"‚vv2r’#ï	ú{âw&Vv"v7FóÂö'WGFöããÂöF—cãÆF—b6Æ73Ò&6&B"–CÒ'vÆÆWBÖ6&B#ãÆƒ#ï	ù+R7VG&RFR6ÆF÷3Âöƒ#à £ÆF—b–CÒ'vÆÆWB×7VÖÖ'’"&–ÖÆ—fSÒ'öÆ—FR#ãÂöF—cãÆF—b–CÒ'vÆÆWBÖÆ—7B#ãÂöF—cà£ÆFWF–Ç2–CÒ&÷Væ–ærÖVF—F÷"#ãÇ7VÖÖ'“å6ÆFò–æ–6–ÂFVÂÖW3Â÷7VÖÖ'“à£Æf÷&Ò–CÒ&÷Væ–ærÖf÷&Ò#ãÆÆ&VÂf÷#Ò&÷Væ–ærÖÖöçF‚#äÖW2FRW'GW&ÂöÆ&VÃãÆ–çWBG—SÒ&ÖöçF‚"–CÒ&÷Væ–ærÖÖöçF‚"&WV—&VCà£ÆÆ&VÂf÷#Ò&÷Væ–ærÖÖ÷VçB#å6ÆFòÂ6öÖVç¦"VÂÖW3ÂöÆ&VÃãÆ–çWB–CÒ&÷Væ–ærÖÖ÷VçB"FF×W6÷2–çWFÖöFSÒ'FW‡B"&WV—&VBÆ6V†öÆFW#Ò"C#à£Ç6ÖÆÂ6Æ73Ò&×WFR"–CÒ&÷Væ–ærÖ÷&–v–â#ãÂ÷6ÖÆÃãÆ'WGFöãä6öæf—&Ö"6ÆFò–æ–6–ÃÂö'WGFöããÆ'WGFöâG—SÒ&'WGFöâ"6Æ73Ò'6V2"–CÒ&÷Væ–ærÖWFò"†–FFVãåW6"6–W'&RçFW&–÷#Âö'WGFöããÂöf÷&ÓãÂöFWF–Ç3à£ÆFWF–Ç2–CÒ'vÆÆWBÖVF—F÷"#ãÇ7VÖÖ'“å&Vv—7G&"6ÆFóÂ÷7VÖÖ'“ãÆf÷&Ò–CÒ'vÆÆWBÖf÷&Ò#à£ÆÆ&VÂf÷#Ò'vÆÆWB×6÷W&6R#äL;6æFRF–VæW2VÂF–æW&óÂöÆ&VÃãÇ6VÆV7B–CÒ'vÆÆWB×6÷W&6R#ãÂ÷6VÆV7Cà£ÆF—b–CÒ'vÆÆWBÖ7W7FöÒ"†–FFVããÆÆ&VÂf÷#Ò'vÆÆWBÖæÖR#äæöÖ'&RFRÆ7VVçFÂöÆ&VÃãÆ–çWB–CÒ'vÆÆWBÖæÖR"Ö†ÆVæwFƒÒ#c"Æ6V†öÆFW#Ò$æöÖ'&RFVÂ&æ6òÂ&–ÆÆWFW&ò#ãÂöF—cà£ÆÆ&VÂf÷#Ò'vÆÆWBÖÖ÷VçB#å6ÆFò7GVÂVâW6÷3ÂöÆ&VÃãÆ–çWBFF×W6÷2–CÒ'vÆÆWBÖÖ÷VçB"–çWFÖöFSÒ&çVÖW&–2"&WV—&VBÆ6V†öÆFW#Ò"C"ãã#à£Æ'WGFöãäwV&F"6ÆFóÂö'WGFöããÂöf÷&ÓãÂöFWF–Ç3ãÂöF—cãÆF—b–CÒ&–ÖWF"†–FFVããÂöF—cãÆF—b6Æ73Ò&6&B#ãÆƒ#ãÇ7â&–Ö†–FFVãÒ'G'VR#ï	ù8ƒÂ÷7ãâW7FRÖW26öçG&VÂçFW&–÷#Âöƒ#ãÆF—b–CÒ&–6×#ãÂöF—cãÂöF—cãÆF—b–CÒ&–"†–FFVããÂöF—cãÆF—b6Æ73Ò&6&B#ãÆƒ#ãÇ7â&–Ö†–FFVãÒ'G'VR#ï	ùICÂ÷7ãâ,;7†–Ö2ö&Æ–v6–öæW3Âöƒ#ãÆF—b–CÒ&–ÆW'B#ãÂöF—cãÂöF—cãÆF—b–CÒ&–66‚"†–FFVããÂöF—cãÂ÷6V7F–öããÇ6V7F–öâ–CÒ'BÖÖ÷B"6Æ73Ò'6V2×F"#ãÆF—b6Æ73Ò&6&B#ãÆƒ#äf–6†FRÆÖ÷FóÂöƒ#ãÆÆ&VÂf÷#Ò'fV†–6ÆR×6VÆV7B#åfVŒ:Ö7VÆò7F—fóÂöÆ&VÃãÆF—b6Æ73Ò'&÷r#ãÇ6VÆV7B–CÒ'fV†–6ÆR×6VÆV7B"&–ÖÆ&VÃÒ%fVŒ:Ö7VÆò7F—fò#ãÂ÷6VÆV7CãÆ'WGFöâG—SÒ&'WGFöâ"–CÒ&FB×fV†–6ÆR"6Æ73Ò'6V2#îûÈ²w&Vv"Ö÷FóÂö'WGFöããÂöF—cãÇ6ÖÆÂ6Æ73Ò&×WFR#ä6FÖ÷FòwV&F7Rf–6†ÂFö7VÖVçF÷2Âö&Æ–v6–öæW2R†—7F÷&–ÂFRÖçFVæ–Ö–VçFòâ–æw&W6÷2’v7F÷26R6ö×'FVâVâÆ÷2–æf÷&ÖW2ãÂ÷6ÖÆÃãÆF—b6Æ73Ò'&÷r#ãÆF—cãÆÆ&VÂf÷#Ò&×#åÆ6ÂöÆ&VÃãÆ–çWB–CÒ&×"WFö6ö×ÆWFSÒ&öfb#ãÂöF—cãÆF—cãÆÆ&VÂf÷#Ò&Ö#ä;òÖöFVÆóÂöÆ&VÃãÆ–çWB–CÒ&Ö"–çWFÖöFSÒ&çVÖW&–2#ãÂöF—cãÂöF—cãÆF—b6Æ73Ò'&÷r#ãÆF—cãÆÆ&VÂf÷#Ò&Ö'&æB#äÖ&6ÂöÆ&VÃãÆ–çWB–CÒ&Ö'&æB"Æ6V†öÆFW#Ò$V¢â7W§V¶’#ãÂöF—cãÆF—cãÆÆ&VÂf÷#Ò&ÖÆ–æR#äÌ:ÖæVÂöÆ&VÃãÆ–çWB–CÒ&ÖÆ–æR"Æ6V†öÆFW#Ò$V¢âv—‡†W"S#ãÂöF—cãÂöF—cãÆF—b6Æ73Ò'&÷r#ãÆF—cãÆÆ&VÂf÷#Ò&Ö62#ä6–Æ–æG&¦R†62“ÂöÆ&VÃãÆ–çWB–CÒ&Ö62"G—SÒ&çVÖ&W""Ö–ãÒ#"–çWFÖöFSÒ&çVÖW&–2"Æ6V†öÆFW#Ò$V¢âSR#ãÂöF—cãÆF—cãÆÆ&VÂf÷#Ò&×&Vr#äfV6†FRÖG,:Ö7VÆÂöÆ&VÃãÆ–çWB–CÒ&×&Vr"G—SÒ&FFR#ãÂöF—cãÂöF—cãÆF—b6Æ73Ò'&÷r#ãÆF—cãÆÆ&VÂf÷#Ò&ÖFWB#äFW'FÖVçFòFRÖG,:Ö7VÆÂöÆ&VÃãÇ6VÆV7B–CÒ&ÖFWB#ãÆ÷F–öâfÇVSÒ"#å6VÆV66–öæÂö÷F–öããÆ÷F–öãä&öv÷L:Bä2ãÂö÷F–öããÆ÷F–öãä7VæF–æÖ&6Âö÷F–öããÆ÷F–öãä÷G&òFW'FÖVçFóÂö÷F–öããÂ÷6VÆV7CãÂöF—cãÆF—cãÆÆ&VÂf÷#Ò&Ö²#ä¶Ò7GVÃÂöÆ&VÃãÆ–çWB–CÒ&Ö²"–çWFÖöFSÒ&çVÖW&–2#ãÂöF—cãÂöF—cãÆÆ&VÂf÷#Ò&Ö2#ä6öÆ÷#ÂöÆ&VÃãÆ–çWB–CÒ&Ö2#ãÆÆ&VÂf÷#Ò&×fÂ#äfÌ;¦òöf–6–Â##b…4”$t“ÂöÆ&VÃãÆ–çWB–CÒ&×fÂ"FF×W6÷2–çWFÖöFSÒ&çVÖW&–2"Æ6V†öÆFW#Ò%6öÆò6’v–×VW7FòfV†–7VÆ"#ãÆÆ&VÂf÷#Ò&×&FR#åF&–fFR–×VW7Fò‚R’6V|;¦â†6–VæFÂöÆ&VÃãÆ–çWB–CÒ&×&FR"–çWFÖöFSÒ&FV6–ÖÂ"fÇVSÒ#ÃR#ãÇ6ÖÆÂ6Æ73Ò&×WFR#å&VfW&Væ6–æ6–öæÂÃRS²VâÆwVæ2§W&—6F–66–öæW26R7VÖÃ"VçF÷2â6öæf—&ÖÆF&–fVR&V6RVâÆf7GW&ãÂ÷6ÖÆÃãÆ'WGFöâ–CÒ&Ög2#äwV&F"f–6†’6Æ7VÆ"ö&Æ–v6–öæW3Âö'WGFöããÆF—b6Æ73Ò'fV†–6ÆRÖÆ–æ·2"7G–ÆSÒ&Ö&v–â×F÷£‚#ãÆ6Æ73Ò&'WGFöâÖÆ–æ²"F&vWCÒ%ö&Ææ²"&VÃÒ&æö÷VæW""‡&VcÒ&‡GG3¢ò÷wwrç'VçBæv÷bæ6òö7F÷&W2ö6—VFFæòö6öç7VÇFÖFR×fV†–7VÆ÷2×÷"×Æ6#ä6öç7VÇF"Æ6Vâ%TåCÂöãÆ6Æ73Ò&'WGFöâÖÆ–æ²"F&vWCÒ%ö&Ææ²"&VÃÒ&æö÷VæW""‡&VcÒ&‡GG3¢ò÷vV"æÖ–çG&ç7÷'FRæv÷bæ6ò÷6–&vò#ä6öç7VÇF"fÌ;¦ò4”$tÂöãÆ6Æ73Ò&'WGFöâÖÆ–æ²"F&vWCÒ%ö&Ææ²"&VÃÒ&æö÷VæW""‡&VcÒ&‡GG3¢ò÷wwrç7WW&f–ææ6–W&æv÷bæ6ò÷V&Æ–66–öæW2óS“S2÷7WW&f–ææ6–W&ÖF—gVÆvÖÆ2×F&–f2ÖÖ†–Ö2ÖFVÂ×6öB×&Ó##bò#åF&–f24ôB##cÂöãÆ6Æ73Ò&'WGFöâÖÆ–æ²"F&vWCÒ%ö&Ææ²"&VÃÒ&æö÷VæW""‡&VcÒ&‡GG3¢ò÷wwræ7VæF–æÖ&6æv÷bæ6òöFWVæFVæ6–2÷6V6†6–VæFö–×VW7F÷2÷fV†–7VÆ÷2#ä†6–VæF7VæF–æÖ&6ÂöãÆ6Æ73Ò&'WGFöâÖÆ–æ²"F&vWCÒ%ö&Ææ²"&VÃÒ&æö÷VæW""‡&VcÒ&‡GG3¢ò÷wwræ†6–VæF&öv÷Fæv÷bæ6òöW2ö–×VW7F÷2ö–×VW7Fò×6ö'&R×fV†–7VÆ÷2ÖWFöÖ÷F÷&W2#ä†6–VæF&öv÷L:ÂöãÂöF—cãÇ–CÒ'fV†–6ÆRÖFFÖæ÷FR"6Æ73Ò&×WFR#ãÂ÷ãÂöF—cãÆF—b–CÒ&ÖFö72"†–FFVããÂöF—cãÆ'WGFöâ–CÒ&ÖG2"†–FFVãäwV&F"fV6†3Âö'WGFöããÆF—b6Æ73Ò&6&B#ãÆƒ#äö&Æ–v6–öæW2fV†–7VÆ&W3Âöƒ#ãÆF—b–CÒ&ö&Â#ãÂöF—cãÆF—b–CÒ&ö'B#ãÂöF—cãÆF—b–CÒ&ö"Ö†VÇ"6Æ73Ò&6&Bæ÷F#ãÂöF—cãÆ'WGFöâG—SÒ&'WGFöâ"6Æ73Ò'6V2"–CÒ&VF—BÖö""&–Ö6öçG&öÇ3Ò&ö"ÖVF—F÷""&–ÖW‡æFVCÒ&fÇ6R#î)ÈşûˆòVF—F"ö&Æ–v6–öæW3Âö'WGFöããÆF—b–CÒ&ö"ÖVF—F÷""†–FFVããÆÆ&VÂf÷#Ò&ö&â#äö&Æ–v6œ;6ãÂöÆ&VÃãÇ6VÆV7B–CÒ&ö&â#ãÂ÷6VÆV7CãÆÆ&VÂf÷#Ò&ö'b#äfV6†FRfVæ6–Ö–VçFò†6öæf—&ÖVâ%TåBòVâGR;6Æ—¦“ÂöÆ&VÃãÆ–çWB–CÒ&ö'b"G—SÒ&FFR#ãÆÆ&VÂf÷#Ò&ö&"#åfÆ÷"FR&VfW&Væ6–ò6÷F—¦Fò„4õ“ÂöÆ&VÃãÆ–çWBFF×W6÷2–CÒ&ö&""–çWFÖöFSÒ&çVÖW&–2#ãÇ6ÖÆÂ6Æ73Ò&×WFR#å4ôB6RW7F–Ö6V|;¦âVÂ6–Æ–æG&¦RâVVFW2&VV×Æ¦"VÂfÆ÷"÷"VÂFRGR&V6–&òâÆFV6æöÖV<:æ–6f,:Ö6V|;¦âVÂ4D²–æw&W6ÆÌ:ÒVÂ&V6–ò6÷F—¦FòãÂ÷6ÖÆÃãÆ'WGFöâ–CÒ&ö'2#äwV&F"6Ö&–÷3Âö'WGFöããÆÆ&VÂf÷#Ò&ö"×&VÖ–æB#äÖ÷7G&"f—6òVâ–æ–6–óÂöÆ&VÃãÇ6VÆV7B–CÒ&ö"×&VÖ–æB#ãÆ÷F–öâfÇVSÒ#3#ã3L:Ö2çFW3Âö÷F–öããÆ÷F–öâfÇVSÒ#R#ãRL:Ö2çFW3Âö÷F–öããÆ÷F–öâfÇVSÒ#r#ãrL:Ö2çFW3Âö÷F–öããÆ÷F–öâfÇVSÒ##ãL:ÖçFW3Âö÷F–öããÂ÷6VÆV7CãÂöF—cãÂöF—cãÆF—b6Æ73Ò&6&B#ãÆƒ#ä†—7F÷&–ÂFR&Væ÷f6–öæW3Âöƒ#ãÆF—b–CÒ&ö"Ö†—7F÷'’#ãÂöF—cãÂöF—cãÆF—b6Æ73Ò&6&B#ãÆƒ#äçVWfòÖçFVæ–Ö–VçFóÂöƒ#ãÆÆ&VÂf÷#Ò&Ö6×#ä6ö×öæVçFSÂöÆ&VÃãÇ6VÆV7B–CÒ&Ö6×#ãÂ÷6VÆV7CãÆÆ&VÂf÷#Ò&Öb#äfV6†ÂöÆ&VÃãÆ–çWB–CÒ&Öb"G—SÒ&FFR#ãÆF—b6Æ73Ò'&÷r#ãÆF—cãÆÆ&VÂf÷#Ò&Ö¶Ò#ä¶ÓÂöÆ&VÃãÆ–çWB–CÒ&Ö¶Ò"–çWFÖöFSÒ&çVÖW&–2#ãÂöF—cãÆF—cãÆÆ&VÂf÷#Ò&×b#åfÆ÷"F÷FÂ„4õ“ÂöÆ&VÃãÆ–çWBFF×W6÷2–CÒ&×b"–çWFÖöFSÒ&çVÖW&–2#ãÂöF—cãÂöF—cãÆÆ&VÂf÷#Ò&Ö–çB#ä6F7\:çF÷2¶ÒFö6FRçVWfóÂöÆ&VÃãÆ–çWB–CÒ&Ö–çB"–çWFÖöFSÒ&çVÖW&–2"Æ6V†öÆFW#Ò%6V|;¦â7RÖçVÂò7RÖV<:æ–6ò#ãÆÆ&VÂf÷#Ò&ÖÖW2#ä6F7\:çF÷2ÖW6W2†÷6–öæÂ“ÂöÆ&VÃãÆ–çWB–CÒ&ÖÖW2"–çWFÖöFSÒ&çVÖW&–2#ãÆÆ&VÂ7G–ÆSÒ&F—7Æ“¦fÆWƒ¶Æ–vâÖ—FV×3¦6VçFW#¶Ö&v–â×F÷£'‚#ãÆ–çWBG—SÒ&6†V6¶&÷‚"–CÒ&×r"6†V6¶VB7G–ÆSÒ'v–GFƒ¦WFó¶Ö&v–â×&–v‡C£‚#å–Æòw\:“¢&Vv—7G&&Æò6öÖòv7FóÂöÆ&VÃãÆÆ&VÂf÷#Ò&Öâ#äæ÷F‡&WVW7FòÂÖæòFRö'&“ÂöÆ&VÃãÆ–çWB–CÒ&Öâ#ãÆ'WGFöâ–CÒ&FDÒ#äwV&F"ÖçFVæ–Ö–VçFóÂö'WGFöããÂöF—cãÆF—b6Æ73Ò&6&B#ãÆƒ#ï	úz’&WVW7F÷2’&V6–÷3Âöƒ#ãÆF—b–CÒ''G2ÖÆ—7B"6Æ73Ò''G2ÖÆ—7B#ãÂöF—cãÆFWF–Ç26Æ73Ò''BÖVF—F÷"#ãÇ7VÖÖ'“äw&Vv"òVF—F"6÷F—¦6œ;6ãÂ÷7VÖÖ'“ãÆÆ&VÂf÷#Ò'62#ä6ö×öæVçFSÂöÆ&VÃãÇ6VÆV7B–CÒ'62#ãÂ÷6VÆV7CãÆÆ&VÂf÷#Ò'FW62#äFW67&—6œ;6âFVÂ&WVW7FóÂöÆ&VÃãÇFW‡F&V–CÒ'FW62"&÷w3Ò#""Ö†ÆVæwFƒÒ#3"Æ6V†öÆFW#Ò$Ö&6Â&VfW&Væ6–òW7V6–f–66œ;6â#ãÂ÷FW‡F&VãÆF—b6Æ73Ò'&÷r#ãÆF—cãÆÆ&VÂf÷#Ò'##å&WVW7FòÜ:ÖâãÂöÆ&VÃãÆ–çWBFF×W6÷2–CÒ'#"–çWFÖöFSÒ&çVÖW&–2#ãÂöF—cãÆF—cãÆÆ&VÂf÷#Ò'#"#å&WVW7FòÜ:‚ãÂöÆ&VÃãÆ–çWBFF×W6÷2–CÒ'#""–çWFÖöFSÒ&çVÖW&–2#ãÂöF—cãÂöF—cãÆF—b6Æ73Ò'&÷r#ãÆF—cãÆÆ&VÂf÷#Ò'Ã#äÖæòFRö'&Ü:ÖâãÂöÆ&VÃãÆ–çWBFF×W6÷2–CÒ'Ã"–çWFÖöFSÒ&çVÖW&–2#ãÂöF—cãÆF—cãÆÆ&VÂf÷#Ò'Ã"#äÖæòFRö'&Ü:‚ãÂöÆ&VÃãÆ–çWBFF×W6÷2–CÒ'Ã""–çWFÖöFSÒ&çVÖW&–2#ãÂöF—cãÂöF—cãÆ'WGFöâ–CÒ&FE"6Æ73Ò'6V2#äwV&F"6÷F—¦6œ;6ãÂö'WGFöããÆF—b6Æ73Ò&'&÷r"7G–ÆSÒ&w&–B×FV×ÆFRÖ6öÇVÖç3£g"WFò#ãÆ–çWB–CÒ&Ö6â"Æ6V†öÆFW#Ò$çVWfò6ö×öæVçFR#ãÆ'WGFöâ–CÒ&Ö6"6Æ73Ò'‚"7G–ÆSÒ&6öÆ÷#§f"‚ÒÖ62’#äw&Vv#Âö'WGFöããÂöF—cãÂöFWF–Ç3ãÂöF—cãÆF—b6Æ73Ò&6&B#ãÆƒ#ãÇ7â&–Ö†–FFVãÒ'G'VR#ï	ùJsÂ÷7ãâ,;7†–Ö÷2ÖçFVæ–Ö–VçF÷3Âöƒ#ãÆF—b–CÒ&ÖæW‡B#ãÂöF—cãÂöF—cãÆF—b6Æ73Ò&6&B#ãÆƒ#ä†—7F÷&–ÂFRÖçBãÂöƒ#ãÆF—b–CÒ&Ö†—7B#ãÂöF—cãÂöF—cãÂ÷6V7F–öããÇ6V7F–öâ–CÒ'B×&Vr"6Æ73Ò'6V2×F"#à¢ÆF—b6Æ73Ò&6&B#à¢ÆF—b6Æ73Ò&6Æ÷6RÖ†VF–ær#ãÆÆ&VÂf÷#Ò&b#äfV6†ÂöÆ&VÃãÆ–çWB–CÒ&b"G—SÒ&FFR#ãÂöF—cà¢ÆF—b–CÒ&&÷w2"6Æ73Ò'&÷r–æ6öÖRÖw&–B#ãÂöF—cà¢ÆF—b6Æ73Ò'&÷r6Æ÷6R×F÷FÇ2#à¢ÆF—cãÆÆ&VÂf÷#Ò&¶Ò#ä¶ÒF÷FÆW3ÂöÆ&VÃãÆ–çWB–CÒ&¶Ò"–çWFÖöFSÒ&FV6–ÖÂ"Æ6V†öÆFW#Ò#CR#ãÂöF—cà¢ÆF—cãÆÆ&VÂf÷#Ò&‚#ä†÷&2F÷FÆW3ÂöÆ&VÃãÆ–çWB–CÒ&‚"–çWFÖöFSÒ&FV6–ÖÂ"Æ6V†öÆFW#Ò#BÃR#ãÂöF—cà¢ÆF—cãÆÆ&VÂf÷#Ò&F’×fÇVR#åfÆ÷"F÷FÃÂöÆ&VÃãÆ÷WGWB–CÒ&F’×fÇVR"6Æ73Ò&f–VÆBÖ÷WGWB#ãÂö÷WGWCãÂöF—cà¢ÂöF—cà¢Æ'WGFöâ–CÒ&FDB#äwV&F"¦÷&æFÂö'WGFöãà¢ÂöF—cãÆF—b6Æ73Ò&6&B#ãÆƒ#ãÇ7â&–Ö†–FFVãÒ'G'VR#ï	ùy>ûˆóÂ÷7ãâ†—7F÷&–ÂFR¦÷&æF3Âöƒ#ãÆF—b–CÒ&†—7D’#ãÂöF—cãÂöF—cãÂ÷6V7F–öããÇ6V7F–öâ–CÒ'BÖv2"6Æ73Ò'6V2×F"#à¢ÆF—b6Æ73Ò&6&B#à¢Æƒ#å&Vv—7G&"v7FóÂöƒ#à¢ÆF—b6Æ73Ò'&÷rf–VÆB×—"#à¢ÆF—cãÆÆ&VÂf÷#Ò&wB#åF—òFRv7FóÂöÆ&VÃãÇ6VÆV7B–CÒ&wB#ãÆ÷F–öâfÇVSÒ&Ö÷Fò#äÖ÷FóÂö÷F–öããÆ÷F–öâfÇVSÒ'W'6öæÂ#åW'6öæÃÂö÷F–öããÂ÷6VÆV7CãÂöF—cà¢ÆF—cãÆÆ&VÂf÷#Ò&vb#äfV6†ÂöÆ&VÃãÆ–çWB–CÒ&vb"G—SÒ&FFR#ãÂöF—cà¢ÂöF—cà¢ÆÆ&VÂf÷#Ò&v2#ä6FVv÷,:ÖÂöÆ&VÃà¢ÆF—b6Æ73Ò&6FVv÷'’×–6¶W"#ãÇ6VÆV7B–CÒ&v2#ãÂ÷6VÆV7CãÆ'WGFöâ–CÒ&VF—BÖ6FVv÷&–W2"G—SÒ&'WGFöâ"6Æ73Ò'6V2"&–ÖÆ&VÃÒ$VF—F"6FVv÷,:Ö2#î)ÈşûˆóÂö'WGFöããÂöF—cà¢ÆÆ&VÂf÷#Ò&wb#åfÆ÷"„4õ“ÂöÆ&VÃãÆ–çWBFF×W6÷2–CÒ&wb"–çWFÖöFSÒ&çVÖW&–2"Æ6V†öÆFW#Ò"C#Rã#à¢ÆÆ&VÂf÷#Ò&W‡Vç6RÖæ÷FR#äö'6W'f6œ;6â†÷6–öæÂ“ÂöÆ&VÃãÆ–çWB–CÒ&W‡Vç6RÖæ÷FR#ãÆÆ&VÂf÷#Ò&W‡Vç6R×&V6V—B#äf÷FòFVÂ&V6–&ò†÷6–öæÂ“ÂöÆ&VÃãÆ–çWB–CÒ&W‡Vç6R×&V6V—B"G—SÒ&f–ÆR"66WCÒ&–ÖvRò¢"6GW&SÒ&Vçf—&öæÖVçB#ãÇ6ÖÆÂ–CÒ'&V6V—BÖæ÷FR"6Æ73Ò&×WFR#äÆf÷Fò6R6ö×&–ÖR’6RwV&F6öâVÂv7FòãÂ÷6ÖÆÃà¢Æ'WGFöâ–CÒ&FDr#äwV&F"v7FóÂö'WGFöããÆ'WGFöâ–CÒ&6æ6VÂÖW‡Vç6R"6Æ73Ò'6V2"†–FFVãä6æ6VÆ"VF–6œ;6ãÂö'WGFöãà ¢ÂöF—cà¢ÆF—b6Æ73Ò&6&B#ãÆƒ#ãÇ7â&–Ö†–FFVãÒ'G'VR#ï	ú{ãÂ÷7ãâv7F÷2&Vv—7G&F÷3Âöƒ#ãÆF—b6Æ73Ò&f–Â#ãÇ6VÆV7B–CÒ&vgB"&–ÖÆ&VÃÒ%F—òFRv7FòVâ†—7F÷&–Â#ãÆ÷F–öâfÇVSÒ&Ö÷Fò#äÖ÷FóÂö÷F–öããÆ÷F–öâfÇVSÒ'W'6öæÂ#åW'6öæÃÂö÷F–öããÂ÷6VÆV7CãÆ–çWB–CÒ&vfÒ"G—SÒ&ÖöçF‚"&–ÖÆ&VÃÒ$ÖW2#ãÇ6VÆV7B–CÒ&vf2"&–ÖÆ&VÃÒ$6FVv÷,:Ö#ãÂ÷6VÆV7CãÂöF—cãÆF—b–CÒ&w7VÒ#ãÂöF—cãÆF—b–CÒ&†—7B#ãÂöF—cãÂöF—cà£Â÷6V7F–öãà £Ç6V7F–öâ–CÒ'B×&W2"6Æ73Ò'6V2×F"#à¢ÆF—b6Æ73Ò&6†—2"–CÒ&6†—2#ãÆ'WGFöâFF×Ò&†÷’#ä†÷“Âö'WGFöããÆ'WGFöâFF×Ò'6VÖæ"6Æ73Ò'6V2#å6VÖæÂö'WGFöããÆ'WGFöâFF×Ò&6Â"6Æ73Ò'6V2#äW7FRÖW3Âö'WGFöããÆ'WGFöâFF×Ò&çB"6Æ73Ò'6V2#äÖW2çBãÂö'WGFöããÆ'WGFöâFF×Ò&7W2"6Æ73Ò'6V2#å&ævóÂö'WGFöããÂöF—cãÆF—b6Æ73Ò'&÷rFFR×&ævR"–CÒ&f7W2"†–FFVããÆF—cãÆÆ&VÂf÷#Ò&f3#äFW6FSÂöÆ&VÃãÆ–çWBG—SÒ&FFR"–CÒ&f3#ãÂöF—cãÆF—cãÆÆ&VÂf÷#Ò&f3"#ä†7FÂöÆ&VÃãÆ–çWBG—SÒ&FFR"–CÒ&f3"#ãÂöF—cãÂöF—cà¢ ¢ÆF—b6Æ73Ò&6&B#ãÆƒ#ãÇ7â&–Ö†–FFVãÒ'G'VR#ï	ù8£Â÷7ãâW7FFòFR&W7VÇFF÷3Âöƒ#ãÆF—b–CÒ&·b#ãÂöF—cãÂöF—cãÆF—b6Æ73Ò&6&Bæ÷F#ãÆƒ#ãÇ7â&–Ö†–FFVãÒ'G'VR#ï	ù+Â÷7ãâ7\:çFò6W&#Âöƒ#ãÆF—b–CÒ&fæ÷F#ãÂöF—cãÂöF—cà£ÆF—b6Æ73Ò&6&B#ãÆƒ#å&VçF&–Æ–FBFRÆÖ÷FóÂöƒ#ãÆF—b–CÒ&g&VçB#ãÂöF—cãÂöF—cãÆF—b6Æ73Ò&6&B#ãÆƒ#ï	ù8R&VçF&–Æ–FB÷"L:ÖFRÆ6VÖæÂöƒ#ãÆF—b–CÒ'vVV¶F’×&öf—B#ãÂöF—cãÂöF—cãÆF—b6Æ73Ò&6&B#ãÆƒ#ä6÷7F÷2FR÷W&6œ;6ãÂöƒ#ãÆF—b–CÒ&f6B#ãÂöF—cãÂöF—cà¢ÆF—b6Æ73Ò&6&B#ãÆƒ#ì9¦ÇF–Ö÷2BL:Ö3Âöƒ#ãÆF—b–CÒ&–Wfò#ãÂöF—cãÂöF—cãÆF—b6Æ73Ò&6&B#ãÆƒ#å÷"Æ–66œ;6ãÂöƒ#ãÆF—b6Æ73Ò'F&Â"–CÒ&2#ãÂöF—cãÂöF—cà£Â÷6V7F–öãà £Ç6V7F–öâ–CÒ'BÖÖ2"6Æ73Ò'6V2×F"#ãÆF—b6Æ73Ò&6&B#ãÆ'WGFöâ6Æ73Ò&vò"FFÖvóÒ&'VB#ï	ù+&W7WVW7FòW'6öæÃÂö'WGFöããÆ'WGFöâ6Æ73Ò&vò6V2"FFÖvóÒ'6WB#î)©ûˆò§W7FW2’6÷–2FR6VwW&–FCÂö'WGFöããÂöF—cãÂ÷6V7F–öããÇ6V7F–öâ–CÒ'BÖ'VB"6Æ73Ò'6V2×F"#ãÆ'WGFöâ6Æ73Ò&vò6V2"FFÖvóÒ&Ö2"7G–ÆSÒ&Ö&v–ã£‡‚#î(iÜ:3Âö'WGFöããÆF—b6Æ73Ò&6&B#ãÆƒ#äÖW3Âöƒ#ãÆ–çWB–CÒ&&Ò"G—SÒ&ÖöçF‚#ãÂöF—cãÆF—b6Æ73Ò&6&B#ãÆƒ#å&W7VÇFFòFVÂÖW3Âöƒ#ãÆF—b–CÒ&&&Â#ãÂöF—cãÂöF—cãÆ'WGFöâ6Æ73Ò&vò6V2"FFÖvóÒ&v2"–CÒ'W'6öæÂÖW‡Vç6R#ï	ú{â&Vv—7G&"v7FòW'6öæÃÂö'WGFöããÆF—b6Æ73Ò&6&B#ãÆƒ#äVâ\:’6RfÆÆFÂöƒ#ãÆF—b–CÒ&&Föâ#ãÂöF—cãÂöF—cãÆF—b6Æ73Ò&6&B#ãÆƒ#å&W7WVW7Fòg2v7FFóÂöƒ#ãÆF—b–CÒ&&&'2#ãÂöF—cãÂöF—cãÆF—b6Æ73Ò&6&B#ãÆƒ#äv7F÷2FVÂÖW3Âöƒ#ãÆF—b–CÒ&&†—7B#ãÂöF—cãÂöF—cãÆF—b6Æ73Ò&6&B"–CÒ'W'6öæÂÖ6FVv÷&–W2#ãÆƒ#ä6FVv÷,:Ö2’&W7WVW7FòÖVç7VÃÂöƒ#ãÆF—b–CÒ&&6B#ãÂöF—cãÆF—b6Æ73Ò&'&÷r"7G–ÆSÒ&w&–B×FV×ÆFRÖ6öÇVÖç3£g"WFò#ãÆ–çWB–CÒ&&æWr"Æ6V†öÆFW#Ò$çVWf6FVv÷,:Ö#ãÆ'WGFöâ–CÒ&&FB"6Æ73Ò'‚"7G–ÆSÒ&6öÆ÷#§f"‚ÒÖ62’#äw&Vv#Âö'WGFöããÂöF—cãÆ'WGFöâ–CÒ'6fT"#äwV&F"6Ö&–÷3Âö'WGFöããÂöF—cãÂ÷6V7F–öããÇ6V7F–öâ–CÒ'B×6WB"6Æ73Ò'6V2×F"#ãÆ'WGFöâ6Æ73Ò&vò6V2"FFÖvóÒ&Ö2"7G–ÆSÒ&Ö&v–ã£‡‚#î(iÜ:3Âö'WGFöãà¢ÆF–Æör–CÒ&6Æ÷VB×&V6÷fW'’ÖF–Æör"&–ÖÆ&VÆÆVF'“Ò&6Æ÷VB×&V6÷fW'’×F—FÆR#ãÆf÷&Ò–CÒ&6Æ÷VB×&V6÷fW'’Öf÷&Ò#ãÆƒ"–CÒ&6Æ÷VB×&V6÷fW'’×F—FÆR#äFVf–æRVæ6öçG&6\;çVWfÂöƒ#ãÇ6Æ73Ò&×WFR#äVÆ–vRVæ6öçG&6\;FRÂÖVæ÷2‚6&7FW&W2’6öæl:×&ÖÆãÂ÷ãÆÆ&VÂf÷#Ò&6Æ÷VBÖæWr×77v÷&B#äçVWf6öçG&6\;ÂöÆ&VÃãÆ–çWB–CÒ&6Æ÷VBÖæWr×77v÷&B"G—SÒ'77v÷&B"]´ÛMí¢G§²ÚîÆ­yßK[n],v=projectedValue(k);r.push({n:n,d:d,days:dd(d),v:v})});return r.sort(function(x,y){return x.days-y.days})}
 function oblAlerts(){var l=oblList().slice(0,3);if(!l.length)return'<p class="mute">Registre las fechas de vencimiento en Mi moto para ver sus prÃ³ximas obligaciones.</p>';var T=0,h=l.map(function(x){T+=x.v;return'<div class="al"><div class="alh"><b>'+esc(obligationLabel(x.n))+'</b><span class="'+(x.days<=30?"neg":"")+'">'+(x.days<0?"Vencida hace "+(-x.days)+(x.days==-1?" dÃ­a":" dÃ­as"):x.days==0?"Vence hoy":x.days==1?"Falta 1 dÃ­a":"Faltan "+x.days+" dÃ­as")+'</span></div><div class="mute">Vence: '+fd(x.d)+'</div><div>A pagar: <b>'+(x.v>0?cop(x.v):"sin valor")+'</b></div></div>'}).join("");return h+'<div class="kv"><span>Para tener disponible</span><b>'+cop(T)+'</b></div>'}
 function obligationLabel(name){return name==="TecnomecÃ¡nica"?"Tecno":name}
 function projectedValue(key) { const manual=S.ov?.[key];if(manual!=null&&Number(manual)>0)return Number(manual);if(key==="soat"){const q=soatReference();if(q!=null)return q}if(key==="imp"){const q=taxReference();if(q!=null)return q}return S.p27?.[key] ?? S.ob?.[key] ?? 0; }
@@ -1507,19 +392,32 @@ setupDateWeekdays();
 all();
 loadPartQuote();
 </script>
-<script>const cacheKey = K + "_cloud", authKey = K + "_auth", ownerKey = K + "_owner";
+<script>const cacheKey = K + "_cloud", authKey = K + "_auth", ownerKey = K + "_owner", recoveryKey = K + "_recovery";
 const cloudConfig = window.CUENTASMOTO_CLOUD || {};
 const cloudReady = /^https:\/\/[a-z0-9-]+\.supabase\.co\/?$/i.test(cloudConfig.url || "") && Boolean(cloudConfig.anonKey);
-let revision = 0, dirty = false, busy = false, conflict = false, cloudSession = null, cloudUser = null;
+let revision = 0, dirty = false, busy = false, conflict = false, cloudSession = null, cloudUser = null, cloudRecovery = null;
 const statusText = text => { $("cst").textContent = text; };
 const authStatus = text => { $("cloud-auth-msg").textContent = text; };
+function renderProfileMenu() {
+  const name = String(cloudUser?.user_metadata?.display_name || "").trim() || cloudUser?.email?.split("@")[0] || "Mi perfil";
+  $("profile-name-label").textContent = name;
+  $("cloud-user").textContent = cloudUser?.email || "";
+  const nameInput = $("profile-display-name");
+  if (document.activeElement !== nameInput) nameInput.value = cloudUser?.user_metadata?.display_name || "";
+  const avatar = cloudUser ? (S?.profile?.avatar || "") : "";
+  const badge = $("profile-avatar-badge"), preview = $("profile-avatar-preview"), fallback = $("profile-avatar-fallback");
+  if (avatar) { badge.src = avatar; badge.hidden = false; preview.src = avatar; preview.hidden = false; fallback.hidden = true; }
+  else { badge.removeAttribute("src"); badge.hidden = true; preview.removeAttribute("src"); preview.hidden = true; fallback.hidden = false; }
+  $("profile-trigger").title = cloudUser ? "Mi perfil Â· " + name : "Iniciar sesiÃ³n";
+  $("profile-trigger").setAttribute("aria-label", cloudUser ? "Abrir perfil de " + name : "Iniciar sesiÃ³n para abrir el perfil");
+}
 function setCloudUI() {
   $("cloud-config-warning").hidden = cloudReady;
   $("cloud-config-warning").textContent = cloudReady ? "" : "La sincronizaciÃ³n todavÃ­a no estÃ¡ conectada. Configura el proyecto de nube para activar el acceso desde otros dispositivos.";
   $("cloud-signed-out").hidden = Boolean(cloudUser);
   $("cloud-signed-in").hidden = !cloudUser;
-  if (cloudUser) $("cloud-user").textContent = "SesiÃ³n iniciada como " + cloudUser.email;
-  else if(!portable) statusText(cloudReady ? "Inicia sesiÃ³n para sincronizar entre dispositivos" : "Datos guardados en este dispositivo Â· nube por configurar");
+  if(!portable) statusText(cloudUser ? "SesiÃ³n iniciada Â· " + cloudUser.email : cloudReady ? "Inicia sesiÃ³n para sincronizar entre dispositivos" : "Datos guardados en este dispositivo Â· nube por configurar");
+  renderProfileMenu();
 }
 function saveSession(session) {
   if(session?.access_token && !session.expires_at) session.expires_at=Math.floor(Date.now()/1000)+Number(session.expires_in||3600);
@@ -1578,11 +476,136 @@ $("cloud-signup").onclick=async()=>{
   try { const session=await authCall("signup",{email,password}); if(session.access_token&&session.user){await connectAccount(session);authStatus("Cuenta creada y conectada.");}else authStatus("Cuenta creada. Confirma el correo y luego inicia sesiÃ³n."); }
   catch(e){authStatus(e.message);}
 };
+async function initPasswordRecovery() {
+  if (portable) return;
+  const params = new URLSearchParams(location.hash.slice(1));
+  if (params.get("error")) {
+    history.replaceState(null, document.title, location.pathname + location.search);
+    showTab("set");
+    authStatus("El enlace venciÃ³ o no es vÃ¡lido. Solicita otro desde â€œÂ¿Olvidaste tu contraseÃ±a?â€");
+    return;
+  }
+  if (params.get("type") === "recovery") {
+    const accessToken = params.get("access_token"), refreshToken = params.get("refresh_token");
+    if (accessToken && refreshToken) {
+      cloudRecovery = {access_token:accessToken, refresh_token:refreshToken, token_type:params.get("token_type")||"bearer", expires_in:Number(params.get("expires_in")||3600), expires_at:Number(params.get("expires_at")||0)||Math.floor(Date.now()/1000)+Number(params.get("expires_in")||3600)};
+      try { sessionStorage.setItem(recoveryKey, JSON.stringify(cloudRecovery)); } catch {}
+    }
+    history.replaceState(null, document.title, location.pathname + location.search);
+  } else if (!cloudRecovery) {
+    try { cloudRecovery = JSON.parse(sessionStorage.getItem(recoveryKey)||"null"); } catch {}
+  }
+  if (!cloudRecovery?.access_token) return;
+  showTab("set");
+  try {
+    const response = await fetch(cloudConfig.url.replace(/\/$/, "") + "/auth/v1/user", {headers:{apikey:cloudConfig.anonKey,Authorization:"Bearer "+cloudRecovery.access_token}});
+    const user = await response.json().catch(()=>({}));
+    if (!response.ok) throw Error("El enlace venciÃ³ o ya fue utilizado. Solicita uno nuevo para cambiar la contraseÃ±a.");
+    cloudRecovery.user = user;
+    try { sessionStorage.setItem(recoveryKey, JSON.stringify(cloudRecovery)); } catch {}
+    $("cloud-recovery-open").hidden = false;
+    $("profile-menu").open = true;
+    $("cloud-recovery-dialog").showModal();
+  } catch(e) {
+    cloudRecovery = null;
+    try { sessionStorage.removeItem(recoveryKey); } catch {}
+    $("cloud-recovery-open").hidden = true;
+    authStatus(e.message || "El enlace no es vÃ¡lido. Solicita uno nuevo para cambiar la contraseÃ±a.");
+  }
+}
+$("cloud-forgot").onclick = async () => {
+  if (!cloudReady) { authStatus("La cuenta de nube aÃºn no estÃ¡ configurada."); return; }
+  const email = $("cloud-email").value.trim();
+  if (!email) { authStatus("Escribe tu correo para enviarte el enlace de recuperaciÃ³n."); $("cloud-email").focus(); return; }
+  authStatus("Enviando enlaceâ€¦");
+  const redirectTo = location.origin + location.pathname + location.search;
+  try {
+    await authCall("recover?redirect_to=" + encodeURIComponent(redirectTo), {email});
+    authStatus("Si el correo corresponde a una cuenta, recibirÃ¡s un enlace para cambiar la contraseÃ±a.");
+  } catch(e) { authStatus(e.message); }
+};
+$("cloud-recovery-open").onclick = () => { if (cloudRecovery) $("cloud-recovery-dialog").showModal(); };
+$("cloud-recovery-later").onclick = () => $("cloud-recovery-dialog").close();
+$("cloud-recovery-form").onsubmit = async event => {
+  event.preventDefault();
+  const password = $("cloud-new-password").value, confirmation = $("cloud-confirm-password").value;
+  if (password.length < 8) { $("cloud-recovery-msg").textContent = "Usa al menos 8 caracteres."; return; }
+  if (password !== confirmation) { $("cloud-recovery-msg").textContent = "Las contraseÃ±as no coinciden."; $("cloud-confirm-password").focus(); return; }
+  if (!cloudRecovery?.access_token) { $("cloud-recovery-msg").textContent = "El enlace venciÃ³. Solicita uno nuevo."; return; }
+  const save = $("cloud-save-password"); save.disabled = true; $("cloud-recovery-msg").textContent = "Guardando contraseÃ±aâ€¦";
+  try {
+    const response = await fetch(cloudConfig.url.replace(/\/$/, "") + "/auth/v1/user", {method:"PUT",headers:{apikey:cloudConfig.anonKey,Authorization:"Bearer "+cloudRecovery.access_token,"Content-Type":"application/json"},body:JSON.stringify({password})});
+    const result = await response.json().catch(()=>({}));
+    if (!response.ok) throw Error(result.msg || result.message || result.error_description || result.error || "No se pudo cambiar la contraseÃ±a.");
+    const session = cloudRecovery;
+    cloudRecovery = null;
+    try { sessionStorage.removeItem(recoveryKey); } catch {}
+    $("cloud-recovery-open").hidden = true;
+    $("cloud-recovery-dialog").close();
+    $("cloud-new-password").value = ""; $("cloud-confirm-password").value = "";
+    try { await connectAccount(session); authStatus("ContraseÃ±a actualizada. SesiÃ³n iniciada."); }
+    catch { saveSession(null); cloudUser = null; setCloudUI(); authStatus("ContraseÃ±a actualizada. Inicia sesiÃ³n con tu nueva contraseÃ±a."); }
+  } catch(e) { $("cloud-recovery-msg").textContent = e.message; }
+  finally { save.disabled = false; }
+};
+$("profile-save-name").onclick = async () => {
+  const displayName = $("profile-display-name").value.trim();
+  if (!displayName) { authStatus("Escribe un nombre para tu perfil."); $("profile-display-name").focus(); return; }
+  authStatus("Guardando perfilâ€¦");
+  try {
+    const response = await cloudFetch("/auth/v1/user", {method:"PUT",body:JSON.stringify({data:{...(cloudUser.user_metadata||{}),display_name:displayName}})});
+    const result = await response.json().catch(()=>({}));
+    if (!response.ok) throw Error(result.msg || result.message || result.error_description || "No se pudo guardar el nombre.");
+    cloudUser = result; renderProfileMenu(); authStatus("Nombre actualizado.");
+  } catch(e) { authStatus(e.message); }
+};
+async function resizeProfileAvatar(file) {
+  if (file.size > 8 * 1024 * 1024) throw Error("La foto debe pesar menos de 8 MB.");
+  if (file.type && !file.type.startsWith("image/")) throw Error("Selecciona un archivo de imagen.");
+  const source = await new Promise((resolve,reject) => { const reader=new FileReader(); reader.onload=()=>resolve(String(reader.result||"")); reader.onerror=()=>reject(Error("No se pudo leer la foto.")); reader.readAsDataURL(file); });
+  const image = await new Promise((resolve,reject) => { const img=new Image(); img.onload=()=>resolve(img); img.onerror=()=>reject(Error("No se pudo abrir la imagen.")); img.src=source; });
+  if (!image.naturalWidth || !image.naturalHeight) throw Error("La foto no tiene dimensiones vÃ¡lidas.");
+  const size=180, scale=Math.max(size/image.naturalWidth,size/image.naturalHeight), width=Math.round(image.naturalWidth*scale), height=Math.round(image.naturalHeight*scale);
+  const canvas=document.createElement("canvas"); canvas.width=size; canvas.height=size;
+  const context=canvas.getContext("2d"); if(!context) throw Error("El navegador no pudo procesar la foto.");
+  context.drawImage(image,(size-width)/2,(size-height)/2,width,height);
+  let quality=.72, result=canvas.toDataURL("image/jpeg",quality);
+  while(result.length>120000 && quality>.42){quality-=.08;result=canvas.toDataURL("image/jpeg",quality);}
+  if(result.length>120000) throw Error("La foto quedÃ³ muy pesada. Prueba con otra imagen.");
+  return result;
+}
+$("profile-avatar-input").onchange = async event => {
+  const file=event.target.files?.[0]; if(!file) return;
+  authStatus("Guardando fotoâ€¦");
+  try { const avatar=await resizeProfileAvatar(file); if(!S.profile)S.profile={}; S.profile.avatar=avatar; save(); renderProfileMenu(); authStatus("Foto de perfil guardada y sincronizando."); }
+  catch(e) { authStatus(e.message); }
+  finally { event.target.value=""; }
+};
+$("profile-remove-avatar").onclick = () => {
+  if(S.profile) delete S.profile.avatar;
+  save(); renderProfileMenu(); authStatus("Foto de perfil eliminada.");
+};
+$("profile-password-form").onsubmit = async event => {
+  event.preventDefault();
+  const password=$("profile-new-password").value, confirmation=$("profile-confirm-password").value;
+  if(password.length<8){authStatus("Usa al menos 8 caracteres.");return;}
+  if(password!==confirmation){authStatus("Las contraseÃ±as no coinciden.");$("profile-confirm-password").focus();return;}
+  const button=event.currentTarget.querySelector('button[type="submit"]'); button.disabled=true; authStatus("Actualizando contraseÃ±aâ€¦");
+  try {
+    const response=await cloudFetch("/auth/v1/user",{method:"PUT",body:JSON.stringify({password})});
+    const result=await response.json().catch(()=>({}));
+    if(!response.ok)throw Error(result.msg||result.message||result.error_description||"No se pudo cambiar la contraseÃ±a.");
+    $("profile-new-password").value="";$("profile-confirm-password").value="";authStatus("ContraseÃ±a actualizada.");
+  } catch(e) { authStatus(e.message); }
+  finally { button.disabled=false; }
+};
 $("cloud-logout").onclick=async()=>{
   try { if(await ensureSession()) await fetch(cloudConfig.url.replace(/\/$/,"")+"/auth/v1/logout",{method:"POST",headers:{apikey:cloudConfig.anonKey,Authorization:"Bearer "+cloudSession.access_token}}); } catch {}
   saveSession(null); cloudUser=null; conflict=false; resolveButton.hidden=true; setCloudUI(); statusText("SesiÃ³n cerrada Â· copia local conservada");
 };
 setCloudUI();
+if (portable) $("profile-menu").hidden = true;
+document.addEventListener("click", event => { if (!$("profile-menu").contains(event.target)) $("profile-menu").open = false; });
 function persist() {
   try {
     localStorage.setItem(cacheKey, JSON.stringify({ revision, dirty, data:S }));
@@ -1592,6 +615,7 @@ function persist() {
 function displayData(data) {
   if (data.clearedAt) clearLegacyCopies();
   S = data; fix(); syncApps(); buildBud(); buildDay(); loadDay(); all(); loadPartQuote();
+  renderProfileMenu();
 }
 try {
   const cached = JSON.parse(localStorage.getItem(cacheKey));
@@ -1659,7 +683,7 @@ async function synchronize() {
   } finally { busy=false; }
 }
 async function restoreCloudSession() {
-  if(!cloudReady || portable) return;
+  if(!cloudReady || portable || cloudRecovery) return;
   if(await ensureSession()) {
     try {
       const response=await cloudFetch("/auth/v1/user",{method:"GET"});
@@ -1673,6 +697,7 @@ async function restoreCloudSession() {
     catch { statusText("Sin conexiÃ³n con la nube Â· copia local conservada"); }
   }
 }
+initPasswordRecovery();
 restoreCloudSession();
 window.addEventListener("online",synchronize);
 window.addEventListener("focus",synchronize);
