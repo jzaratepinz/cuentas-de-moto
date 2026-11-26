@@ -667,12 +667,45 @@ button { border-radius: 12px; letter-spacing: .01em; }
   .home-summary .tile:last-child:nth-child(odd) { grid-column: 1 / -1; }
   .home-summary .tile:last-child:nth-child(odd) .num { font-size: clamp(16px, 5vw, 21px) !important; }
 }
+/* Resumen de inicio basado en la referencia visual del usuario. */
+.balance-hero { display: grid; grid-template-columns: minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr); align-items: center; gap: 4px; text-align: center; }
+.balance-part { min-width: 0; display: grid; justify-items: center; gap: 7px; }
+.balance-label { color: #e1efff; font-size: clamp(9px,2.5vw,12px); line-height: 1.15; font-weight: 800; letter-spacing: .045em; text-transform: uppercase; white-space: nowrap; }
+.balance-value { display: block; max-width: 100%; color: #c5f58c; font-size: clamp(10px,3.2vw,20px); line-height: 1.1; font-weight: 800; letter-spacing: -.025em; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.balance-operator { color: #fff; font-size: clamp(15px,4vw,22px); font-weight: 800; line-height: 1; }
+.balance-total .balance-value { color: #d4ff9d; }
+.home-summary { grid-template-columns: repeat(3,minmax(0,1fr)); gap: 9px; }
+.home-summary .hero { grid-column: 1/-1; }
+.home-summary .summary-tile { display: flex; flex-direction: column; align-items: stretch; justify-content: flex-start; gap: 7px; min-width: 0; min-height: 190px; height: 100%; padding: 12px 9px; text-align: center; }
+.summary-tile h3 { min-height: 2.3em; display: flex; justify-content: center; align-items: center; margin: 0; font-size: clamp(9px,2.5vw,13px) !important; letter-spacing: .025em; }
+.summary-tile .num { margin: 0; font-size: clamp(14px,4vw,20px) !important; line-height: 1.25; white-space: normal; overflow-wrap: anywhere; }
+.summary-detail { font-size: clamp(9px,2.25vw,11px); line-height: 1.25; font-weight: 700; overflow-wrap: anywhere; }
+.summary-detail.positive { color: var(--pos); }
+.summary-detail.highlight { color: #f4c84b; }
+.summary-expenses .num, .expense-breakdown { color: var(--neg); }
+.expense-breakdown { display: grid; gap: 4px; margin-top: 1px; text-align: left; font-size: clamp(9px,2.2vw,11px); line-height: 1.2; }
+.expense-breakdown > div { display: flex; justify-content: space-between; gap: 4px; }
+.expense-breakdown b { font-variant-numeric: tabular-nums; }
+.summary-link { width: auto; min-height: 30px; margin: auto auto 0; padding: 4px 3px; border: 0; background: transparent; color: var(--acc); font-size: 10px; text-decoration: underline; }
+.maintenance-summary > h2 { margin-bottom: 12px; }
+.maintenance-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; }
+.maintenance-tile { display: grid; align-content: start; justify-items: center; gap: 8px; min-width: 0; min-height: 150px; padding: 14px 8px; border: 1px solid var(--line); border-radius: 14px; background: var(--bg); text-align: center; }
+.maintenance-tile h3 { margin: 0; font-size: clamp(10px,2.5vw,13px) !important; }
+.maintenance-tile strong { font-size: clamp(16px,4vw,21px); line-height: 1.2; font-variant-numeric: tabular-nums; }
+.maintenance-tile span, .maintenance-tile small { color: var(--mute); font-size: 11px; line-height: 1.3; }
+.maintenance-tile small b { color: var(--ink); font-size: 14px; }
+@media (max-width: 370px) {
+  .balance-hero { gap: 2px; padding-inline: 9px; }
+  .balance-label { font-size: 8px; letter-spacing: 0; }
+  .balance-value { font-size: 10px; }
+  .home-summary .summary-tile { padding-inline: 6px; }
+}
 </style></head>
 <body>
 <header class="mast"><img class="mark" src="icon-192.png" alt="" width="42" height="42"><div class="mast-title"><span class="brand">CUENTAS</span><p class="mute" id="cst" role="status"></p></div><details class="profile-menu" id="profile-menu"><summary id="profile-trigger" aria-label="Abrir perfil" title="Mi perfil"><svg class="profile-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="8" r="3.5"></circle><path d="M4.8 20c.6-3.6 3.3-5.5 7.2-5.5s6.6 1.9 7.2 5.5"></path></svg><img id="profile-avatar-badge" class="profile-avatar" alt="" hidden></summary><div class="profile-popover"><p id="cloud-config-warning" class="mute" hidden></p><div id="cloud-signed-out"><h2 class="profile-heading">Mi cuenta</h2><p class="profile-note">Inicia sesión para sincronizar tus registros entre dispositivos.</p><label for="cloud-email">Correo electrónico</label><input id="cloud-email" type="email" autocomplete="email" inputmode="email" placeholder="tu@correo.com"><label for="cloud-password">Contraseña</label><input id="cloud-password" type="password" autocomplete="current-password" minlength="8" placeholder="Mínimo 8 caracteres"><div class="profile-actions"><button id="cloud-login" type="button">Iniciar sesión</button><button id="cloud-signup" type="button" class="sec">Crear cuenta</button></div><button id="cloud-forgot" type="button" class="sec">¿Olvidaste tu contraseña?</button></div><div id="cloud-signed-in" hidden><div class="profile-identity"><div class="profile-avatar-frame"><img id="profile-avatar-preview" class="avatar-preview" alt="Foto de perfil"><svg id="profile-avatar-fallback" class="profile-icon profile-placeholder" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"></circle><path d="M4.8 20c.6-3.6 3.3-5.5 7.2-5.5s6.6 1.9 7.2 5.5"></path></svg></div><div class="profile-identity-copy"><h2 id="profile-name-label">Mi perfil</h2><p id="cloud-user" class="profile-email"></p></div></div><label for="profile-display-name">Nombre visible</label><input id="profile-display-name" type="text" maxlength="60" autocomplete="nickname" placeholder="Tu nombre"><button id="profile-save-name" type="button">Guardar nombre</button><label for="profile-avatar-input">Foto de perfil</label><input id="profile-avatar-input" type="file" accept="image/*"><button id="profile-remove-avatar" type="button" class="sec">Quitar foto</button><details class="profile-section"><summary>Cambiar contraseña</summary><form id="profile-password-form"><label for="profile-new-password">Nueva contraseña</label><input id="profile-new-password" type="password" autocomplete="new-password" minlength="8" required placeholder="Mínimo 8 caracteres"><label for="profile-confirm-password">Confirma la contraseña</label><input id="profile-confirm-password" type="password" autocomplete="new-password" minlength="8" required><button type="submit">Actualizar contraseña</button></form></details><div class="profile-links"><h3>Más opciones</h3><button type="button" class="go sec" data-go="bud">💰 Presupuesto personal</button><button type="button" class="go sec" data-go="set">⚙️ Ajustes y copias de seguridad</button></div><button id="cloud-logout" type="button" class="sec">Cerrar sesión</button></div><p id="cloud-auth-msg" class="profile-message" role="status" aria-live="polite"></p><button id="cloud-recovery-open" type="button" class="sec" hidden>Continuar cambio de contraseña</button></div></details><small id="today"></small></header><h1 id="ttl">INICIO</h1>
 
 
-<section id="t-ini" class="sec-tab on"><div class="chips" id="ichips"><button data-p="hoy">Hoy</button><button data-p="semana" class="sec">Semana</button><button data-p="cal" class="sec">Este mes</button><button data-p="cus" class="sec">Rango</button></div><div class="row date-range" id="icus" hidden><div><label for="ic1">Desde</label><input type="date" id="ic1"></div><div><label for="ic2">Hasta</label><input type="date" id="ic2"></div></div><div class="home-summary"><div class="card hero"><svg class="map" viewBox="0 0 340 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><pattern id="blocks" width="46" height="33" patternTransform="rotate(-24)" patternUnits="userSpaceOnUse"><rect x="3" y="3" width="39" height="26" rx="3" fill="#1b427d" stroke="#4168a0"/></pattern></defs><rect width="340" height="200" fill="url(#blocks)"/><path d="M-20 188 62 151 82 105 142 78 165 120 224 94 252 43 348 -1" fill="none" stroke="#94d6ff" stroke-width="4" stroke-linejoin="round"/><circle cx="165" cy="120" r="7" fill="#d6efff" stroke="#153567" stroke-width="3"/></svg><div class="hero-eyebrow">Acumulado + hoy</div><div class="hero-description">Disponible</div><div class="big" id="in">$0</div></div><div id="imini"></div></div><div class="actions"><button onclick="showTab('reg')">💵 Registrar jornada</button><button class="sec" onclick="showTab('gas')">🧾 Agregar gasto</button></div><div class="card" id="wallet-card"><h2>💵 Cuadre de saldos</h2>
+<section id="t-ini" class="sec-tab on"><div class="chips" id="ichips"><button data-p="hoy">Hoy</button><button data-p="semana" class="sec">Semana</button><button data-p="cal" class="sec">Este mes</button><button data-p="cus" class="sec">Rango</button></div><div class="row date-range" id="icus" hidden><div><label for="ic1">Desde</label><input type="date" id="ic1"></div><div><label for="ic2">Hasta</label><input type="date" id="ic2"></div></div><div class="home-summary"><div class="card hero balance-hero"><svg class="map" viewBox="0 0 340 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><pattern id="blocks" width="46" height="33" patternTransform="rotate(-24)" patternUnits="userSpaceOnUse"><rect x="3" y="3" width="39" height="26" rx="3" fill="#1b427d" stroke="#4168a0"/></pattern></defs><rect width="340" height="200" fill="url(#blocks)"/><path d="M-20 188 62 151 82 105 142 78 165 120 224 94 252 43 348 -1" fill="none" stroke="#94d6ff" stroke-width="4" stroke-linejoin="round"/><circle cx="165" cy="120" r="7" fill="#d6efff" stroke="#153567" stroke-width="3"/></svg><div class="balance-part"><span class="balance-label">Acumulado</span><strong class="balance-value" id="balance-before">$0</strong></div><span class="balance-operator" aria-hidden="true">+</span><div class="balance-part"><span class="balance-label">Hoy</span><strong class="balance-value" id="balance-today">$0</strong></div><span class="balance-operator" aria-hidden="true">=</span><div class="balance-part balance-total"><span class="balance-label">Disponible</span><strong class="balance-value" id="in">$0</strong></div></div><div id="imini"></div></div><section class="card maintenance-summary"><h2><span aria-hidden="true">⛽</span> Gasolina y mantenimiento</h2><div class="maintenance-grid" id="operating-summary"></div></section><div class="actions"><button onclick="showTab('reg')">💵 Registrar jornada</button><button class="sec" onclick="showTab('gas')">🧾 Agregar gasto</button></div><div class="card" id="wallet-card"><h2>💵 Cuadre de saldos</h2>
 
 <div id="wallet-summary" aria-live="polite"></div><div id="wallet-list"></div>
 <details id="opening-editor"><summary>Saldo inicial del mes</summary>
@@ -1180,16 +1213,38 @@ function refreshDateWeekdays() {
 function dmy(f){return fd(f)}
 function renderOb(){var b=S.ob||{};$("ob1").value=b.soat||"";$("ob2").value=b.tec||"";$("ob3").value=b.imp||"";var t=(b.soat||0)+(b.tec||0)+(b.imp||0);$("obt").innerHTML=row("Provisión mensual",cop(t/12))+'<p class="mute">Si ya incluyó estos valores en los gastos fijos mensuales de Ajustes, no los repita aquí: se contarían dos veces.</p>'}
 $("obs").onclick=function(){S.ob={soat:money($("ob1").value),tec:money($("ob2").value),imp:money($("ob3").value)};save();all();msg("Valores guardados")};
-function renderIni(){updateWeekLabels();var o=calc(rng(IP,"i")),t=new Date();
-var c=calc([iso(new Date(t.getFullYear(),t.getMonth(),1)),iso(t),1]),p=calc([iso(new Date(t.getFullYear(),t.getMonth()-1,1)),iso(new Date(t.getFullYear(),t.getMonth(),0)),1]);
-const available=openingBalance(iso(t).slice(0,7))+c.cashMovement;
+function renderIni(){
+updateWeekLabels();
+const period=rng(IP,"i"),o=calc(period),now=new Date(),today=iso(now),month=today.slice(0,7);
+const monthTotals=calc([month+"-01",today,1]),todayTotals=calc([today,today,1]);
+const accumulated=openingBalance(month)+monthTotals.cashMovement-todayTotals.cashMovement;
+const available=accumulated+todayTotals.cashMovement;
+$("balance-before").textContent=cop(accumulated);
+$("balance-today").textContent=cop(todayTotals.cashMovement);
 $("in").textContent=cop(available);
-$("in").className="big "+(available>=0?"pos":"neg");
+$("in").className="big balance-value "+(available>=0?"pos":"neg");
 renderWallet(available);
 if (!$("opening-editor").open) refreshOpening();
-$("imini").innerHTML=[["Ingreso bruto",cop(o.ing),(o.km>0?cop(o.ing/o.km):"—")+" por km<br>"+(o.h>0?cop(o.ing/o.h):"—")+" por hora"],["Ingreso neto",cop(o.ing-o.com),(o.km>0?cop((o.ing-o.com)/o.km):"—")+" por km<br>"+(o.h>0?cop((o.ing-o.com)/o.h):"—")+" por hora"],["Km y horas",Math.round(o.km)+" km<br>"+o.h.toLocaleString("es-CO",{maximumFractionDigits:1})+" h",""]].map(function(x){return'<div class="card tile"><div class="mute">'+x[0]+'</div><div class="num">'+x[1]+'</div>'+(x[2]?'<div class="mute sub">'+x[2]+'</div>':"")+'</div>'}).join("");
+const inPeriod=date=>date>=period[0]&&date<=period[1];
+const motorcycle=S.g.filter(record=>inPeriod(record.f)).reduce((total,record)=>total+Number(record.v||0),0);
+const personal=(S.b?.e||[]).filter(record=>inPeriod(record.f)).reduce((total,record)=>total+Number(record.v||0),0);
+const expenses=motorcycle+personal+o.com;
+const incomePerHour=o.h>0?cop(o.ing/o.h):"—";
+const incomePerKm=o.km>0?cop(o.ing/o.km):"—";
+const targetGap=Math.max(0,o.km*(Number(S.s.meta)||1000)-o.neta);
+const periodWord=IP==="hoy"?"hoy":"en este período";
+$("imini").innerHTML=
+'<article class="card tile summary-tile summary-income"><h3>Ingreso bruto</h3><div class="num">'+cop(o.ing)+'</div><div class="summary-detail positive">✓ '+incomePerHour+' / h</div><div class="summary-detail highlight">● '+incomePerKm+' / km</div><div class="summary-detail">'+(targetGap>0?"Faltan "+cop(targetGap)+" "+periodWord:"Meta cumplida")+'</div></article>'+
+'<article class="card tile summary-tile summary-expenses"><h3>Gastos</h3><div class="num">'+cop(expenses)+'</div><div class="expense-breakdown"><div><span>Moto</span><b>'+cop(motorcycle)+'</b></div><div><span>Pers.</span><b>'+cop(personal)+'</b></div><div><span>Com.</span><b>'+cop(o.com)+'</b></div></div><button type="button" class="go summary-link" data-go="gas">Ver movimientos</button></article>'+
+'<article class="card tile summary-tile summary-shift"><h3>Jornada</h3><div class="num">'+Math.round(o.km)+' km<br>'+o.h.toLocaleString("es-CO",{maximumFractionDigits:1})+' h</div></article>';
+const maintenance=(S.g||[]).filter(record=>inPeriod(record.f)&&motoGroup(record.c)==="maintenance").reduce((total,record)=>total+Number(record.v||0),0);
+$("operating-summary").innerHTML=
+'<article class="maintenance-tile"><h3>Gasolina</h3><strong>'+cop(o.gs)+'</strong><span>Registrado</span><small>Reserva estimada<br><b>'+cop(o.eg)+'</b></small></article>'+
+'<article class="maintenance-tile"><h3>Mantenimiento</h3><strong>'+cop(maintenance)+'</strong><span>Registrado</span><small>Reserva estimada<br><b>'+cop(o.em)+'</b></small></article>';
+var c=monthTotals,p=calc([iso(new Date(now.getFullYear(),now.getMonth()-1,1)),iso(new Date(now.getFullYear(),now.getMonth(),0)),1]);
 $("icmp").innerHTML=row("Mes actual",cop(c.neta),c.neta>=0?"pos":"neg")+row("Mes anterior",cop(p.neta),p.neta>=0?"pos":"neg")+row("Diferencia",cop(c.neta-p.neta),c.neta>=p.neta?"pos":"neg");
-$("ialert").innerHTML=oblAlerts()}
+$("ialert").innerHTML=oblAlerts()
+}
 function renderWeekdayProfit(period) {
   const hoursByDate = new Map();
   for (const entry of S.d) {
