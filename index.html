@@ -139,7 +139,21 @@ h2 { font-size: 19px; letter-spacing: -.025em; }
 .profile-section form { display: grid; gap: 4px; padding: 0 12px 12px; }
 .profile-section form button { width: 100%; }
 .brand { font-weight: 750; letter-spacing: -.04em; font-size: 19px; }
-.mast small { color: var(--mute); font-size: 12px; max-width: 130px; text-align: right; }
+.mast small { display:block; min-width:0; color:var(--mute); font-size:12px; max-width:130px; text-align:right; line-height:1.2; }
+@media (max-width:480px) {
+  .mast { grid-template-columns:40px minmax(0,1fr) 84px 40px; gap:6px; }
+  .mast-title { min-width:0; overflow:hidden; }
+  .mast-title .brand { font-size:18px; }
+  #cst { font-size:11px; line-height:1.15; overflow-wrap:anywhere; }
+  #today { max-width:84px; font-size:11px; line-height:1.2; overflow-wrap:anywhere; }
+  .profile-menu { grid-column:4; grid-row:1; }
+  .profile-menu > summary { width:40px; height:40px; }
+}
+@media (max-width:360px) {
+  .mast { grid-template-columns:36px minmax(0,1fr) 72px 38px; gap:5px; }
+  #today { max-width:72px; font-size:10px; }
+  .profile-menu > summary { width:38px; height:38px; }
+}
 #cst { min-height: 20px; font-size: 12px; margin: 0; }
 
 .chips {
@@ -1771,7 +1785,7 @@ try {
     revision = cached.revision; dirty = cached.dirty; displayData(cached.data);
   } else dirty = Boolean(_raw);
 } catch {}
-$("today").textContent = fd(iso(new Date()));
+function updateHeaderDate() { const now = new Date(); const full = fd(iso(now)); const compact = new Intl.DateTimeFormat("es-CO", {weekday:"short", day:"2-digit", month:"short"}).format(now).replace(/\\./g, ""); $("today").textContent = window.matchMedia("(max-width: 480px)").matches ? compact : full; $("today").setAttribute("aria-label", full); } updateHeaderDate(); window.addEventListener("resize", updateHeaderDate, {passive:true});
 const resolveButton = document.createElement("button");
 resolveButton.className = "sec"; resolveButton.hidden = true;
 resolveButton.textContent = "Revisar versiones";
