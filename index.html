@@ -1977,9 +1977,11 @@ $("export-empty").onclick = () => downloadPortable(false);
 </script>
 <script>
 if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
-  window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(() => {
-    statusText("Sin conexión: abre la app una vez con internet para prepararla.");
-  }));
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js", {updateViaCache:"none"})
+      .then(registration => registration.update().catch(() => {}))
+      .catch(() => statusText("Sin conexión: abre la app una vez con internet para prepararla."));
+  });
 }
 </script></body>
 </html>
