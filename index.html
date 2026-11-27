@@ -951,7 +951,7 @@ function getCom(){var c={};APPS.forEach(function(a){c[a]=num($("cp_"+a).value)})
 function buildBudOld(){fix();var ks=Object.keys(S.b.cat);$("bc").innerHTML=ks.map(function(k){return"<option>"+k+"</option>"}).join("");$("bcat").innerHTML=ks.map(function(k){return'<label for="bc_'+k+'">'+k+'</label><input id="bc_'+k+'" inputmode="numeric" value="'+moneyField(S.b.cat[k]||"")+'">'}).join("")}
 function renderBud(){fix();var m=$("bm").value||iso(new Date()).slice(0,7),b=S.b,ks=Object.keys(b.cat),tot=Object.create(null),T=0;
 var es=b.e.filter(function(x){return x.f.slice(0,7)==m});es.forEach(function(x){tot[x.c]=(tot[x.c]||0)+x.v;T+=x.v});Object.keys(tot).forEach(function(k){if(!Object.hasOwn(b.cat,k))ks.push(k)});
-var mo=calc(["m+"-01"","m+"-31"",30]),opening=openingBalance(m),rest=opening+mo.cashMovement;
+var mo=calc([m+"-01",m+"-31",30]),opening=openingBalance(m),rest=opening+mo.cashMovement;
 const goal=b.goal||{},goalMinKm=Number(goal.minKm??S.s.meta??1000),goalMaxKm=Number(goal.maxKm??1600),goalMinHour=Number(goal.minHour??14000),goalMaxHour=Number(goal.maxHour??30000),kmShift=Number(goal.kmShift??88),hoursShift=Number(goal.hoursShift??6);
 const workDays=Math.max(1,Number(S.s.dias)||26),fixedMonth=Number(S.s.fijos)||0,fixedDaily=fixedMonth/workDays;
 const fuelDaily=kmShift/Math.max(1,Number(S.s.kmgal)||110)*(Number(S.s.galon)||0),maintenanceDaily=kmShift*(Number(S.s.mant)||0);
