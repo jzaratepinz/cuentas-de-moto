@@ -1217,7 +1217,7 @@ $("bk").onclick=function(){var t="";try{t=localStorage.getItem(K+"_bak")||""}cat
 var TT={ini:"Inicio",reg:"Ingresos",gas:"Gastos",res:"Finanzas",mot:"Mi moto",mas:"Más",bud:"Presupuesto",set:"Ajustes"};
 function setTtl(t){$("ttl").textContent=(TT[t]||"Cuentas de moto").toLocaleUpperCase("es-CO")}
 function showTab(t){[].forEach.call(document.querySelectorAll(".sec-tab"),function(c){c.className="sec-tab"+(c.id=="t-"+t?" on":"")});var h=(t=="bud"||t=="set")?"mas":t;[].forEach.call(document.querySelectorAll("nav button"),function(c){c.className=c.dataset.t==h?"on":""});setTtl(t);refreshDateWeekdays();window.scrollTo(0,0)}
-document.querySelector("nav").addEventListener("click",function(e){var b=e.target.closest("button");if(b)setTtl(b.dataset.t)});
+document.querySelector("nav").addEventListener("click",function(e){var b=e.target.closest("button[data-t]");if(!b)return;showTab(b.dataset.t);setTtl(b.dataset.t)});
 function syncApps(){APPS=["Didi","Picap","Uber","Yango","inDrive"].concat(S.ax||[])}
 function cn(n){return new Intl.NumberFormat("es-CO",{maximumFractionDigits:0}).format(Math.round(n||0))}
 function buildDay() {
