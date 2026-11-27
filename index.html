@@ -955,7 +955,7 @@ var mo=calc(["m+"-01"","m+"-31"",30]),opening=openingBalance(m),rest=opening+mo.
 const goal=b.goal||{},goalMinKm=Number(goal.minKm??S.s.meta??1000),goalMaxKm=Number(goal.maxKm??1600),goalMinHour=Number(goal.minHour??14000),goalMaxHour=Number(goal.maxHour??30000),kmShift=Number(goal.kmShift??88),hoursShift=Number(goal.hoursShift??6);
 const workDays=Math.max(1,Number(S.s.dias)||26),fixedMonth=Number(S.s.fijos)||0,fixedDaily=fixedMonth/workDays;
 const fuelDaily=kmShift/Math.max(1,Number(S.s.kmgal)||110)*(Number(S.s.galon)||0),maintenanceDaily=kmShift*(Number(S.s.mant)||0);
-const rates=Object.values(S.s.com||{}).map(Number).filter(Number.isFinite),commissionPct=rates.length?rates.reduce((sum,value)=>sum+value,0)/rates.length:15;
+const rates=Object.values(S.s.com||{}).map(Number).filter(Number.isFinite),commissionPct=mo.ing>0?mo.com/mo.ing*100:rates.length?rates.reduce((sum,value)=>sum+value,0)/rates.length:15;
 const targetMin=Math.max(goalMinKm*kmShift,goalMinHour*hoursShift),targetMax=Math.max(goalMaxKm*kmShift,goalMaxHour*hoursShift);
 const commissionMin=targetMin*commissionPct/100,commissionMax=targetMax*commissionPct/100;
 const dailyCosts=fixedDaily+fuelDaily+maintenanceDaily,netMin=targetMin-commissionMin-dailyCosts,netMax=targetMax-commissionMax-dailyCosts;
