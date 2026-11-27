@@ -1,4 +1,4 @@
-const CACHE = "cuentas-moto-iphone-v24";
+const CACHE = "cuentas-moto-iphone-v25";
 const APP_FILES = ["./", "./index.html", "./supabase-config.js", "./manifest.webmanifest", "./icon.svg", "./icon-180.png", "./icon-192.png", "./icon-512.png"];
 self.addEventListener("install", event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(APP_FILES)));
