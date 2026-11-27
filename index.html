@@ -1824,14 +1824,25 @@ async function cloudFetch(path, options={}) {
   if (response.status===401 && await refreshSession()) response=await send();
   return response;
 }
+function stableJson(value) {
+  if (Array.isArray(value)) return "[" + value.map(stableJson).join(",") + "]";
+  if (value && typeof value === "object") {
+    return "{" + Object.keys(value).sort().map(key => JSON.stringify(key) + ":" + stableJson(value[key])).join(",") + "}";
+  }
+  return JSON.stringify(value);
+}
 async function connectAccount(session) {
   const savedOwner=localStorage.getItem(ownerKey);
   if (savedOwner && savedOwner!==session.user.id) { saveSession(null); throw Error("Esta copia está vinculada a otro correo. Descarga primero una copia de seguridad antes de cambiar de cuenta."); }
   saveSession(session); cloudUser=session.user; localStorage.setItem(ownerKey,cloudUser.id); setCloudUI();
-  const local=JSON.parse(localStorage.getItem(cacheKey)||"null"), hasLocal=Boolean(_raw || local?.data);
+  const local=JSON.parse(localStorage.getItem(cacheKey)||"null");
+  let localData=local?.data ?? null;
+  if (!localData && _raw) { try { localData=JSON.parse(_raw); } catch {} }
+  const hasLocal=Boolean(localData);
   const remote=await readAccount();
   if (remote.data) {
-    if (hasLocal) { revision=remote.version; markConflict(); }
+    const sameCopy=hasLocal && stableJson(localData)===stableJson(remote.data);
+    if (hasLocal && !sameCopy) { revision=remote.version; markConflict(); }
     else { displayData(remote.data); revision=remote.version; dirty=false; persist(); }
   } else if (hasLocal) { revision=0; dirty=true; persist(); await synchronize(); }
   else { revision=0; dirty=false; persist(); statusText("Cuenta conectada · sin registros todavía"); }
