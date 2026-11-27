@@ -1824,10 +1824,11 @@ async function cloudFetch(path, options={}) {
   if (response.status===401 && await refreshSession()) response=await send();
   return response;
 }
-function stableJson(value) {
-  if (Array.isArray(value)) return "[" + value.map(stableJson).join(",") + "]";
+function stableJson(value, omitTimestamp=false) {
+  if (Array.isArray(value)) return "[" + value.map(item => stableJson(item)).join(",") + "]";
   if (value && typeof value === "object") {
-    return "{" + Object.keys(value).sort().map(key => JSON.stringify(key) + ":" + stableJson(value[key])).join(",") + "}";
+    const keys=Object.keys(value).filter(key => !(omitTimestamp && key==="ts")).sort();
+    return "{" + keys.map(key => JSON.stringify(key) + ":" + stableJson(value[key])).join(",") + "}";
   }
   return JSON.stringify(value);
 }
@@ -1841,7 +1842,7 @@ async function connectAccount(session) {
   const hasLocal=Boolean(localData);
   const remote=await readAccount();
   if (remote.data) {
-    const sameCopy=hasLocal && stableJson(localData)===stableJson(remote.data);
+    const sameCopy=hasLocal && stableJson(localData,true)===stableJson(remote.data,true);
     if (hasLocal && !sameCopy) { revision=remote.version; markConflict(); }
     else { displayData(remote.data); revision=remote.version; dirty=false; persist(); }
   } else if (hasLocal) { revision=0; dirty=true; persist(); await synchronize(); }
@@ -2018,12 +2019,13 @@ resolveButton.textContent = "Revisar versiones";
 $("cst").after(resolveButton);
 function markConflict() {
   conflict = true; resolveButton.hidden = false;
-  statusText("Hay cambios en dos dispositivos. Tu copia local está pendiente.");
+  resolveButton.textContent = "Revisar copias";
+  statusText("Hay copias por revisar. No se reemplazó ningún dato.");
 }
 resolveButton.onclick = async () => {
   try {
     const remote = await readAccount();
-    const choice = prompt("Escribe NUBE para cargar la versión de tu cuenta o LOCAL para enviar la de este dispositivo. Primero puedes copiar tus registros en Ajustes.");
+    const choice = prompt("Escribe NUBE para reemplazar esta copia con la de tu cuenta, o LOCAL para reemplazar la copia de la nube con la de este dispositivo. Puedes descargar un respaldo desde Ajustes antes de continuar.");
     if (!choice || !["NUBE","LOCAL"].includes(choice.trim().toUpperCase())) return;
     if (choice.trim().toUpperCase() === "NUBE" && remote.data) { displayData(remote.data); dirty=false; }
     revision=remote.version; conflict=false; resolveButton.hidden=true; persist(); synchronize();
