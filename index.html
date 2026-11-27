@@ -951,8 +951,40 @@ function getCom(){var c={};APPS.forEach(function(a){c[a]=num($("cp_"+a).value)})
 function buildBudOld(){fix();var ks=Object.keys(S.b.cat);$("bc").innerHTML=ks.map(function(k){return"<option>"+k+"</option>"}).join("");$("bcat").innerHTML=ks.map(function(k){return'<label for="bc_'+k+'">'+k+'</label><input id="bc_'+k+'" inputmode="numeric" value="'+moneyField(S.b.cat[k]||"")+'">'}).join("")}
 function renderBud(){fix();var m=$("bm").value||iso(new Date()).slice(0,7),b=S.b,ks=Object.keys(b.cat),tot=Object.create(null),T=0;
 var es=b.e.filter(function(x){return x.f.slice(0,7)==m});es.forEach(function(x){tot[x.c]=(tot[x.c]||0)+x.v;T+=x.v});Object.keys(tot).forEach(function(k){if(!Object.hasOwn(b.cat,k))ks.push(k)});
-var mo=calc([m+"-01",m+"-31",30]),opening=openingBalance(m),rest=opening+mo.cashMovement;
-$("bbal").innerHTML=row("Saldo inicial",cop(opening))+row("Ingresos de moto menos comisiones y gastos pagados",cop(mo.cashMovement+T))+row("Gastos personales","− "+cop(T))+row("Le queda",cop(rest),rest>=0?"pos":"neg");
+var mo=calc(["m+"-01"","m+"-31"",30]),opening=openingBalance(m),rest=opening+mo.cashMovement;
+const goal=b.goal||{},goalMinKm=Number(goal.minKm??S.s.meta??1000),goalMaxKm=Number(goal.maxKm??1600),goalMinHour=Number(goal.minHour??14000),goalMaxHour=Number(goal.maxHour??30000),kmShift=Number(goal.kmShift??88),hoursShift=Number(goal.hoursShift??6);
+const workDays=Math.max(1,Number(S.s.dias)||26),fixedMonth=Number(S.s.fijos)||0,fixedDaily=fixedMonth/workDays;
+const fuelDaily=kmShift/Math.max(1,Number(S.s.kmgal)||110)*(Number(S.s.galon)||0),maintenanceDaily=kmShift*(Number(S.s.mant)||0);
+const rates=Object.values(S.s.com||{}).map(Number).filter(Number.isFinite),commissionPct=rates.length?rates.reduce((sum,value)=>sum+value,0)/rates.length:15;
+const targetMin=Math.max(goalMinKm*kmShift,goalMinHour*hoursShift),targetMax=Math.max(goalMaxKm*kmShift,goalMaxHour*hoursShift);
+const commissionMin=targetMin*commissionPct/100,commissionMax=targetMax*commissionPct/100;
+const dailyCosts=fixedDaily+fuelDaily+maintenanceDaily,netMin=targetMin-commissionMin-dailyCosts,netMax=targetMax-commissionMax-dailyCosts;
+const budgetTotal=Object.values(b.cat).reduce((sum,value)=>sum+Number(value||0),0),exceeded=Math.max(0,T-budgetTotal),moneyInput=value=>moneyField(value);
+$("bbal").innerHTML='<div class="budget-kpis"><div class="budget-kpi"><span>Presupuesto</span><b>'+cop(budgetTotal)+'</b></div><div class="budget-kpi"><span>Gastado</span><b>'+cop(T)+'</b></div><div class="budget-kpi"><span>Excedido</span><b class="'+(exceeded>0?"neg":"pos")+'">'+cop(exceeded)+'</b></div></div>'+
+'<div class="budget-projection"><h3>Proyección automática de ingresos</h3>'+
+row("Tarifa mínima por km",cop(goalMinKm))+row("Tarifa máxima por km",cop(goalMaxKm))+
+row("Valor mínimo por hora",cop(goalMinHour))+row("Valor máximo por hora",cop(goalMaxHour))+
+row("Km por jornada",kmShift.toLocaleString("es-CO")+" km")+row("Horas por jornada",hoursShift.toLocaleString("es-CO")+" h")+
+row("Meta mínima diaria",cop(targetMin))+row("Meta máxima diaria",cop(targetMax))+
+row("Meta mínima del mes",cop(targetMin*workDays))+row("Meta máxima del mes",cop(targetMax*workDays))+
+row("Gastos fijos del mes",cop(fixedMonth))+row("Gastos fijos por jornada",cop(fixedDaily))+
+row("Gasolina por jornada",cop(fuelDaily))+row("Mantenimiento por jornada",cop(maintenanceDaily))+
+row("Comisión estimada · "+commissionPct.toLocaleString("es-CO",{maximumFractionDigits:1})+" %",cop(commissionMin)+" – "+cop(commissionMax))+
+row("Disponible neto estimado por jornada",cop(netMin)+" – "+cop(netMax))+'</div>'+
+'<details class="accordion budget-goals"><summary><h3>Configurar meta diaria</h3></summary><div class="budget-goal-fields">'+
+'<label>Tarifa mínima por km<input data-pesos id="goal-min-km" inputmode="numeric" value="'+moneyInput(goalMinKm)+'"></label>'+
+'<label>Tarifa máxima por km<input data-pesos id="goal-max-km" inputmode="numeric" value="'+moneyInput(goalMaxKm)+'"></label>'+
+'<label>Valor mínimo por hora<input data-pesos id="goal-min-hour" inputmode="numeric" value="'+moneyInput(goalMinHour)+'"></label>'+
+'<label>Valor máximo por hora<input data-pesos id="goal-max-hour" inputmode="numeric" value="'+moneyInput(goalMaxHour)+'"></label>'+
+'<label>Km por jornada<input id="goal-km-shift" inputmode="decimal" value="'+String(kmShift).replace(".",",")+'"></label>'+
+'<label>Horas por jornada<input id="goal-hours-shift" inputmode="decimal" value="'+String(hoursShift).replace(".",",")+'"></label>'+
+'<button type="button" id="saveDailyGoal">Guardar metas</button></div></details>'+
+'<div class="budget-bank-balance"><h3>Saldo del mes</h3>'+row("Saldo inicial",cop(opening))+row("Ingresos de moto menos comisiones y gastos pagados",cop(mo.cashMovement+T))+row("Gastos personales","− "+cop(T))+row("Disponible",cop(rest),rest>=0?"pos":"neg")+'</div>';
+$("saveDailyGoal").onclick=function(){const values={minKm:money($("goal-min-km").value),maxKm:money($("goal-max-km").value),minHour:money($("goal-min-hour").value),maxHour:money($("goal-max-hour").value),kmShift:num($("goal-km-shift").value),hoursShift:num($("goal-hours-shift").value)};
+if(Object.values(values).some(value=>!Number.isFinite(value)||value<=0)){msg("Completa las seis metas con valores mayores que cero");return}
+if(values.maxKm<values.minKm||values.maxHour<values.minHour){msg("Los valores máximos deben ser iguales o mayores que los mínimos");return}
+S.b.goal=values;save();renderBud();msg("Metas guardadas y presupuesto recalculado")};
+$("configure-budget").onclick=function(){const editor=$("personal-categories");editor.open=true;editor.scrollIntoView({behavior:"smooth",block:"start"})};
 var sv='<svg viewBox="0 0 42 42" width="170" height="170" role="img" aria-label="Gastos por categoría"><circle cx="21" cy="21" r="15.9155" fill="none" stroke="var(--line)" stroke-width="6"/>',off=25,lg="";
 ks.forEach(function(k,i){var v=tot[k]||0;if(!v)return;var p=v/T*100;sv+='<circle cx="21" cy="21" r="15.9155" fill="none" stroke="'+COL[i%8]+'" stroke-width="6" stroke-dasharray="'+p+' '+(100-p)+'" stroke-dashoffset="'+off+'"/>';off-=p;lg+='<div class="kv"><span><i class="dot" style="background:'+COL[i%8]+'"></i>'+esc(k)+'</span><b>'+cop(v)+' · '+Math.round(p)+'%</b></div>'});
 $("bdon").innerHTML=T?'<div style="text-align:center">'+sv+'</svg></div>'+lg:'<p class="mute">Registre un gasto personal para ver el gráfico.</p>';
@@ -1275,9 +1307,7 @@ $("imini").innerHTML=
 '<article class="card tile summary-tile summary-expenses"><h3>Gastos</h3><div class="num">'+cop(expenses)+'</div><div class="expense-breakdown"><div><span>Moto</span><b>'+cop(motorcycle)+'</b></div><div><span>Pers.</span><b>'+cop(personal)+'</b></div><div><span>Com.</span><b>'+cop(o.com)+'</b></div></div><button type="button" class="go summary-link" data-go="gas">Ver movimientos</button></article>'+
 '<article class="card tile summary-tile summary-shift"><h3>Jornada</h3><div class="num">'+Math.round(o.km)+' km<br>'+o.h.toLocaleString("es-CO",{maximumFractionDigits:1})+' h</div></article>';
 const maintenance=(S.g||[]).filter(record=>inPeriod(record.f)&&motoGroup(record.c)==="maintenance").reduce((total,record)=>total+Number(record.v||0),0);
-$("operating-summary").innerHTML=
-'<article class="maintenance-tile"><h3>Gasolina</h3><strong>'+cop(o.gs)+'</strong><span>Registrado</span><small>Reserva estimada<br><b>'+cop(o.eg)+'</b></small></article>'+
-'<article class="maintenance-tile"><h3>Mantenimiento</h3><strong>'+cop(maintenance)+'</strong><span>Registrado</span><small>Reserva estimada<br><b>'+cop(o.em)+'</b></small></article>';
+$("operating-summary").innerHTML='<div class="tbl"><table class="operating-table"><thead><tr><th>Concepto</th><th>Gastado</th><th>Reserva est.</th></tr></thead><tbody><tr><th scope="row">Gasolina</th><td>'+cop(o.gs)+'</td><td>'+cop(o.eg)+'</td></tr><tr><th scope="row">Mantenimiento</th><td>'+cop(maintenance)+'</td><td>'+cop(o.em)+'</td></tr></tbody></table></div>';
 var c=monthTotals,p=calc([iso(new Date(now.getFullYear(),now.getMonth()-1,1)),iso(new Date(now.getFullYear(),now.getMonth(),0)),1]);
 $("icmp").innerHTML=row("Mes actual",cop(c.neta),c.neta>=0?"pos":"neg")+row("Mes anterior",cop(p.neta),p.neta>=0?"pos":"neg")+row("Diferencia",cop(c.neta-p.neta),c.neta>=p.neta?"pos":"neg");
 $("ialert").innerHTML=oblAlerts()
